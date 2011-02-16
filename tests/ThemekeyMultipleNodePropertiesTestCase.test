@@ -54,7 +54,7 @@ class ThemekeyMultipleNodePropertiesTestCase extends ThemekeyWebTestCase {
       }
     }
 
-
+    module_load_include('inc', 'themekey', 'themekey_build');
     $rules = themekey_load_rules();
 
     if (!empty($rules)) {
