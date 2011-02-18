@@ -5,6 +5,7 @@ ThemeKey 7.x-1.0-rc2, 2011-xx-xx
 [#1062966] mkalkbrenner: PHP 5.3 strict warning in themekey_help()
 [        ] mkalkbrenner: fixed fatal error in ThemekeyMultipleNodePropertiesTestCase
 [        ] mkalkbrenner: moved ThemeKey Example module to Development package
+[#1065878] mkalkbrenner: Error messages when activating all Themekey modules on a Standard English Drupal-7.0 installation
 
 
 ThemeKey 7.x-1.0-rc1, 2011-02-11
