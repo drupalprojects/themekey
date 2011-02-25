@@ -1,5 +1,4 @@
 <?php
-// $Id$
 
 require_once(drupal_get_path('module', 'themekey_ui') .'/themekey_ui_helper.inc');
 

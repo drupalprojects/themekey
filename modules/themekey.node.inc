@@ -1,5 +1,4 @@
 <?php
-// $Id$
 
 function themekey_node_themekey_properties() {
   // Attributes for properties

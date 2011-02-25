@@ -1,4 +1,3 @@
-; $Id$
 
 name = "ThemeKey"
 description = "Map themes to Drupal paths or object properties."

@@ -1,5 +1,4 @@
 <?php
-// $Id$
 
 /**
  * Function _themekey_invoke_modules().

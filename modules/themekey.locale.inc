@@ -1,5 +1,4 @@
 <?php
-// $Id$
 
 function themekey_locale_themekey_properties() {
   // Attributes for properties
