@@ -1,4 +1,3 @@
-; $Id$
 
 name = "ThemeKey Example"
 description = "Implements parts of the ThemeKey API as an example for Developers."
