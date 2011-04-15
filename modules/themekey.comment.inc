@@ -50,8 +50,8 @@ function themekey_comment_themekey_paths() {
   $paths = array();
   $paths[] = array('path' => 'comment/reply/#node:nid');
   $paths[] = array('path' => 'comment/reply/#node:nid/#comment:cid');
-  $paths[] = array('path' => 'comment/edit/#comment:cid');
-  $paths[] = array('path' => 'comment/delete/#comment:cid');
+  $paths[] = array('path' => 'comment/#comment:cid/edit');
+  $paths[] = array('path' => 'comment/#comment:cid/delete');
 
   return $paths;
 }
@@ -73,7 +73,7 @@ function themekey_comment_themekey_paths() {
  *   or NULL if no value could be mapped
  */
 function themekey_comment_cid2nid($cid) {
-  $nid = db_select('comments', 'c')
+  $nid = db_select('comment', 'c')
   ->fields('c', array('nid'))
   ->condition('cid', $cid)
   ->execute()
