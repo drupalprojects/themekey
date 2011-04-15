@@ -6,6 +6,7 @@ ThemeKey 7.x-1.0-rc2, 2011-xx-xx
 [        ] mkalkbrenner: moved ThemeKey Example module to Development package
 [#1065878] mkalkbrenner: Error messages when activating all Themekey modules on a Standard English Drupal-7.0 installation
 [#1125920] mkalkbrenner: don't set $custom_theme to 'default'
+[#1096356] mkalkbrenner: taxonomy:tid and taxonomy:tid_and_childs change themes for term nodes but not for nodes referencing terms
 
 
 ThemeKey 7.x-1.0-rc1, 2011-02-11
