@@ -1,0 +1,6 @@
+name = "ThemeKey Compatibility (Experimental!)"
+description = "Integration of different theme switching modules into ThemeKey and it's theme switching rule chain."
+core = 7.x
+dependencies[] = themekey
+package = ThemeKey
+configure = admin/config/user-interface/themekey/settings/compat

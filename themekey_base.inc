@@ -439,8 +439,10 @@ function themekey_property_value(&$parameters, $property) {
             isset($map['path']) ? $map['path'] : '');
         }
 
+        $arguments = isset($map['args']) ? $map['args'] : array();
+
         if (function_exists($map_func)) {
-          $parameters[$property] = $map_func($parameters[$map['src']], $parameters);
+          $parameters[$property] = $map_func($parameters[$map['src']], $arguments);
         }
         else {
           themekey_set_debug_message('Map function %map_function does not exists', array('%map_function' => $map_func));
