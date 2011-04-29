@@ -6,6 +6,7 @@ ThemeKey 7.x-1.0-rc3, 2011-xx-xx
 [        ] mkalkbrenner: introduced additional arguments for mapping callback functions
 [        ] mkalkbrenner: introduced experimental module ThemeKey Compatibility
 [        ] mkalkbrenner: integrated Print module's paths to detect node ids
+[#1142402] mkalkbrenner: new property for POST variables: system:post
 
 
 ThemeKey 7.x-1.0-rc2, 2011-04-15
