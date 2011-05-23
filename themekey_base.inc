@@ -330,10 +330,10 @@ function themekey_match_condition($condition, &$parameters) {
       $match_path = themekey_match_path($condition, $parameters);
       if ($condition->operator == '=') {
         return $match_path;
-       }
-       // only '=' and '!' are allowed
-       // @see themekey_validator_drupal_path()
-       return !$match_path;
+      }
+      // only '=' and '!' are allowed
+      // @see themekey_validator_drupal_path()
+      return !$match_path;
     }
 
     $value = themekey_property_value($parameters, $condition->property);
