@@ -446,7 +446,7 @@ function themekey_property_value(&$parameters, $property) {
         }
         else {
           themekey_set_debug_message('Map function %map_function does not exists', array('%map_function' => $map_func));
-          watchdog('php', 'ThemeKey map function %map_function does not exists', array('%map_function' => $map_func), 'error');
+          watchdog('php', 'ThemeKey map function %map_function does not exists', array('%map_function' => $map_func), WATCHDOG_ERROR);
         }
         break;
       }
