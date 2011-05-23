@@ -1,3 +1,8 @@
+ThemeKey 6.x-3.4, 2011-xx-xx
+----------------------------
+[#1159326] mkalkbrenner: drupal:path does not respect operator
+
+
 ThemeKey 6.x-3.3, 2011-04-27
 ----------------------------
 [#1030268] mkalkbrenner: Toggle "Property drupal:path is case sensitive" does not work; drupal:path is always case sensitive
