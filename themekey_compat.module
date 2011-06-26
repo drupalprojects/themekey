@@ -103,6 +103,8 @@ function themekey_compat_dummy2theme($dummy, $args) {
  * Implements hook_modules_disabled().
  */
 function themekey_compat_modules_disabled($modules) {
+  require_once DRUPAL_ROOT . '/' . drupal_get_path('module', 'themekey') . '/themekey_build.inc';
+
   variable_set('themekey_compat_modules_enabled',
     array_diff(variable_get('themekey_compat_modules_enabled', array()), $modules));
 
