@@ -1,8 +1,9 @@
-ThemeKey 7.x-1.1, 2011-xx-xx
+ThemeKey 7.x-1.1, 2011-06-27
 ----------------------------
 [        ] mkalkbrenner: fixed debug messages in themekey_compat
 [        ] mkalkbrenner: fixed javascript tooltip exchange on property change
 [        ] mkalkbrenner: Call to undefined function themekey_update_static_rule()
+[#1199750] mkalkbrenner: rename css files
 
 
 ThemeKey 7.x-1.0, 2011-05-23
