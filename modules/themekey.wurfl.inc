@@ -18,7 +18,7 @@
  * @return
  *   array of themekey properties and mapping functions
  */
-function themekey_book_themekey_properties() {
+function themekey_wurfl_themekey_properties() {
   // Attributes for properties
   $attributes = array();
 
@@ -50,8 +50,15 @@ function themekey_book_themekey_properties() {
  *   just a dummy
  *
  * @return
- *   string 'true' if client is a mobile browser, otherwise 'false'
+ *   string 'true' if client is a mobile browser, otherwise 'false',
+ *   or NULL if no value could be mapped
  */
 function themekey_wurfl_dummy2is_mobile_browser($dummy) {
-  return wurfl_get_requestingDevice()->getCapability('mobile_browser') ? 'true' : 'false';
+  $requesting_device = wurfl_get_requestingDevice();
+
+  if (is_object($requesting_device)) {
+    return $requesting_device->getCapability('mobile_browser') ? 'true' : 'false';
+  }
+
+  return NULL;
 }
