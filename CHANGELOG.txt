@@ -2,6 +2,7 @@ ThemeKey 6.x-3.4, 2011-xx-xx
 ----------------------------
 [#1159326] mkalkbrenner: drupal:path does not respect operator
 [#1214624] chawl, mkalkbrenner: New property: wurfl:is_mobile_browser
+[#1215656] mkalkbrenner: Avoid errors if a third party module gets deactivated
 
 
 ThemeKey 6.x-3.3, 2011-04-27
