@@ -25,10 +25,10 @@
 function themekey_invoke_modules($hook) {
   $return = array();
   foreach (variable_get('themekey_modules', array('node')) as $module) {
-    if (module_exists($module) && is_readable(drupal_get_path('module', 'themekey') .'/modules/'. $module .'.inc')) {
-      require_once(drupal_get_path('module', 'themekey') .'/modules/'. $module .'.inc');
+    if (module_exists($module) && is_readable(drupal_get_path('module', 'themekey') .'/modules/themekey.'. $module .'.inc')) {
+      require_once(drupal_get_path('module', 'themekey') .'/modules/themekey.'. $module .'.inc');
 
-      $function = str_replace('.', '_', $module) .'_'. $hook;
+      $function = 'themekey_' . $module . '_' . $hook;
       if (function_exists($function)) {
         $return = array_merge_recursive($return, $function());
       }
