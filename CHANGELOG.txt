@@ -1,6 +1,7 @@
 ThemeKey 7.x-1.2, 2011-xx-xx
 ----------------------------
 [#1215656] mkalkbrenner: Avoid errors if a third party module gets deactivated
+[        ] mkalkbrenner: disable theme switching during drupal installation or update
 
 
 ThemeKey 7.x-1.1, 2011-06-27
