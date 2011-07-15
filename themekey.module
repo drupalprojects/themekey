@@ -180,10 +180,6 @@ function themekey_custom_theme() {
     themekey_debug_properties();
   }
 
-  if ($custom_theme && variable_get('themekey_override_custom_theme', 0)) {
-    // TODO initialize theme right here
-  }
-
   return $custom_theme;
 }
 

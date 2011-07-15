@@ -1,4 +1,4 @@
-name = "ThemeKey Compatibility (Experimental!)"
+name = "ThemeKey Compatibility"
 description = "Integration of different theme switching modules into ThemeKey and it's theme switching rule chain."
 core = 7.x
 dependencies[] = themekey
