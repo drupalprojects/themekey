@@ -1,4 +1,4 @@
-ThemeKey 6.x-3.4, 2011-xx-xx
+ThemeKey 6.x-3.4, 2011-08-11
 ----------------------------
 [#1159326] mkalkbrenner: drupal:path does not respect operator
 [#1214624] chawl, mkalkbrenner: New property: wurfl:is_mobile_browser
