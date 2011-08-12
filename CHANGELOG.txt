@@ -1,3 +1,8 @@
+ThemeKey 7.x-1.4, 2011-xx-xx
+----------------------------
+[        ] mkalkbrenner: added new properties sytem:month and system_day_of_month
+
+
 ThemeKey 7.x-1.3, 2011-08-12
 ----------------------------
 [#1246604] mkalkbrenner: Use of undefined constants when running update.php
