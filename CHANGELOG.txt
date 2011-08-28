@@ -1,3 +1,8 @@
+ThemeKey 6.x-3.6, 2011-xx-xx
+----------------------------
+[        ] mkalkbrenner: integration / support of Revisioning module
+
+
 ThemeKey 6.x-3.5, 2011-08-17
 ----------------------------
 [        ] mkalkbrenner: hide debug information about current theme if themekey_debug_trace_rule_switching not set
