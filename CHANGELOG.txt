@@ -1,6 +1,7 @@
 ThemeKey 7.x-1.5, 2011-xx-xx
 ----------------------------
-[        ] mkalkbrenner: integration / support of Revisioning module
+[#1254144] mkalkbrenner: integration / support of Revisioning module
+[#1264310] tungscit, mkalkbrenner: Themekey path doesn't support special chars
 
 
 ThemeKey 7.x-1.4, 2011-08-17
