@@ -1,3 +1,8 @@
+ThemeKey 7.x-1.6, 2011-xx-xx
+----------------------------
+[#1298644] mkalkbrenner: new operators "*", "!*", "!~"
+
+
 ThemeKey 7.x-1.5, 2011-09-19
 ----------------------------
 [#1254144] mkalkbrenner: integration / support of Revisioning module
