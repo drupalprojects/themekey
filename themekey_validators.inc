@@ -415,7 +415,7 @@ function themekey_validator_node_type($rule) {
       break;
 
     case '~':
-    case '!':
+    case '!~':
       $errors = themekey_validator_regex($rule);
       break;
 
@@ -461,7 +461,7 @@ function themekey_validator_http_host($rule) {
   $errors = array();
   switch ($rule['operator']) {
     case '~':
-    case '!':
+    case '!~':
       $errors = themekey_validator_regex($rule);
       break;
 
@@ -771,7 +771,7 @@ function themekey_validator_role($rule) {
       break;
 
     default:
-      $errors['operator'] = t('Possible operators are "=", "!", "~", "!~"');
+      $errors['operator'] = t('Possible operators are "=", "!", "*", "!*", "~", "!~"');
       break;
 
   }
