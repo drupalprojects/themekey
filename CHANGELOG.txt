@@ -1,6 +1,8 @@
-ThemeKey 6.x-3.7, 2011-xx-xx
+ThemeKey 6.x-3.7, 2011-09-28
 ----------------------------
 [#1290754] mkalkbrenner: ThemeKey not working for block detail configuration
+[#1252846] mkalkbrenner: Use of undefined constants when running install.php
+[#1293182] mkalkbrenner: disable theme switching during drupal installation or update
 
 
 ThemeKey 6.x-3.6, 2011-09-19
