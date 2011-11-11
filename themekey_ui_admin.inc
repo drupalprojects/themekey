@@ -123,6 +123,18 @@ function themekey_ui_settings_form_validate(&$form, $form_state) {
       );
     }
   }
+
+  $selectable_themes = array_diff($form_state['values']['themekey_ui_selectable_themes'], array('0'));
+  if (empty($selectable_themes)) {
+    if (
+      (array_key_exists('themekey_ui_pathalias', $form_state['values']) && $form_state['values']['themekey_ui_pathalias']) ||
+      $form_state['values']['themekey_ui_nodeform'] ||
+      $form_state['values']['themekey_ui_author'] ||
+      (array_key_exists('themekey_ui_blog_author', $form_state['values']) && $form_state['values']['themekey_ui_blog_author'])
+    ) {
+      form_set_error('themekey_ui_selectable_themes', t('You need to activate at least one selectable theme.'));
+    }
+  }
 }
 
 
