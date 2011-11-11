@@ -246,7 +246,7 @@ function themekey_ui_theme_build_select_form(&$form, $title, $description, $defa
 
     $screenshot = NULL;
     $theme_key = $info->name;
-    while ($theme_key) {
+    while ($theme_key && array_key_exists($theme_key, $themes)) {
       if (file_exists($themes[$theme_key]->info['screenshot'])) {
         $screenshot = $themes[$theme_key]->info['screenshot'];
         break;
