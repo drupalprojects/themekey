@@ -1,3 +1,9 @@
+ThemeKey 7.x-2.0beta2, 2011-xx-xx
+---------------------------------
+[        ] mkalkbrenner: integration / support of blog module
+[#1307126] mkalkbrenner: Treat blogs/username path as the same as user created nodes when selected in the UI
+
+
 ThemeKey 7.x-2.0beta1, 2011-10-07
 ---------------------------------
 [#1298644] mkalkbrenner: new operators "*", "!*", "!~"

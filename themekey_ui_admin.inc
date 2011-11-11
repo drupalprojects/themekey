@@ -88,12 +88,41 @@ function themekey_ui_settings_form() {
     '#description' => t('Assign themes from user profile. All nodes created by a user will be shown to all visitors using the theme she selected in her profile.'),
   );
 
+  if (module_exists('blog')) {
+    $form['themekey_ui']['themekey_ui_blog_author'] = array(
+      '#type' => 'checkbox',
+      '#title' => t('Let the user select a theme for her blog pages'),
+      '#default_value' => variable_get('themekey_ui_blog_author', 0),
+      '#description' => t('Assign themes to personal blogs from user profile. Requires "%themekey_ui_author" to be activated.', array('%themekey_ui_author' => t('Let the user select a theme for her nodes in her user profile'))),
+    );
+  }
+
   $form['buttons']['submit'] = array(
     '#type' => 'submit',
     '#value' => t('Save configuration'),
   );
 
   return $form;
+}
+
+
+/**
+ * Validation of
+ * @see themekey_ui_settings_form()
+ */
+function themekey_ui_settings_form_validate(&$form, $form_state) {
+  if (array_key_exists('themekey_ui_blog_author', $form_state['values'])) {
+    if ($form_state['values']['themekey_ui_blog_author'] && !$form_state['values']['themekey_ui_author']) {
+      form_set_error('themekey_ui_blog_author',
+        t('"%themekey_ui_blog_author" requires "%themekey_ui_author" to be active.',
+          array(
+            '%themekey_ui_blog_author' => t('Let the user select a theme for her blog pages'),
+            '%themekey_ui_author' => t('Let the user select a theme for her nodes in her user profile'),
+          )
+        )
+      );
+    }
+  }
 }
 
 
@@ -112,6 +141,7 @@ function themekey_ui_settings_form_submit($form, &$form_state) {
 
   themekey_update_static_rule('themekey_ui:node_triggers_theme', $form_state['values']['themekey_ui_nodeform']);
   themekey_update_static_rule('themekey_ui:node_author_triggers_theme', $form_state['values']['themekey_ui_author']);
+  themekey_update_static_rule('themekey_ui:blog_author_triggers_theme', array_key_exists('themekey_ui_blog_author', $form_state['values']) ? $form_state['values']['themekey_ui_blog_author'] : FALSE);
 
   drupal_set_message(t('The configuration options have been saved.'));
 }
