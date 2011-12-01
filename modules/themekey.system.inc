@@ -476,7 +476,7 @@ function themekey_dummy2date_time($dummy) {
  *   current date as string formatted like "2009-12-24"
  */
 function themekey_dummy2date($dummy) {
-  return format_date(time(), 'custom', 'Y-m-d', variable_get('date_default_timezone', 0));
+  return format_date(time(), 'custom', 'Y-m-d', variable_get('date_default_timezone', 0), 'en');
 }
 
 
@@ -492,10 +492,10 @@ function themekey_dummy2date($dummy) {
  *   string containing current value of ThemeKey property system:dummy
  *
  * @return
- *   current date as string formatted like "2009-12-24"
+ *   current month as string, three letters formatted like "Jan"
  */
 function themekey_dummy2month($dummy) {
-  return format_date(time(), 'custom', 'M', variable_get('date_default_timezone', 0));
+  return format_date(time(), 'custom', 'M', variable_get('date_default_timezone', 0), 'en');
 }
 
 
@@ -643,7 +643,7 @@ function themekey_dummy2session($dummy) {
  *   current day of the week as three letters from "Mon" through "Sun"
  */
 function themekey_dummy2day_of_week($dummy) {
-  return format_date(time(), 'custom', 'D', variable_get('date_default_timezone', 0));
+  return format_date(time(), 'custom', 'D', variable_get('date_default_timezone', 0), 'en');
 }
 
 
@@ -659,7 +659,7 @@ function themekey_dummy2day_of_week($dummy) {
 *   string containing current value of ThemeKey property system:dummy
 *
 * @return
-*   current day of the week as three letters from "Mon" through "Sun"
+*   current day of the month without leading zeros
 */
 function themekey_dummy2day_of_month($dummy) {
   return format_date(time(), 'custom', 'j', variable_get('date_default_timezone', 0));
