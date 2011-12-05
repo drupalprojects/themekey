@@ -476,7 +476,7 @@ function themekey_dummy2date_time($dummy) {
  *   current date as string formatted like "2009-12-24"
  */
 function themekey_dummy2date($dummy) {
-  return format_date(time(), 'custom', 'Y-m-d', variable_get('date_default_timezone', 0), 'en');
+  return format_date(time(), 'custom', 'Y-m-d', variable_get('date_default_timezone', 0));
 }
 
 
