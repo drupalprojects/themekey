@@ -20,6 +20,7 @@
  * - system:query_param
  * - system:query_string
  * - system:cookie
+ * - system:http_header
  * - system:server_ip
  * - system:server_port
  * - system:server_name
@@ -69,6 +70,11 @@ function themekey_system_themekey_properties() {
 
   $attributes['system:cookie'] = array(
     'description' => t("System: Cookie - Every single cookie and its value if present will be formatted like 'COOKIE_NAME=COOKIE_VALUE'"),
+    'page cache' => THEMEKEY_PAGECACHE_UNSUPPORTED,
+  );
+
+  $attributes['system:http_header'] = array(
+    'description' => t("System: HTTP Header - Every single HTTP header and its value if present will be formatted like 'HEADER_NAME=HEADER_VALUE'"),
     'page cache' => THEMEKEY_PAGECACHE_UNSUPPORTED,
   );
 
@@ -270,6 +276,9 @@ foo
                   'dst'       => 'system:cookie',
                   'callback'  => 'themekey_dummy2cookie');
   $maps[] = array('src'       => 'system:dummy',
+                  'dst'       => 'system:http_header',
+                  'callback'  => 'themekey_dummy2http_header');
+  $maps[] = array('src'       => 'system:dummy',
                   'dst'       => 'system:post',
                   'callback'  => 'themekey_dummy2post');
   $maps[] = array('src'       => 'system:dummy',
@@ -388,6 +397,30 @@ function themekey_dummy2cookie($dummy) {
     $filtered_cookies[] = $key . (!empty($value) ? '=' . $value : '');
   }
   return count($filtered_cookies) ? array_unique($filtered_cookies) : NULL;
+}
+
+
+/**
+ * ThemeKey mapping function to set a
+ * ThemeKey property's value (destination)
+ * with the aid of another ThemeKey property (source).
+ *
+ * src: system:dummy
+ * dst: system:http_header
+ *
+ * @param $dummy
+ *   string containing current value of ThemeKey property system:dummy
+ *
+ * @return
+ *   array of system:http_header values
+ *   or NULL if no value could be mapped
+ */
+function themekey_dummy2http_header($dummy) {
+  $filtered_headers = array();
+  foreach (apache_request_headers() as $key => $value) {
+    $filtered_headers[] = $key . (!empty($value) ? '=' . $value : '');
+  }
+  return count($filtered_headers) ? array_unique($filtered_headers) : NULL;
 }
 
 
