@@ -1,3 +1,8 @@
+ThemeKey 7.x-2.1, 2012-xx-xx
+----------------------------
+[        ] mkalkbrenner: fixed warnings in themekey_browser_detection.php
+
+
 ThemeKey 7.x-2.0, 2012-01-19
 ----------------------------
 [        ] mkalkbrenner: fixed rare fatal error "Call to undefined function apache_request_headers()" if property system:http_header is used in combination with ThemeKey Debug and drush

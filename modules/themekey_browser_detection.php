@@ -50,7 +50,7 @@ class ThemekeyBrowserDetection {
    * @static
    * @access public
    */
-  function getBrowser($useragent) {
+  static function getBrowser($useragent) {
     // check for most popular browsers first
     // unfortunately, that's IE. We also ignore Opera and Netscape 8
     // because they sometimes send msie agent
@@ -142,7 +142,7 @@ class ThemekeyBrowserDetection {
    * @static
    * @access public
    */
-  function getBrowserSimplified($browser) {
+  static function getBrowserSimplified($browser) {
     return trim(preg_replace('/[0-9.]/', '', $browser));
   }
 
@@ -153,7 +153,7 @@ class ThemekeyBrowserDetection {
    * @static
    * @access public
    */
-  function getOs($useragent) {
+  static function getOs($useragent) {
     $useragent = drupal_strtolower($useragent);
 
     //check for (aaargh) most popular first
@@ -234,7 +234,7 @@ class ThemekeyBrowserDetection {
    * @static
    * @access public
    */
-  function getOsSimplified($os) {
+  static function getOsSimplified($os) {
     if (strpos($os, 'Windows') !== FALSE) {
       return 'Windows';
     }
