@@ -3,6 +3,9 @@ ThemeKey 7.x-2.1, 2012-xx-xx
 [        ] mkalkbrenner: fixed warnings in themekey_browser_detection.php
 [        ] mkalkbrenner: added basic integration of module purl to prepare the integration with the mobile tools module
 [#1589354] CoyoteCreed, mkalkbrenner: ThemeKey calls obsolete Organic Groups function
+[        ] mkalkbrenner: only validate enabled rules
+[#1513070] mkalkbrenner: Improve Features support
+[#686650]  daggerhart, mkalkbrenner: add Organic Groups to properties (exprimental)
 
 
 ThemeKey 7.x-2.0, 2012-01-19
