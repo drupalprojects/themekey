@@ -6,6 +6,7 @@ ThemeKey 7.x-2.1, 2012-xx-xx
 [        ] mkalkbrenner: only validate enabled rules
 [#1513070] mkalkbrenner: Improve Features support
 [#686650]  daggerhart, mkalkbrenner: add Organic Groups to properties (exprimental)
+[#1030268] mkalkbrenner: Toggle "Property drupal:path is case sensitive" does not work for path aliases
 
 
 ThemeKey 7.x-2.0, 2012-01-19

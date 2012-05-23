@@ -62,6 +62,7 @@ function themekey_invoke_modules($hook) {
  *   boolean
  */
 function themekey_match_path($condition, &$parameters) {
+  // don't repeat alias detection for all rules during one page request
   static $alias_uri = '';
 
   if ('drupal:path' != $condition->property) {
@@ -70,13 +71,8 @@ function themekey_match_path($condition, &$parameters) {
 
   $get_q = $get_q_to_split = themekey_get_q();
 
-  if (!variable_get('themekey_path_case_sensitive', 0)) {
-    $condition->value = drupal_strtolower($condition->value);
-    $get_q_to_split = drupal_strtolower($get_q_to_split);
-  }
-
   $condition_parts = explode('/', $condition->value);
-  $get_q_parts = explode('/', $get_q_to_split);
+  $get_q_parts = explode('/', $get_q);
 
   $wildcards = themekey_match_path_parts($get_q_parts, $condition_parts);
   if (FALSE === $wildcards && module_exists('path')) {
@@ -150,6 +146,11 @@ function themekey_match_path_parts($path_parts, $condition_parts) {
         continue;
       }
       return FALSE;
+    }
+
+    if (!variable_get('themekey_path_case_sensitive', 0)) {
+      $part = drupal_strtolower($part);
+      $path_parts[$key] = drupal_strtolower($path_parts[$key]);
     }
 
     if ($part == $path_parts[$key] || $part == urldecode($path_parts[$key]) || $part == rawurldecode($path_parts[$key])) {
