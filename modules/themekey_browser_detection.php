@@ -60,8 +60,13 @@ class ThemekeyBrowserDetection {
         return 'Blazer ' . $matches[1];
       }
       //deal with IE
-      if (preg_match("/MSIE ([0-9]{1}\.[0-9]{1,2})/", $useragent, $matches)) {
+      if (preg_match("/MSIE ([0-9]{1,2}\.[0-9]{1,2})/", $useragent, $matches)) {
         return 'Internet Explorer ' . $matches[1];
+      }
+    }
+    elseif (strpos($useragent, 'IEMobile') !== FALSE) {
+      if (preg_match("/IEMobile\/([0-9]{1,2}\.[0-9]{1,2})/", $useragent, $matches)) {
+        return 'Internet Explorer Mobile ' . $matches[1];
       }
     }
     elseif (strpos($useragent, 'Gecko')) {
@@ -188,6 +193,9 @@ class ThemekeyBrowserDetection {
     elseif (strpos($useragent, 'win 9x 4.90') !== FALSE) {
       return 'Windows ME';
     }
+    elseif (strpos($useragent, 'windows phone') !== FALSE) {
+      return 'Windows Phone';
+    }
     elseif (strpos($useragent, 'iphone') !== FALSE) {
       return 'iPhone';
     }
@@ -235,7 +243,10 @@ class ThemekeyBrowserDetection {
    * @access public
    */
   static function getOsSimplified($os) {
-    if (strpos($os, 'Windows') !== FALSE) {
+    if (strpos($os, 'Windows Phone') !== FALSE) {
+      return 'Windows Phone';
+    }
+    elseif (strpos($os, 'Windows') !== FALSE) {
       return 'Windows';
     }
     else {
