@@ -4,7 +4,7 @@
  * @file
  * The functions in this file are the back end of ThemeKey.
  *
- * @author Markus Kalkbrenner | Cocomore AG
+ * @author Markus Kalkbrenner | bio.logis GmbH
  *   @see http://drupal.org/user/124705
  *
  * @author profix898
@@ -25,7 +25,7 @@
 function themekey_invoke_modules($hook) {
   $return = array();
   foreach (variable_get('themekey_modules', array('node')) as $module) {
-    if (module_exists($module) && is_readable(drupal_get_path('module', 'themekey') . '/modules/themekey.' . $module .'.inc')) {
+    if (module_exists($module) && is_readable(drupal_get_path('module', 'themekey') . '/modules/themekey.' . $module . '.inc')) {
       require_once DRUPAL_ROOT . '/' . drupal_get_path('module', 'themekey') . '/modules/themekey.' . $module . '.inc';
 
       $function = 'themekey_' . $module . '_' . $hook;

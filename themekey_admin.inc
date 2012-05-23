@@ -4,7 +4,7 @@
  * @file
  * Contains all form manipulations to required by ThemeKey.
  *
- * @author Markus Kalkbrenner | Cocomore AG
+ * @author Markus Kalkbrenner | bio.logis GmbH
  *   @see http://drupal.org/user/124705
  *
  * @author profix898

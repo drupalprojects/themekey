@@ -5,7 +5,7 @@
  * The functions in this file are the back end of ThemeKey which should be
  * used only if you configure something, but not when ThemeKey switches themes.
  *
- * @author Markus Kalkbrenner | Cocomore AG
+ * @author Markus Kalkbrenner | bio.logis GmbH
  *   @see http://drupal.org/user/124705
  *
  * @author profix898
