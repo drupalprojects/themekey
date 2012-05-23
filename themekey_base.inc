@@ -62,14 +62,17 @@ function themekey_invoke_modules($hook) {
  *   boolean
  */
 function themekey_match_path($condition, &$parameters) {
+  global $language;
+  
   // don't repeat alias detection for all rules during one page request
   static $alias_uri = '';
-
+  static $language_prefix = NULL;
+  
   if ('drupal:path' != $condition->property) {
     return FALSE;
   }
 
-  $get_q = $get_q_to_split = themekey_get_q();
+  $get_q = themekey_get_q();
 
   $condition_parts = explode('/', $condition->value);
   $get_q_parts = explode('/', $get_q);
@@ -85,17 +88,46 @@ function themekey_match_path($condition, &$parameters) {
         $alias_uri_parts = explode('?', $alias_uri);
         $alias_uri = $alias_uri_parts[0];
       }
+      
+      if (NULL === $language_prefix) {
+        if (LOCALE_LANGUAGE_NEGOTIATION_URL_PREFIX ==
+          variable_get('locale_language_negotiation_url_part', LOCALE_LANGUAGE_NEGOTIATION_URL_PREFIX)
+          && (array_key_exists('locale-url', variable_get('language_negotiation_language', array())) ||
+              array_key_exists('locale-url', variable_get('language_negotiation_language_content', array())))
+        ) {
+          $languages = language_list('enabled');
+          list($language_object, $alias_uri) = language_url_split_prefix($alias_uri, $languages[1]);
+          if ($language_object) {
+            $language_prefix = $language_object->prefix;
+          }
+          else {
+            $language_prefix = FALSE;
+          }
+        }
+        else {
+          // prevent multiple checks for prefixes
+          $language_prefix = FALSE;
+        }
+      }
+            
       // For $alias_uri != $_GET['q'] the page was requested using an
       // aliased path, otherwise get the path alias internally
       if ($alias_uri == $get_q) {
-        $alias_uri = drupal_get_path_alias($get_q);
+        $lang_code = NULL;
+        if (!empty($language->language) && LANGUAGE_NONE != $language->language) {
+          $lang_code = $language->language;
+        }
+        
+        $alias_uri = drupal_get_path_alias($get_q, $lang_code);
       }
     }
 
     if ($alias_uri != $get_q) {
-      $alias_parts = explode('/', $alias_uri);
-
-      $wildcards = themekey_match_path_parts($alias_parts, $condition_parts);
+      $wildcards = themekey_match_path_parts(explode('/', $alias_uri), $condition_parts);
+      if (FALSE === $wildcards && $language_prefix) {
+        // retry, because the rule might contain the path alias including the language prefix
+        $wildcards = themekey_match_path_parts(explode('/', $language_prefix . '/' . $alias_uri), $condition_parts);
+      }
     }
   }
 
