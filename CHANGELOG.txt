@@ -1,4 +1,4 @@
-ThemeKey 7.x-2.1, 2012-xx-xx
+ThemeKey 7.x-2.1, 2012-05-24
 ----------------------------
 [        ] mkalkbrenner: fixed warnings in themekey_browser_detection.php
 [        ] mkalkbrenner: added basic integration of module purl to prepare the integration with the mobile tools module
