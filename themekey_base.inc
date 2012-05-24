@@ -90,7 +90,7 @@ function themekey_match_path($condition, &$parameters) {
       }
       
       if (NULL === $language_prefix) {
-        if (LOCALE_LANGUAGE_NEGOTIATION_URL_PREFIX ==
+        if (drupal_multilingual() && LOCALE_LANGUAGE_NEGOTIATION_URL_PREFIX ==
           variable_get('locale_language_negotiation_url_part', LOCALE_LANGUAGE_NEGOTIATION_URL_PREFIX)
           && (array_key_exists('locale-url', variable_get('language_negotiation_language', array())) ||
               array_key_exists('locale-url', variable_get('language_negotiation_language_content', array())))
