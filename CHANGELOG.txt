@@ -2,6 +2,7 @@ ThemeKey 7.x-2.3, 2012-xx-xx
 ----------------------------
 [#686650]  daggerhart, mkalkbrenner: add Organic Groups to properties (continued experimental implementation)
 [#1651026] mkalkbrenner: fixed notice when activating a static rule
+[#1653236] minorOffense: Add support for PURL modifiers
 
 
 ThemeKey 7.x-2.2, 2012-05-24
