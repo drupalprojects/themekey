@@ -4,6 +4,7 @@ ThemeKey 7.x-2.3, 2012-07-24
 [#1651026] mkalkbrenner: fixed notice when activating a static rule
 [#1653236] minorOffense: Add support for PURL modifiers
 [#1623010] mkalkbrenner: fixed Notice: Undefined property: stdClass::$revision in themekey_ui_node_update()
+[#1694782] mkalkbrenner: fixed Notice: Undefined index: enabled in themekey_rule_set()
 
 
 ThemeKey 7.x-2.2, 2012-05-24

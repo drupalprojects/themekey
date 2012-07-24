@@ -505,11 +505,11 @@ function themekey_rule_get($id) {
  */
 function themekey_update_static_rule($property, $state) {
 
-  $id = db_select('themekey_properties', 'tp')
-    ->fields('tp', array('id'))
+  $existing_rule = db_select('themekey_properties', 'tp')
+    ->fields('tp', array('id', 'enabled', 'parent'))
     ->condition('property', $property)
     ->execute()
-    ->fetchField();
+    ->fetchAssoc();
 
 
   if ($state) {
@@ -520,9 +520,10 @@ function themekey_update_static_rule($property, $state) {
       'theme' => 'default',
     );
 
-    if ($id) {
-      $item['id'] = $id;
-      // leave 'enabled' as it is in database
+    if (!empty($existing_rule)) {
+      $item['id'] = $existing_rule['id'];
+      $item['enabled'] = $existing_rule['enabled'];
+      $item['parent'] = $existing_rule['parent'];
     }
     else {
       // enable new rule
@@ -532,8 +533,8 @@ function themekey_update_static_rule($property, $state) {
 
     themekey_rule_set($item);
   }
-  elseif ($id) {
-    themekey_rule_del($id);
+  elseif (!empty($existing_rule)) {
+    themekey_rule_del($existing_rule['id']);
   }
 }
 
