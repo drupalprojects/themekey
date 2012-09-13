@@ -268,6 +268,12 @@ foo
     'page cache' => THEMEKEY_PAGECACHE_SUPPORTED,
   );
 
+  $attributes['drupal:path_is_admin'] = array(
+    'description' => t("Drupal: Path is admin - 'true' if current page's path belongs to the admin section, otherwise just 'false'."),
+    'validator' => 'themekey_validator_string_boolean',
+    'page cache' => THEMEKEY_PAGECACHE_SUPPORTED,
+  );
+
   $maps = array();
   $maps[] = array('src'       => 'system:dummy',
                   'dst'       => 'system:query_param',
@@ -345,6 +351,7 @@ function themekey_system_themekey_global() {
 
   $parameters['drupal:base_path'] = base_path();
   $parameters['drupal:is_front_page'] = drupal_is_front_page() ? 'true' : 'false';
+  $parameters['drupal:path_is_admin'] = path_is_admin() ? 'true' : 'false';
 
   return $parameters;
 }
