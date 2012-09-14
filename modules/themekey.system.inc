@@ -351,7 +351,7 @@ function themekey_system_themekey_global() {
 
   $parameters['drupal:base_path'] = base_path();
   $parameters['drupal:is_front_page'] = drupal_is_front_page() ? 'true' : 'false';
-  $parameters['drupal:path_is_admin'] = path_is_admin() ? 'true' : 'false';
+  $parameters['drupal:path_is_admin'] = path_is_admin($_GET['q']) ? 'true' : 'false';
 
   return $parameters;
 }
