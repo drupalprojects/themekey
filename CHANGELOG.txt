@@ -1,3 +1,8 @@
+ThemeKey 6.x-4.1, 2012-xx-xx
+----------------------------
+[#1792198] psynaptic: Invalid multibyte sequence in themekey_validators.inc
+
+
 ThemeKey 6.x-4.0, 2012-01-19
 ----------------------------
 [#1410182] souk: taxonomy:tid_and_childs not working as intended

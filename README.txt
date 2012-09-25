@@ -3,7 +3,7 @@ ThemeKey
 ========
 
 Name: themekey
-Authors: Markus Kalkbrenner | Cocomore AG
+Authors: Markus Kalkbrenner | bio.logis GmbH
          Carsten Müller | Cocomore AG
          Thilo Wawrzik <drupal at profix898 dot de>
 Drupal: 6.x
@@ -63,7 +63,7 @@ HOOK_themekey_properties()
     Value:  array()
             - description => Readable name of property (required)
             - validator   => Callback function to validate a rule starting with that property (optional)
-                             TODO: describe validator arguments and return value 
+                             TODO: describe validator arguments and return value
               static      => true/false, static properties don't occur in properties drop down
                              and have fixed operator and value (optional)
 
@@ -92,4 +92,3 @@ HOOK_themekey_paths()
 
 HOOK_themekey_load_validators()
   include files containing validators
-  
