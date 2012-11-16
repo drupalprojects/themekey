@@ -2,6 +2,7 @@ ThemeKey 7.x-2.4, 2012-xx-xx
 ----------------------------
 [        ] mkalkbrenner: new property drupal:path_is_admin
 [#1842066] netw3rker, mkalkbrenner: organic groups properties are not available
+[        ] mkalkbrenner: fixed rare fatal error on upgrades from early ThemeKey 6.x versions
 
 
 ThemeKey 7.x-2.3, 2012-07-24

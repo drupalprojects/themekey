@@ -411,7 +411,7 @@ function themekey_update_6202() {
       if (is_array($conditions)) {
         $parent = $row->id;
         foreach ($conditions as $condition) {
-          $insert_result = db_insert('themekey_properties') // Table name no longer needs {}
+          $parent = db_insert('themekey_properties') // Table name no longer needs {}
           ->fields(array(
             'property' =>  $condition['property'],
             'operator' => $condition['operator'],
@@ -423,16 +423,9 @@ function themekey_update_6202() {
             'parent' => $parent,
           ))
           ->execute();
-
-          if ($insert_result) {
-            $parent = db_last_insert_id('themekey_properties', 'id'); // TODO Wofür ist das gut?
-          }
-
         }
       }
-
     }
-
   }
 
   db_drop_field('themekey_properties', 'conditions');
