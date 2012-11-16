@@ -2,7 +2,7 @@
 
 /**
  * @file
- * Integration of different theme switching modules into ThemeKey and it's theme switching rule chain.
+ * Integration of different theme switching modules into ThemeKey and its theme switching rule chain.
  * @see themekey.module
  *
  * @author Markus Kalkbrenner | bio.logis GmbH
