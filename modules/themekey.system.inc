@@ -53,7 +53,7 @@ function themekey_system_themekey_properties() {
   $attributes = array();
 
   $attributes['system:host'] = array(
-    'description' => t('System: HTTP_HOST - The hostname/domain of the site without http:// or https://, like "www.drupal.org" or "drupal.cocomore.com"'),
+    'description' => t('System: HTTP_HOST - The hostname/domain of the site without http:// or https://, like "www.drupal.org" or "www.biologis.com"'),
     'validator' => 'themekey_validator_http_host',
     'page cache' => THEMEKEY_PAGECACHE_SUPPORTED,
   );
