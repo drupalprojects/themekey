@@ -882,7 +882,7 @@ function themekey_validator_month($rule) {
 * Validates a Theme Switching Rule.
 * Allowed Operators: "=", "!", "<", "<=", ">", ">="
 * Allowed values:
-* - a three letter month string if operator is "=" or "!"
+* - a number between 1 and 31
 *
 *
 * @param $rule
