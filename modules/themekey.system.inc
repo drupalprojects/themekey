@@ -79,7 +79,7 @@ function themekey_system_themekey_properties() {
   );
 
   $attributes['system:post'] = array(
-    'description' => t("System: POST - Every single POST value formatted like 'POST_VARIABLE_NAME=POST_VARIABLE_VALUE'. Example: form_id=node_form"),
+    'description' => t("System: POST - Every single POST value formatted like 'POST_VARIABLE_NAME=POST_VARIABLE_VALUE'. Example: form_id=node_form. If the POST value is not a scalar but a complex type like array or object, the resulting string is formatted as 'POST_VARIABLE_NAME' without a value."),
     'page cache' => THEMEKEY_PAGECACHE_UNSUPPORTED,
   );
 
@@ -428,7 +428,7 @@ function themekey_dummy2http_header($dummy) {
     // Function apache_request_headers() is only available when PHP runs as an Apache module.
     // P.e. when running drush, it's not available
     foreach (apache_request_headers() as $key => $value) {
-      $filtered_headers[] = $key . (!empty($value) ? '=' . $value : '');
+        $filtered_headers[] = $key . '=' . $value;
     }
   }
   return count($filtered_headers) ? array_unique($filtered_headers) : NULL;
@@ -453,7 +453,12 @@ function themekey_dummy2http_header($dummy) {
 function themekey_dummy2post($dummy) {
   $filtered_post = array();
   foreach ($_POST as $key => $value) {
-    $filtered_post[] = $key . (!empty($value) ? '=' . $value : '');
+    if (!empty($value) && is_scalar($value)) {
+      $filtered_post[] = $key . '=' . $value;
+    }
+    else {
+      $filtered_post[] = $key;
+    }
   }
   return count($filtered_post) ? array_unique($filtered_post) : NULL;
 }
