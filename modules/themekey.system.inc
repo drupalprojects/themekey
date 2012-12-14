@@ -428,7 +428,7 @@ function themekey_dummy2http_header($dummy) {
     // Function apache_request_headers() is only available when PHP runs as an Apache module.
     // P.e. when running drush, it's not available
     foreach (apache_request_headers() as $key => $value) {
-        $filtered_headers[] = $key . '=' . $value;
+        $filtered_headers[] = $key . (!empty($value) ? '=' . $value : '');
     }
   }
   return count($filtered_headers) ? array_unique($filtered_headers) : NULL;
