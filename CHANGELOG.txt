@@ -5,6 +5,7 @@ ThemeKey 7.x-2.4, 2012-xx-xx
 [        ] mkalkbrenner: fixed rare fatal error on upgrades from early ThemeKey 6.x versions
 [#1705410] rooby, mkalkbrenner: new property overlay:mode
 [#1866850] frizi, mkalkbrenner: differentiate between scalar and complex post values for property system:post
+[#1900864] Pacufist: Bug in function themekey_compat_module_implements_alter().
 
 
 ThemeKey 7.x-2.3, 2012-07-24
