@@ -582,9 +582,12 @@ function themekey_dummy2time($dummy) {
  *   current user's browser as string
  */
 function themekey_dummy2user_browser($dummy) {
-  return ThemekeyBrowserDetection::getBrowser($_SERVER['HTTP_USER_AGENT']);
-}
+  if (!empty($_SERVER['HTTP_USER_AGENT'])) {
+    return ThemekeyBrowserDetection::getBrowser($_SERVER['HTTP_USER_AGENT']);
+  }
 
+  return NULL;
+}
 
 /**
  * ThemeKey mapping function to set a
@@ -601,7 +604,11 @@ function themekey_dummy2user_browser($dummy) {
  *   current user's operating system as string
  */
 function themekey_dummy2user_os($dummy) {
-  return ThemekeyBrowserDetection::getOs($_SERVER['HTTP_USER_AGENT']);
+  if (!empty($_SERVER['HTTP_USER_AGENT'])) {
+    return ThemekeyBrowserDetection::getOs($_SERVER['HTTP_USER_AGENT']);
+  }
+
+  return NULL;
 }
 
 
