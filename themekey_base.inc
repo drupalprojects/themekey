@@ -216,7 +216,7 @@ function themekey_get_global_parameters() {
     $path_condition->property = 'drupal:path';
     $paths = variable_get('themekey_paths', array());
     foreach ($paths as $item) {
-      $path_condition->value = $item;
+      $path_condition->value = $item['path'];
       $parameters = array();
 
       if (themekey_match_path($path_condition, &$parameters)) {

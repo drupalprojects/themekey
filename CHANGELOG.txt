@@ -8,6 +8,7 @@ ThemeKey 7.x-2.4, 2012-xx-xx
 [#1900864] Pacufist: Bug in function themekey_compat_module_implements_alter().
 [#1916338] dwatson, mkalkbrenner: Undefined index: HTTP_USER_AGENT in themekey_dummy2user_os()
 [#1955062] andrewsuth, mkalkbrenner: support path aliases in themekey_get_global_parameters()
+[        ] mkalkbrenner: fixed explode() expects parameter 2 to be string, array given themekey_base.inc:77
 
 
 ThemeKey 7.x-2.3, 2012-07-24
