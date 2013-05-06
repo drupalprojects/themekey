@@ -219,7 +219,7 @@ function themekey_get_global_parameters() {
       $path_condition->value = $item['path'];
       $parameters = array();
 
-      if (themekey_match_path($path_condition, &$parameters)) {
+      if (themekey_match_path($path_condition, $parameters)) {
         foreach ($parameters['internal:temp_wildcards'] as $index => $item_wildcard) {
           $global_parameters[$item_wildcard] = $parameters['internal:temp_wildcards'][$index];
         }
