@@ -10,6 +10,7 @@ ThemeKey 7.x-2.4, 2013-xx-xx
 [#1955062] andrewsuth, mkalkbrenner: support path aliases in themekey_get_global_parameters()
 [        ] mkalkbrenner: fixed explode() expects parameter 2 to be string, array given themekey_base.inc:77
 [        ] mkalkbrenner: Avoid caching of pages containing debug info in internal page cache and in external caches like varnish, boost, ...
+[        ] mkalkbrenner: fixed disabling rules on feature import
 
 
 ThemeKey 7.x-2.3, 2012-07-24
