@@ -178,14 +178,14 @@ function themekey_rule_chain_form($form, &$form_state) {
 
     $form['old_items'][$item['id']]['weight'] = array(
       '#type' => 'weight',
-      '#delta' => 50,
+      '#delta' => 200,
       '#default_value' => $item['weight'],
     );
 
     $form['old_items'][$item['id']]['delete'] = array(
       '#markup' => $static ? '' : l(t('delete'), 'admin/config/user-interface/themekey/properties/delete/' . $item['id']),
     );
-    
+
     $form['old_items'][$item['id']]['module'] = array(
       '#type' => 'hidden',
       '#default_value' => $item['module'],
