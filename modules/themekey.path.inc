@@ -18,7 +18,7 @@
  * @return
  *   array of themekey properties and mapping functions
  */
-function themekey_node_themekey_properties() {
+function themekey_path_themekey_properties() {
   // Attributes of properties
   $attributes = array();
   $attributes['path:node_alias'] = array(
