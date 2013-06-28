@@ -232,7 +232,7 @@ function themekey_features_save_rule_childs($module, $childs, $force = FALSE, $p
     try {
       themekey_rule_set($child['rule'], $module);
     }
-    catch (ThemeKeyRuleConfictException $e) {
+    catch (ThemeKeyRuleConflictException $e) {
       // disable a conflicting rule
       if ($force) {
         themekey_rule_disable($e->getCode());
@@ -241,7 +241,7 @@ function themekey_features_save_rule_childs($module, $childs, $force = FALSE, $p
         $child['rule']['enabled'] = 0;
       }
       themekey_rule_set($child['rule'], $module);
-      drupal_set_message(t('ThemeKey rule %rule has been disabled because it conficts with an existing one.', array('%rule' => $child['string'])), 'warning');
+      drupal_set_message(t('ThemeKey rule %rule has been disabled because it conflicts with an existing one.', array('%rule' => $child['string'])), 'warning');
     }
     themekey_features_save_rule_childs($module, $child['childs'], $force, $child['rule']['id'], $child['rule']['enabled']);
   }
