@@ -221,7 +221,7 @@ function themekey_get_global_parameters() {
 
       if (themekey_match_path($path_condition, $parameters)) {
         foreach ($parameters['internal:temp_wildcards'] as $index => $item_wildcard) {
-          $global_parameters[$item_wildcard] = $parameters['internal:temp_wildcards'][$index];
+          $global_parameters[$item['wildcards'][$index]] = $item_wildcard;
         }
 
         if (count($item['callbacks'])) {
