@@ -12,6 +12,7 @@ ThemeKey 7.x-2.4, 2013-xx-xx
 [        ] mkalkbrenner: Avoid caching of pages containing debug info in internal page cache and in external caches like varnish, boost, ...
 [        ] mkalkbrenner: fixed disabling rules on feature import
 [#2027069] mkalkbrenner: added property path:node_alias
+[#2034017] mkalkbrenner: added properties views:machine_name and views:human_name
 
 
 ThemeKey 7.x-2.3, 2012-07-24
