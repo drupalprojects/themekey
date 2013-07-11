@@ -10,7 +10,7 @@ class ThemekeyDrupalPropertiesTestCase extends ThemekeyWebTestCase {
   public static function getInfo() {
     return array(
       'name' => 'Themekey Drupal Properties',
-      'description' => 'Test the themekey node properties (drupal:).',
+      'description' => 'Test the themekey drupal properties (drupal:).',
       'group' => 'Themekey',
     );
   }

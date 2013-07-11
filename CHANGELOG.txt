@@ -1,3 +1,8 @@
+ThemeKey 7.x-3.0, 2013-xx-xx
+----------------------------
+[        ] mkalkbrenner: added hook_themekey_custom_theme_alter()
+
+
 ThemeKey 7.x-2.4, 2013-07-09
 ----------------------------
 [        ] mkalkbrenner: new property drupal:path_is_admin

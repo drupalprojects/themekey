@@ -128,13 +128,19 @@ function themekey_custom_theme() {
     if (!$custom_theme) {
       require_once DRUPAL_ROOT . '/' . drupal_get_path('module', 'themekey') . '/themekey_base.inc';
 
-      $theme_candidate = themekey_match_rules();
+      $theme_candidate = NULL;
+      $result = themekey_match_rules();
+      if (is_array($result)) {
+        $theme_candidate = $result['theme'];
+      }
 
+      $used_session_theme = FALSE;
       // If no theme has been triggered but a theme
       // is in the user's session, use that theme.
       if (!$theme_candidate && !empty($_SESSION['themekey_theme'])
            && (!$custom_theme || $custom_theme == variable_get('theme_default', 'bartik'))) {
         $theme_candidate = $_SESSION['themekey_theme'];
+        $used_session_theme = TRUE;
         if (variable_get('themekey_debug_trace_rule_switching', FALSE)) {
           themekey_set_debug_message('ThemeKey Debug: No rule triggered a different theme. Reusing last theme from user\'s session: %custom_theme', array('%custom_theme' => $theme_candidate));
         }
@@ -157,12 +163,23 @@ function themekey_custom_theme() {
       }
       elseif (variable_get('themekey_debug_trace_rule_switching', FALSE)) {
         if ($custom_theme) {
-          // REVIEW
           // static rules set $theme_candidate to 'default and $custom_theme directly
           themekey_set_debug_message('$custom_theme has been set to %custom_theme during rule matching.', array('%custom_theme' => $custom_theme));
         }
         else {
           themekey_set_debug_message('Using default theme.');
+        }
+      }
+
+      if ($custom_theme && !$used_session_theme) {
+        $custom_theme_not_altered = $custom_theme;
+        drupal_alter('themekey_custom_theme', $custom_theme, $result['rules_matched']);
+        if ($custom_theme_not_altered != $custom_theme) {
+          themekey_set_debug_message('%custom_theme_not_altered has been altered to %custom_theme.', array('custom_theme_not_altered' => $custom_theme_not_altered, '%custom_theme' => $custom_theme));
+        }
+        if (!themekey_check_theme_enabled($custom_theme)) {
+          $custom_theme = $custom_theme_not_altered;
+          themekey_set_debug_message('%custom_theme is not enabled. Fall back to %custom_theme_not_altered.', array('%custom_theme' => $custom_theme, 'custom_theme_not_altered' => $custom_theme_not_altered));
         }
       }
     }
@@ -189,6 +206,7 @@ function themekey_help($path, $arg) {
     case 'admin/help#themekey':
       module_load_include('inc', 'themekey', 'themekey_help');
       $tutorials_form = drupal_get_form('themekey_help_tutorials_form', FALSE);
+      // no break
     case 'admin/config/user-interface/themekey':
       if (!function_exists('themekey_help_properties_form')) {
         module_load_include('inc', 'themekey', 'themekey_help');
@@ -321,3 +339,17 @@ function themekey_flush_caches() {
   return array();
 }
 
+/**
+ * Implements hook_themekey_custom_theme_alter().
+ * Delegates to pseudo hooks in ThemeKey's module plugins.
+ */
+function themekey_themekey_custom_theme_alter(&$custom_theme, $rules_matched) {
+  $modules = & drupal_static('themekey_modules', array());
+
+  foreach ($modules as $module) {
+    $function = 'themekey_' . $module . '_themekey_custom_theme_alter';
+    if (function_exists($function)) {
+      $function($custom_theme, $rules_matched);
+    }
+  }
+}

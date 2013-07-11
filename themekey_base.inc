@@ -23,26 +23,33 @@
  *   mixed output of all hooks
  */
 function themekey_invoke_modules($hook) {
-  $return = array();
-  foreach (variable_get('themekey_modules', array('node')) as $module) {
-    if (module_exists($module) && is_readable(drupal_get_path('module', 'themekey') . '/modules/themekey.' . $module . '.inc')) {
-      require_once DRUPAL_ROOT . '/' . drupal_get_path('module', 'themekey') . '/modules/themekey.' . $module . '.inc';
+  $modules = & drupal_static('themekey_modules', array());
 
-      $function = 'themekey_' . $module . '_' . $hook;
-      if (function_exists($function)) {
-        $return = array_merge_recursive($return, $function());
+  $return = array();
+
+  if (empty($modules)) {
+    foreach (variable_get('themekey_modules', array('node')) as $module) {
+      if (module_exists($module) && is_readable(drupal_get_path('module', 'themekey') . '/modules/themekey.' . $module . '.inc')) {
+        require_once DRUPAL_ROOT . '/' . drupal_get_path('module', 'themekey') . '/modules/themekey.' . $module . '.inc';
+        $modules[] = $module;
+      }
+      else {
+        // seems like a module has been deactivated => update variable 'themekey_modules'
+        module_load_include('inc', 'themekey', 'themekey_build');
+        themekey_scan_modules();
       }
     }
-    else {
-      // seems like a module has been deactivated => update variable 'themekey_modules'
-      module_load_include('inc', 'themekey', 'themekey_build');
-      themekey_scan_modules();
+  }
+
+  foreach ($modules as $module) {
+    $function = 'themekey_' . $module . '_' . $hook;
+    if (function_exists($function)) {
+      $return = array_merge_recursive($return, $function());
     }
   }
 
   return $return;
 }
-
 
 /**
  * Detects if a ThemeKey rule for property drupal:path
@@ -241,20 +248,20 @@ function themekey_get_global_parameters() {
  * the rule chain and returns a theme.
  *
  * @return
- *   a theme as string or NULL
+ *   array containing the name of the selected theme and the cascade of rules matched
+ *   or NULL
  */
 function themekey_match_rules() {
   $parameters = themekey_get_global_parameters();
 
-  $theme = themekey_match_rule_childs($parameters);
-  if (FALSE === $theme || TRUE === $theme) {
-    $theme = NULL;
+  $result = themekey_match_rule_childs($parameters);
+  if (!is_array($result)) {
+    $result = NULL;
   }
-  elseif ('ThemeKeyAdminTheme' === $theme) {
-    $theme = variable_get('admin_theme', '0');
+  elseif ('ThemeKeyAdminTheme' === $result['theme']) {
+    $result['theme'] = variable_get('admin_theme', '0');
   }
-
-  return $theme;
+  return $result;
 }
 
 /**
@@ -268,17 +275,20 @@ function themekey_match_rules() {
  * @param $parent
  *   id of parent rule
  *
+ * @param $rules
+ *   array of matched rules
+ *
  * @return
  *   NULL in case of an error
- *   string name of the theme if child rule matched
+ *   array containing the name of the theme if child rule matched and the cascade of parent rules matched
  *   FALSE if no child rule matches
  *   TRUE if no child properties in the chain
  */
-function themekey_match_rule_childs(&$parameters, $parent = 0) {
+function themekey_match_rule_childs(&$parameters, $parent = 0, $rules = array()) {
   static $child_lookups = array();
 
   if (isset($child_lookups[$parent])) {
-    // prevent endless recursion in case of malformatted data in database
+    // prevent endless recursion in case of mal-formatted data in database
     return $child_lookups[$parent];
   }
 
@@ -322,7 +332,11 @@ function themekey_match_rule_childs(&$parameters, $parent = 0) {
             continue;
           }
 
-          $child_lookups[$parent] = $item->theme;
+          $rules[] = $item;
+          $child_lookups[$parent] = array(
+            'theme' => $item->theme,
+            'rules_matched' => $rules,
+          );
         }
 
         // return own theme or theme from child property or NULL in case of a database error
@@ -450,6 +464,8 @@ function themekey_match_condition($condition, &$parameters) {
   else {
     trigger_error(t('Function themekey_match_condition() called with illegal parameters'), E_USER_ERROR);
   }
+
+  return FALSE;
 }
 
 
