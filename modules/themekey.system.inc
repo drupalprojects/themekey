@@ -670,7 +670,7 @@ function themekey_dummy2session($dummy) {
   if (!empty($_SESSION)) {
     foreach ($_SESSION as $key => $value) {
       if (is_bool($value)) {
-        $filtered_params[] = $key . '=' . ($value) ? '1' : '0';
+        $filtered_params[] = $key . '=' . ($value ? '1' : '0');
       }
       elseif (!empty($value) && (is_numeric($value) || is_string($value))) {
         $filtered_params[] = $key . '=' . $value;

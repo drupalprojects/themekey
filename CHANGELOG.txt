@@ -1,6 +1,7 @@
 ThemeKey 7.x-2.5, 2013-xx-xx
 ----------------------------
 [        ] mkalkbrenner: fixed creation of new rule with regex operator
+[#2039581] Nosta, mkalkbrenner: wrong boolean values in system:session
 
 
 ThemeKey 7.x-2.4, 2013-07-09
