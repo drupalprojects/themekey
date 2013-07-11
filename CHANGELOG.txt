@@ -5,6 +5,7 @@ ThemeKey 7.x-3.0, 2013-xx-xx
 [        ] mkalkbrenner: fixed creation of new rule with regex operator
 [#1510482] mkalkbrenner: Switch Theme by Field Value
 [#2039581] Nosta, mkalkbrenner: wrong boolean values in system:session
+[#1900864] Pacufist: selected modules disappear from Compatibility tab
 
 
 ThemeKey 7.x-2.4, 2013-07-09
