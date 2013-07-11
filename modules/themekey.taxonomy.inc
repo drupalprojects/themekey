@@ -109,7 +109,7 @@ function themekey_taxonomy_tid2vid($tids) {
     ->fetchField();
   }
 
-  return count($vid) ? $vid : NULL;
+  return count($vid) ? array_unique($vid) : NULL;
 }
 
 
