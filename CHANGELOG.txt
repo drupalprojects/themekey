@@ -1,3 +1,8 @@
+ThemeKey 7.x-2.5, 2013-xx-xx
+----------------------------
+[        ] mkalkbrenner: fixed creation of new rule with regex operator
+
+
 ThemeKey 7.x-2.4, 2013-07-09
 ----------------------------
 [        ] mkalkbrenner: new property drupal:path_is_admin
