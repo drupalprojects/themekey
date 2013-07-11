@@ -404,10 +404,10 @@ function themekey_rule_chain_form_validate(&$form, $form_state) {
       }
       elseif ('~' == $values['new_item']['operator'] || '!~' == $values['new_item']['operator']) {
         $rule = array(
-                  'property' => $value_1['property'],
-                  'wildcard' => $value_1['wildcard'],
-                  'operator' => $value_1['operator'],
-                  'value' => $value_1['value'],
+                  'property' => $values['new_item']['property'],
+                  'wildcard' => $values['new_item']['wildcard'],
+                  'operator' => $values['new_item']['operator'],
+                  'value' => $values['new_item']['value'],
         );
         $errors = themekey_validator_regex($rule);
         foreach ($errors as $element => $msg) {

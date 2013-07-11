@@ -2,6 +2,7 @@ ThemeKey 7.x-3.0, 2013-xx-xx
 ----------------------------
 [        ] mkalkbrenner: added hook_themekey_custom_theme_alter()
 [#1977472] mjpa, mkalkbrenner: Domain Theme support
+[        ] mkalkbrenner: fixed creation of new rule with regex operator
 
 
 ThemeKey 7.x-2.4, 2013-07-09
