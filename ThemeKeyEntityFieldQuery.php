@@ -40,7 +40,16 @@ class ThemeKeyEntityFieldQuery extends EntityFieldQuery {
 
     foreach ($this->fields as $key => $field) {
       if ('field_sql_storage' == $field['storage']['type']) {
-        $select_query->addField('field_data_' . $field['field_name'] . $key, $field['field_name'] . '_value', $field['field_name']);
+        foreach ($select_query->conditions() as $condition) {
+          if (is_array($condition)
+            && array_key_exists('field', $condition)
+            && strpos($condition['field'], 'field_data_' . $field['field_name'] . $key . '.') === 0
+          ) {
+            list($table_alias, $column) = explode('.', $condition['field']);
+            $select_query->addField($table_alias, $column, $field['field_name']);
+            break;
+          }
+        }
       }
     }
 

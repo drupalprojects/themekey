@@ -29,6 +29,7 @@
  * - node:type
  * - node:uid
  * - node:title
+ * - node:field_...
  *
  * @return
  *   array of themekey properties and mapping functions
@@ -106,7 +107,6 @@ function themekey_node_themekey_properties() {
   );
   $attributes['node:title'] = array(
     'description' => t('Node: Title - The title of the node.'),
-    'validator' => '',
     'page cache' => THEMEKEY_PAGECACHE_SUPPORTED,
   );
 
@@ -182,6 +182,33 @@ function themekey_node_themekey_properties() {
     'dst' => 'node:type',
     'callback' => 'themekey_node_get_q2type',
   );
+
+  foreach (field_info_field_map() as $field_name => $field_info) {
+    if (array_key_exists('node', $field_info['bundles'])) {
+      $field_info = field_info_field($field_name);
+
+      foreach (array_keys($field_info['columns']) as $column) {
+        $property = 'node:' . $field_name . '_' . $column;
+
+        $attributes[$property] = array(
+          'description' => t('Node: Field Value - The (simple scalar) value of the column %column of the field %field_name. The value will be converted in its string representation.', array('%column' => $column, '%field_name' => $field_name)),
+          'page cache' => THEMEKEY_PAGECACHE_SUPPORTED,
+        );
+
+        $maps[] = array(
+          'src' => 'node:nid',
+          'dst' => $property,
+          'callback' => 'themekey_node_nid2field_value',
+          'args' => array(
+            'field_name' => $field_name,
+            'type' => $field_info['type'],
+            'column' => $column,
+            'translatable' => $field_info['translatable'],
+          ),
+        );
+      }
+    }
+  }
 
   return array('attributes' => $attributes, 'maps' => $maps);
 }
@@ -479,6 +506,44 @@ function themekey_node_get_q2type($q) {
 
 
 /**
+* ThemeKey mapping function to set a
+* ThemeKey property's value (destination)
+ * with the aid of another ThemeKey property (source).
+ *
+ * src: node:nid
+ * dst: node:field_...
+ *
+ * @param $nid
+ *   a node id
+ * @param $args
+ *   array, keys required:
+ *    - 'field_name'
+ *    - 'column'
+ *
+ * @return
+ *   string
+ *   or NULL if no value could be mapped
+ */
+function themekey_node_nid2field_value($nid, $args) {
+  $values = array();
+
+  $query = new ThemeKeyEntityFieldQuery();
+  $query->entityCondition('entity_type', 'node')
+    ->propertyCondition('nid', $nid)
+    ->fieldCondition($args['field_name'], $args['column'], '', '<>') // field not empty
+  ;
+
+  if ($query->execute() && !empty($query->orderedResults)) {
+    foreach ($query->orderedResults as $result) {
+      $values[] = (string) $result->{$args['field_name']};
+    }
+  }
+
+  return count($values) ? $values : NULL;
+}
+
+
+/**
  * This function isn't needed anymore and has been removed with ThemeKey 6.x-2.0-beta2.
  * But if it's missing a fatal error occurs if you upgrade from any version before
  * 6.x-2.0-beta2 until you call update.php. That should be avoided.
@@ -487,9 +552,8 @@ function themekey_node_get_q2type($q) {
  *
  * see http://drupal.org/node/662786
  *
- * @param unknown_type $item
- * @param unknown_type $parameters
- * @return unknown_type
+ * @param $item
+ * @param $parameters
  */
 function _themekey_node_callback(&$item, &$parameters) {
   global $user;
