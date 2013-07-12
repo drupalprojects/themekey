@@ -356,6 +356,7 @@ function themekey_rule_set(&$item, $module = 'themekey') {
         ->fetchField();
 
       if ($id) {
+        // Transaction is only required for a lock => no rollback
         throw new ThemeKeyRuleConflictException(t('New rule conflicts with an existing rule on the same level.'), $id);
       }
     }
@@ -384,6 +385,7 @@ function themekey_rule_set(&$item, $module = 'themekey') {
         ->fetchField();
 
       if ($id) {
+        // Transaction is only required for a lock => no rollback
         throw new ThemeKeyRuleConflictException(t('Updated rule conflicts with an existing rule on the same level.'), $id);
       }
     }
