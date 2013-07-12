@@ -976,3 +976,55 @@ function themekey_validator_overlay_mode($rule) {
 
   return $errors;
 }
+
+
+/**
+ * Validates a Theme Switching Rule.
+ * Allowed Operators: "=", "!"
+ * Allowed values:
+ * - og group types as string
+ *
+ *
+ * @param $rule
+ *   A Theme Switching Rule as associative array:
+ *   - property: ThemeKey property as string (e.g., "drupal:path")
+ *   - wildcard: optional string, only used if property is "drupal:path:wildcard"
+ *   - operator: ThemeKey operator as string ("=", "!", "*", "!*", "<", "<=", ">", ">=", "~", "!~")
+ *   - value: ThemeKey property value as string
+ *
+ * @return
+ *   An associative array of errors:
+ *   - property: translated error message as string
+ *     describing a problem with the property
+ *   - wildcard: translated error message as string
+ *     describing a problem with the wildcard
+ *   - operator: translated error message as string
+ *     describing a problem with the operator
+ *   - value: translated error message as string
+ *     describing a problem with the value
+ *   If no errors detected the array is empty.
+ */
+function themekey_validator_og_group_type($rule) {
+  $errors = array();
+
+  switch ($rule['operator']) {
+    case '=':
+    case '!':
+      if (function_exists('og_membership_type_load')) {
+        if (!og_membership_type_load($rule['value'])) {
+          $errors['value'] = t('The group type %value is not defined.', array('%value' => $rule['value']));
+        }
+      }
+      else {
+        $errors['property'] = t('Unable to verify property group:type because function og_membership_type_load() is missing.');
+      }
+      break;
+
+    default:
+      $errors['operator'] = t('Possible operators are "=" and "!"');
+      break;
+
+  }
+
+  return $errors;
+}

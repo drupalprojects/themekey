@@ -31,8 +31,7 @@ function themekey_og_context_themekey_properties() {
   );
   $attributes['group:type'] = array(
     'description' => t('Group: Type - The type of a og group'),
-    // TODO
-    // 'validator' => 'themekey_validator_og_group_type',
+    'validator' => 'themekey_validator_og_group_type',
     'page cache' => THEMEKEY_PAGECACHE_SUPPORTED,
   );
 
