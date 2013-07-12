@@ -55,6 +55,11 @@ function themekey_overlay_themekey_properties() {
  */
 function themekey_overlay_dummy2mode() {
   // hook_init() is called after hook_custom_theme()
+  if (module_exists('locale')) {
+    // overlay_init() LOCALE_LANGUAGE_NEGOTIATION_URL_PREFIX which is defined
+    // in locale.inc that gets loaded by locale_init().
+    include_once DRUPAL_ROOT . '/includes/locale.inc';
+  }
   overlay_init();
   return overlay_get_mode();
 }
