@@ -24,7 +24,8 @@ function themekey_overlay_themekey_properties() {
   // Attributes for properties
   $attributes = array();
   $attributes['overlay:mode'] = array(
-    'description' => t('Overlay: mode - The overlay mode current content is shown'),
+    'description' => t("Overlay: Mode - The current overlay mode used to show the content. Note: If you add such a rule, the mode 'none' will not work anymore. That means that different modules won't be able to turn off overlay manually. That's not an issue for drupal core. See !link for details.",
+      array('!link' => l('function overlay_set_mode documentation', 'https://api.drupal.org/api/drupal/modules!overlay!overlay.module/function/overlay_set_mode/7'))),
     'validator' => 'themekey_validator_overlay_mode',
     'page cache' => THEMEKEY_PAGECACHE_UNSUPPORTED,
   );
