@@ -9,6 +9,7 @@ ThemeKey 7.x-3.0, 2013-xx-xx
 [#1957354] mkalkbrenner: $content_language property
 [        ] mkalkbrenner: fixed "Use of undefined constant LOCALE_LANGUAGE_NEGOTIATION_URL_PREFIX" caused by property overlay:mode if locale.module is enabled
 [#686650]  mkalkbrenner: added validator for property group:type
+[        ] mkalkbrenner: added support for browscap and provided different related properties
 
 
 ThemeKey 7.x-2.4, 2013-07-09
