@@ -254,7 +254,11 @@ function themekey_get_global_parameters() {
 function themekey_match_rules() {
   $parameters = themekey_get_global_parameters();
 
-  $result = themekey_match_rule_childs($parameters);
+  $result = themekey_match_rule_childs($parameters, array(
+    'table' => 'themekey_properties',
+    'format_rule_as_string_callback' => 'themekey_format_rule_as_string',
+    'check_enabled_callback' => 'themekey_check_theme_enabled',
+  ));
   if (!is_array($result)) {
     $result = NULL;
   }
@@ -284,15 +288,20 @@ function themekey_match_rules() {
  *   FALSE if no child rule matches
  *   TRUE if no child properties in the chain
  */
-function themekey_match_rule_childs(&$parameters, $parent = 0, $rules = array()) {
+function themekey_match_rule_childs(&$parameters, $options, $parent = 0) {
   static $child_lookups = array();
+
+  if (!$parent) {
+    // reset
+    $child_lookups = array();
+  }
 
   if (isset($child_lookups[$parent])) {
     // prevent endless recursion in case of mal-formatted data in database
     return $child_lookups[$parent];
   }
 
-  if ($result = db_select('themekey_properties', 'tp')
+  if ($result = db_select($options['table'], 'tp')
     ->fields('tp')
     ->condition('enabled', 1)
     ->condition('parent', $parent)
@@ -316,16 +325,16 @@ function themekey_match_rule_childs(&$parameters, $parent = 0, $rules = array())
         }
 
         if (variable_get('themekey_debug_trace_rule_switching', FALSE)) {
-          themekey_set_debug_message('Match: %rule', array('%rule' => themekey_format_rule_as_string($item->id)));
+          themekey_set_debug_message('Match: %rule', array('%rule' => $options['format_rule_as_string_callback']($item->id)));
         }
 
-        $child_lookups[$parent] = themekey_match_rule_childs($parameters, $item->id);
+        $child_lookups[$parent] = themekey_match_rule_childs($parameters, $options, $item->id);
 
         if (FALSE === $child_lookups[$parent]) {
           continue;
         }
         elseif (TRUE === $child_lookups[$parent]) {
-          if (!themekey_check_theme_enabled($item->theme)) {
+          if (!$options['check_enabled_callback']($item->theme)) {
             if (variable_get('themekey_debug_trace_rule_switching', FALSE)) {
               themekey_set_debug_message('Theme disabled: %theme', array('%theme' => $item->theme));
             }
@@ -343,7 +352,7 @@ function themekey_match_rule_childs(&$parameters, $parent = 0, $rules = array())
         return $child_lookups[$parent];
       }
       elseif (variable_get('themekey_debug_trace_rule_switching', FALSE)) {
-        themekey_set_debug_message('No match: %rule', array('%rule' => themekey_format_rule_as_string($item->id)));
+        themekey_set_debug_message('No match: %rule', array('%rule' => $options['format_rule_as_string_callback']($item->id)));
       }
     }
 
@@ -613,11 +622,16 @@ function themekey_check_theme_enabled($theme, $settings_page = FALSE) {
  */
 function themekey_format_rule_as_string($themekey_property_id) {
   module_load_include('inc', 'themekey', 'themekey_build');
+  return themekey_abstract_format_rule_as_string($themekey_property_id, array(
+    'rule' => themekey_rule_get($themekey_property_id),
+  ));
+}
 
+function themekey_abstract_format_rule_as_string($themekey_property_id, $options) {
   // fallback title
   $title = $themekey_property_id;
 
-  $item = themekey_rule_get($themekey_property_id);
+  $item = $options['rule'];
   if (!empty($item)) {
     $properties = variable_get('themekey_properties', array());
     if (!in_array($item->property, $properties)) {

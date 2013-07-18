@@ -1,6 +1,8 @@
 ThemeKey 7.x-3.0-alpha2, 2013-xx-xx
 -----------------------------------
 [        ] mkalkbrenner: added support for mobile_detect and provided different related properties
+[        ] mkalkbrenner: refactored ThemeKey to make rule chain administration and matching reusable for sub-modules
+[        ] mkalkbrenner: added hook_themekey_rebuild()
 
 
 ThemeKey 7.x-3.0-alpha1, 2013-07-12

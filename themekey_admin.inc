@@ -29,6 +29,14 @@ require_once DRUPAL_ROOT . '/' . drupal_get_path('module', 'themekey') . '/theme
  * @ingroup forms
  */
 function themekey_rule_chain_form($form, &$form_state) {
+  return themekey_abstract_rule_chain_form($form, $form_state, array(
+    'load_rules_callback' => 'themekey_load_rules',
+    'themes' => themekey_theme_options(TRUE, TRUE),
+    'rule_delete_path' => 'admin/config/user-interface/themekey/rules/delete/',
+  ));
+}
+
+function themekey_abstract_rule_chain_form($form, &$form_state, $options) {
   $properties = variable_get('themekey_properties', array());
 
   if (empty($properties)) {
@@ -37,7 +45,6 @@ function themekey_rule_chain_form($form, &$form_state) {
     $properties = variable_get('themekey_properties', array());
   }
 
-  $themes = themekey_theme_options(TRUE, TRUE);
   $attributes = variable_get('themekey_attributes', array());
   $operators = array(
     '=' => '=',
@@ -57,7 +64,7 @@ function themekey_rule_chain_form($form, &$form_state) {
   $items = array();
   $fix_depth = FALSE;
   if (empty($form_state['input']['old_items'])) {
-    $items = themekey_load_rules();
+    $items = $options['load_rules_callback']();
   }
   else {
     $items = $form_state['input']['old_items'];
@@ -167,7 +174,7 @@ function themekey_rule_chain_form($form, &$form_state) {
       $form['old_items'][$item['id']]['theme'] = array(
         '#type' => 'select',
         '#default_value' => $item['theme'],
-        '#options' => $themes,
+        '#options' => $options['themes'],
       );
     }
 
@@ -183,7 +190,7 @@ function themekey_rule_chain_form($form, &$form_state) {
     );
 
     $form['old_items'][$item['id']]['delete'] = array(
-      '#markup' => $static ? '' : l(t('delete'), 'admin/config/user-interface/themekey/properties/delete/' . $item['id']),
+      '#markup' => $static ? '' : l(t('delete'), $options['rule_delete_path'] . $item['id']),
     );
 
     $form['old_items'][$item['id']]['module'] = array(
@@ -217,7 +224,7 @@ function themekey_rule_chain_form($form, &$form_state) {
   $form['new_item']['theme'] = array(
     '#type' => 'select',
     '#default_value' => 'default',
-    '#options' => $themes,
+    '#options' => $options['themes'],
   );
   $form['new_item']['enabled'] = array(
     '#type' => 'checkbox',
@@ -238,6 +245,13 @@ function themekey_rule_chain_form($form, &$form_state) {
  * @see themekey_rule_chain_form()
  */
 function themekey_rule_chain_form_validate(&$form, $form_state) {
+  themekey_abstract_rule_chain_form_validate($form, $form_state, array(
+    'check_enabled_callback' => 'themekey_check_theme_enabled',
+    'not_enabled_message' => t('Theme is not activated'),
+  ));
+}
+
+function themekey_abstract_rule_chain_form_validate(&$form, $form_state, $options) {
   module_load_include('inc', 'themekey', 'themekey_validators');
 
   $attributes = variable_get('themekey_attributes', array());
@@ -247,8 +261,8 @@ function themekey_rule_chain_form_validate(&$form, $form_state) {
   if (!empty($values['old_items'])) {
     foreach ($values['old_items'] as $key_1 => $value_1) {
       if ($value_1['enabled']) {
-        if (!themekey_check_theme_enabled($value_1['theme'])) {
-          form_set_error('old_items][' . $key_1 . '][theme', check_plain(t('Theme is not activated')));
+        if (!$options['check_enabled_callback']($value_1['theme'])) {
+          form_set_error('old_items][' . $key_1 . '][theme', check_plain($options['not_enabled_message']));
         }
 
         if (empty($value_1['property'])) {
@@ -367,8 +381,8 @@ function themekey_rule_chain_form_validate(&$form, $form_state) {
   }
 
   if (!empty($values['new_item']['value'])) {
-    if ($values['new_item']['enabled'] && !themekey_check_theme_enabled($values['new_item']['theme'])) {
-      form_set_error('new_item][theme', check_plain(t('Theme is not activated')));
+    if ($values['new_item']['enabled'] && !$options['check_enabled_callback']($values['new_item']['theme'])) {
+      form_set_error('new_item][theme', check_plain($options['not_enabled_message']));
     }
 
     if (empty($values['new_item']['property'])) {
@@ -425,6 +439,12 @@ function themekey_rule_chain_form_validate(&$form, $form_state) {
  * @see themekey_rule_chain_form()
  */
 function themekey_rule_chain_form_submit($form, &$form_state) {
+  themekey_abstract_rule_chain_form_submit($form, $form_state, array(
+    'rule_set_callback' => 'themekey_rule_set',
+  ));
+}
+
+function themekey_abstract_rule_chain_form_submit($form, &$form_state, $options) {
   $max_weight = 0;
   if (!empty($form_state['values']['old_items'])) {
     foreach ($form_state['values']['old_items'] as $id => $item) {
@@ -440,7 +460,7 @@ function themekey_rule_chain_form_submit($form, &$form_state) {
 
       unset($item['wildcard']);
 
-      themekey_rule_set($item);
+      $options['rule_set_callback']($item);
     }
   }
 
@@ -456,7 +476,7 @@ function themekey_rule_chain_form_submit($form, &$form_state) {
 
     unset($item['wildcard']);
 
-    themekey_rule_set($item);
+    $options['rule_set_callback']($item);
   }
 
   drupal_set_message(check_plain(t('The configuration options have been saved. Trying to clear page cache ...')));
@@ -533,6 +553,20 @@ function themekey_settings_form($form, &$form_state) {
  * @ingroup themeable
  */
 function theme_themekey_rule_chain_form($variables) {
+  return theme_themekey_abstract_rule_chain_form($variables, array(
+    'header' => array(
+      t('Theme Switching Rule Chain'),
+      t('Theme'),
+      t('Enabled'),
+      t('Operation'),
+      t('Parent'),
+      t('Weight'),
+      t('Page<br />Cache'),
+    )
+  ));
+}
+
+function theme_themekey_abstract_rule_chain_form($variables, $options) {
   $form = $variables['form'];
   themekey_admin_theme_warning();
 
@@ -663,17 +697,7 @@ function theme_themekey_rule_chain_form($variables) {
       drupal_add_tabledrag('themekey-properties', 'order', 'sibling', 'themekey-property-weight');
     }
 
-    $header = array(
-      t('Theme Switching Rule Chain'),
-      t('Theme'),
-      t('Enabled'),
-      t('Operation'),
-      t('Parent'),
-      t('Weight'),
-      t('Page<br />Cache'),
-    );
-
-    $output .= theme('table', array('header' => $header, 'rows' => $rows, 'attributes' => array('id' => 'themekey-properties')));
+    $output .= theme('table', array('header' => $options['header'], 'rows' => $rows, 'attributes' => array('id' => 'themekey-properties')));
 
     foreach ($num_childs as $parent => $num) {
       $output .= '<input id="themekey-num-childs-' . $parent . '" type="hidden" value="' . $num . '"></input>';
@@ -713,9 +737,9 @@ function theme_themekey_rule_chain_form($variables) {
   if (!empty($rows)) {
     $header = array(
       '',
-      t('Theme Switching Rule'),
-      t('Theme'),
-      t('Enabled'),
+      $options['header'][0],
+      $options['header'][1],
+      $options['header'][2],
     );
 
     $output .= '<a name="themekey_new_rule"></a>';
@@ -794,7 +818,7 @@ function themekey_admin_delete_rule_confirm($form, &$form_state, $arg, $themekey
 
   return confirm_form($form,
     t('Are you sure you want to delete the ThemeKey rule, %title?', array('%title' => $title)),
-    'admin/config/user-interface/themekey/properties',
+    'admin/config/user-interface/themekey/rules',
     t('This action cannot be undone.'),
     t('Delete'),
     t('Cancel')
@@ -810,7 +834,7 @@ function themekey_admin_delete_rule_confirm_submit($form, &$form_state) {
     themekey_rule_del($form_state['values']['themekey_property_id']);
   }
 
-  $form_state['redirect'] = 'admin/config/user-interface/themekey/properties';
+  $form_state['redirect'] = 'admin/config/user-interface/themekey/rules';
 }
 
 

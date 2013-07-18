@@ -70,13 +70,13 @@ function themekey_menu() {
     'page callback' => 'drupal_get_form',
     'page arguments' => array('themekey_rule_chain_form'),
   );
-  $items['admin/config/user-interface/themekey/properties'] = array(
+  $items['admin/config/user-interface/themekey/rules'] = array(
     'title' => 'Theme Switching Rule Chain',
     'type' => MENU_DEFAULT_LOCAL_TASK,
     'weight' => 0,
   );
-  $items['admin/config/user-interface/themekey/properties/delete'] = array(
-    'title' => 'Delete ThemeKey Property',
+  $items['admin/config/user-interface/themekey/rules/delete'] = array(
+    'title' => 'Delete ThemeKey Rule',
     'page callback' => 'drupal_get_form',
     'page arguments' => array('themekey_admin_delete_rule_confirm', 1),
     'access callback' => 'user_access',
