@@ -1,0 +1,24 @@
+<?php
+
+/**
+ * @file
+ * Database schema of
+ * @see themekey_redirect.module
+ *
+ * @author Markus Kalkbrenner | bio.logis GmbH
+ *   @see http://drupal.org/user/124705
+ */
+
+
+/**
+ * Implements hook_schema().
+ */
+function themekey_redirect_schema() {
+  module_load_include('install', 'themekey');
+  $themekey_schema = themekey_schema();
+
+  $schema = array();
+  $schema['themekey_redirect_rules'] = $themekey_schema['themekey_properties'];
+
+  return $schema;
+}

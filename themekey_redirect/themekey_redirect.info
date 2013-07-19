@@ -1,0 +1,6 @@
+name = "ThemeKey Redirect (Experimental)"
+description = "Define rules to redirect the user to a different domain. The common use-case is to setup sub-domains for mobile sites. In this case you can configure ThemeKey Redirect to detect mobile clients and redirect the user accordingly. In ThemeKEy itself you have to configure rules to select a mobile theme depending on the sub-domain."
+core = 7.x
+dependencies[] = themekey
+package = ThemeKey
+configure = admin/config/user-interface/themekey/redirects
