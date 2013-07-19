@@ -22,3 +22,11 @@ function themekey_css_schema() {
 
   return $schema;
 }
+
+/**
+ * Implements hook_uninstall().
+ */
+function themekey_css_uninstall() {
+  variable_del('themekey_css_files');
+}
+
