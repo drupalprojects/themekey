@@ -80,16 +80,8 @@ function themekey_css_rule_get($id) {
  * Implements hook_init().
  */
 function themekey_css_init() {
-  // don't add css when ...
-  if ((in_array('system', variable_get('themekey_compat_modules_enabled', array())) || !(variable_get('admin_theme', '0') && path_is_admin($_GET['q']))) // ... admin area and admin theme set
-    && strpos($_GET['q'], 'admin/structure/block/demo') !== 0 // ... blocks demo
-    && strpos($_SERVER['SCRIPT_FILENAME'], 'cron.php') === FALSE // ... during cron run executed by cron.php
-    && strpos($_SERVER['SCRIPT_FILENAME'], 'drush.php') === FALSE // ... during cron run executed by drush
-    && (!defined('MAINTENANCE_MODE') || (MAINTENANCE_MODE != 'install' && MAINTENANCE_MODE != 'update')) // ... during drupal installation or update
-  ) {
-
+  if (themekey_is_active()) {
     require_once DRUPAL_ROOT . '/' . drupal_get_path('module', 'themekey') . '/themekey_base.inc';
-
     $parameters = themekey_get_global_parameters();
     $result = themekey_match_rule_childs($parameters, array(
       'table' => 'themekey_css_rules',

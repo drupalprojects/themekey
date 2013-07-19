@@ -2,13 +2,10 @@
 
 /**
  * @file
- * Contains all form manipulations to required by ThemeKey.
+ * Contains all form manipulations required by ThemeKey CSS.
  *
  * @author Markus Kalkbrenner | bio.logis GmbH
  *   @see http://drupal.org/user/124705
- *
- * @author profix898
- *   @see http://drupal.org/user/35192
  */
 
 require_once DRUPAL_ROOT . '/' . drupal_get_path('module', 'themekey_css') . '/themekey_css_build.inc';
@@ -31,7 +28,7 @@ require_once DRUPAL_ROOT . '/' . drupal_get_path('module', 'themekey') . '/theme
 function themekey_css_rule_chain_form($form, &$form_state) {
   return themekey_abstract_rule_chain_form($form, $form_state, array(
     'load_rules_callback' => 'themekey_css_load_rules',
-    'themes' => themekey_css_options(TRUE, TRUE),
+    'themes' => themekey_css_options(),
     'rule_delete_path' => 'admin/config/user-interface/themekey/css/delete/',
   ));
 }

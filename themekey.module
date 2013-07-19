@@ -114,13 +114,7 @@ function themekey_menu() {
 function themekey_custom_theme() {
   $custom_theme = &drupal_static('themekey_custom_theme', '');
 
-  // don't change theme when ...
-  if ((in_array('system', variable_get('themekey_compat_modules_enabled', array())) || !(variable_get('admin_theme', '0') && path_is_admin($_GET['q']))) // ... admin area and admin theme set
-    && strpos($_GET['q'], 'admin/structure/block/demo') !== 0 // ... blocks demo
-    && strpos($_SERVER['SCRIPT_FILENAME'], 'cron.php') === FALSE // ... during cron run executed by cron.php
-    && strpos($_SERVER['SCRIPT_FILENAME'], 'drush.php') === FALSE // ... during cron run executed by drush
-    && (!defined('MAINTENANCE_MODE') || (MAINTENANCE_MODE != 'install' && MAINTENANCE_MODE != 'update')) // ... during drupal installation or update
-    ) {
+  if (themekey_is_active()) {
 
     $custom_theme_called = &drupal_static('themekey_custom_theme_called', FALSE);
     $custom_theme_called = TRUE;
@@ -190,13 +184,19 @@ function themekey_custom_theme() {
     }
   }
 
-  if (variable_get('themekey_debug_show_property_values', FALSE) && module_exists('themekey_debug')) {
-    themekey_debug_properties();
-  }
-
   return $custom_theme;
 }
 
+function themekey_is_active() {
+  // don't change theme when ...
+  return (
+    (in_array('system', variable_get('themekey_compat_modules_enabled', array())) || !(variable_get('admin_theme', '0') && path_is_admin($_GET['q']))) // ... admin area and admin theme set
+    && strpos($_GET['q'], 'admin/structure/block/demo') !== 0 // ... blocks demo
+    && strpos($_SERVER['SCRIPT_FILENAME'], 'cron.php') === FALSE // ... during cron run executed by cron.php
+    && strpos($_SERVER['SCRIPT_FILENAME'], 'drush.php') === FALSE // ... during cron run executed by drush
+    && (!defined('MAINTENANCE_MODE') || (MAINTENANCE_MODE != 'install' && MAINTENANCE_MODE != 'update')) // ... during drupal installation or update
+  );
+}
 
 /**
  * Implements hook_help().

@@ -334,9 +334,9 @@ function themekey_match_rule_childs(&$parameters, $options, $parent = 0) {
           continue;
         }
         elseif (TRUE === $child_lookups[$parent]) {
-          if (!$options['check_enabled_callback']($item->theme)) {
+          if ($options['check_enabled_callback'] && !$options['check_enabled_callback']($item->theme)) {
             if (variable_get('themekey_debug_trace_rule_switching', FALSE)) {
-              themekey_set_debug_message('Theme disabled: %theme', array('%theme' => $item->theme));
+              themekey_set_debug_message('Target disabled or not found: %theme', array('%theme' => $item->theme));
             }
             continue;
           }

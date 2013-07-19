@@ -30,7 +30,7 @@
  * @return
  *   options array for a theme select box
  */
-function themekey_css_options($default = TRUE, $admin = FALSE) {
+function themekey_css_options() {
   return variable_get('themekey_css_files', array());
 }
 
