@@ -208,6 +208,7 @@ function themekey_help($path, $arg) {
       $tutorials_form = drupal_get_form('themekey_help_tutorials_form', FALSE);
       // no break
     case 'admin/config/user-interface/themekey':
+    case 'admin/config/user-interface/themekey/rules':
       if (!function_exists('themekey_help_properties_form')) {
         module_load_include('inc', 'themekey', 'themekey_help');
       }
@@ -226,6 +227,7 @@ function themekey_help($path, $arg) {
             drupal_render($operators_form);
 
         case 'admin/config/user-interface/themekey':
+        case 'admin/config/user-interface/themekey/rules':
           return '<p>' . $text_1 . '<br />' . t('To get an idea how to get started, you might have a look at the !tutorials_link.', array('!tutorials_link' => l(t('tutorials'), 'admin/help/themekey'))) . '</p> ' .
             drupal_render($examples_form) .
             drupal_render($properties_form) .

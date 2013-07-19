@@ -105,3 +105,22 @@ function themekey_css_init() {
     }
   }
 }
+
+/**
+ * Implements hook_help().
+ */
+function themekey_css_help($path, $arg) {
+  switch ($path) {
+    case 'admin/config/user-interface/themekey/css':
+      if (!function_exists('themekey_help_properties_form')) {
+        module_load_include('inc', 'themekey', 'themekey_help');
+      }
+      $properties_form = drupal_get_form('themekey_help_properties_form', TRUE);
+      $operators_form = drupal_get_form('themekey_help_operators_form', TRUE);
+      $text_1 = t('For every page request, Drupal steps through this Adding CSS Rule Chain until an activated rule matches or it reaches the end. If a rule matches, the CSS file associated with this rule will be added to the requested page.');
+
+      return '<p>' . $text_1 . '</p> ' .
+        drupal_render($properties_form) .
+        drupal_render($operators_form);
+  }
+}
