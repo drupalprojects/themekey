@@ -6,7 +6,3 @@ dependencies[]= themekey
 dependencies[]= themekey_ui
 package = ThemeKey
 configure = admin/config/user-interface/themekey/settings/ui
-
-files[] = themekey_user_profile.install
-files[] = themekey_user_profile.module
-files[] = themekey_user_profile_help.inc
