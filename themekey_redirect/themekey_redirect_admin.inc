@@ -26,11 +26,23 @@ require_once DRUPAL_ROOT . '/' . drupal_get_path('module', 'themekey') . '/theme
  * @ingroup forms
  */
 function themekey_redirect_rule_chain_form($form, &$form_state) {
-  return themekey_abstract_rule_chain_form($form, $form_state, array(
+  $form = themekey_abstract_rule_chain_form($form, $form_state, array(
     'load_rules_callback' => 'themekey_redirect_load_rules',
     'themes' => themekey_redirect_options(),
     'rule_delete_path' => 'admin/config/user-interface/themekey/css/delete/',
   ));
+
+  if (!empty($form['old_items'])) {
+    foreach ($form['old_items'] as &$old_item) {
+      $old_item['theme']['#type'] = 'textfield';
+      unset($old_item['theme']['#options']);
+    }
+  }
+  $form['new_item']['theme']['#type'] = 'textfield';
+  $form['new_item']['theme']['#default_value'] = 'http://';
+  unset($form['new_item']['theme']['#options']);
+
+  return $form;
 }
 
 /**
@@ -39,8 +51,8 @@ function themekey_redirect_rule_chain_form($form, &$form_state) {
  */
 function themekey_redirect_rule_chain_form_validate(&$form, $form_state) {
   themekey_abstract_rule_chain_form_validate($form, $form_state, array(
-    'check_enabled_callback' => FALSE,
-    'not_enabled_message' => t('CSS file does not exist.'),
+    'check_enabled_callback' => 'themekey_redirect_check_url',
+    'not_enabled_message' => t('Not a valid URL'),
   ));
 }
 

@@ -74,7 +74,7 @@ function themekey_redirect_init() {
     $result = themekey_match_rule_childs($parameters, array(
       'table' => 'themekey_redirect_rules',
       'format_rule_as_string_callback' => 'themekey_redirect_format_rule_as_string',
-      'check_enabled_callback' => 'themekey_check_css_exists',
+      'check_enabled_callback' => 'themekey_redirect_check_url',
     ));
     if (is_array($result) && 'default' != $result['theme']) {
       drupal_alter('themekey_redirect', $result['theme'], $result['rules_matched']);
@@ -109,4 +109,8 @@ function themekey_redirect_help($path, $arg) {
         drupal_render($properties_form) .
         drupal_render($operators_form);
   }
+}
+
+function themekey_redirect_check_url($url) {
+  return preg_match('@http(|s)://.+\..+@', $url);
 }
