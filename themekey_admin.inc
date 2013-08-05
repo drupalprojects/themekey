@@ -667,6 +667,7 @@ function theme_themekey_abstract_rule_chain_form($variables, $options) {
         );
 
         $page_cache = $attributes[$form['old_items'][$key]['property']['#default_value']]['page cache'];
+        drupal_alter('themekey_page_cache_support', $page_cache, $key, $form['#form_id']);
         if ($form['old_items'][$key]['enabled']['#value']) {
           themekey_page_cache_warning($page_cache);
         }

@@ -191,10 +191,11 @@ function themekey_is_active() {
   // don't change theme when ...
   return (
     (in_array('system', variable_get('themekey_compat_modules_enabled', array())) || !(variable_get('admin_theme', '0') && path_is_admin($_GET['q']))) // ... admin area and admin theme set
-    && strpos($_GET['q'], 'admin/structure/block/demo') !== 0 // ... blocks demo
-    && strpos($_SERVER['SCRIPT_FILENAME'], 'cron.php') === FALSE // ... during cron run executed by cron.php
-    && strpos($_SERVER['SCRIPT_FILENAME'], 'drush.php') === FALSE // ... during cron run executed by drush
-    && (!defined('MAINTENANCE_MODE') || (MAINTENANCE_MODE != 'install' && MAINTENANCE_MODE != 'update')) // ... during drupal installation or update
+    && strpos($_GET['q'], 'admin/structure/block/demo') !== 0 // ... block demo runs
+    && strpos($_SERVER['SCRIPT_FILENAME'], 'cron.php') === FALSE // ... cron is executed by cron.php
+    && strpos($_SERVER['SCRIPT_FILENAME'], 'drush.php') === FALSE // ... cron is executed by drush
+    && (!defined('MAINTENANCE_MODE') || (MAINTENANCE_MODE != 'install' && MAINTENANCE_MODE != 'update')) // ... drupal installation or update runs
+    && strpos($_GET['q'], 'themekey/redirect_callback') !== 0 // ... ThemeKey Redirect ajax callback is requested
   );
 }
 

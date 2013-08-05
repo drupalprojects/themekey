@@ -18,13 +18,20 @@ function themekey_redirect_menu() {
     'weight' => 1,
   );
   $items['admin/config/user-interface/themekey/redirects/delete'] = array(
-    'title' => 'Delete ThemeKey Rule',
+    'title' => 'Delete ThemeKey Redirect Rule',
     'page callback' => 'drupal_get_form',
     'page arguments' => array('themekey_redirect_admin_delete_rule_confirm', 1),
     'access callback' => 'user_access',
     'access arguments' => array('administer theme assignments'),
     'file' => 'themekey_redirect_admin.inc',
     'type' => MENU_CALLBACK,
+  );
+  $items['themekey/redirect_callback'] = array(
+    'title' => 'ThemeKey Redirect Callback',
+    'page callback' => 'themekey_redirect_callback',
+    'access callback' => TRUE,
+    'type' => MENU_CALLBACK,
+    'delivery callback' => 'drupal_json_output',
   );
 
   return $items;
@@ -67,29 +74,44 @@ function themekey_redirect_rule_get($id) {
  * Implements hook_init().
  */
 function themekey_redirect_init() {
-  // TODO configuration if redirect should really happen or if only the javascript callback is functional
   if (themekey_is_active()) {
-    require_once DRUPAL_ROOT . '/' . drupal_get_path('module', 'themekey') . '/themekey_base.inc';
-    $parameters = themekey_get_global_parameters();
-    $result = themekey_match_rule_childs($parameters, array(
-      'table' => 'themekey_redirect_rules',
-      'format_rule_as_string_callback' => 'themekey_redirect_format_rule_as_string',
-      'check_enabled_callback' => 'themekey_redirect_check_url',
-    ));
-    if (is_array($result) && 'default' != $result['theme']) {
-      drupal_alter('themekey_redirect', $result['theme'], $result['rules_matched']);
+    drupal_add_js(drupal_get_path('module', 'themekey_redirect') . '/themekey_redirect.js');
+    $target = themekey_redirect_match_rules();
 
-      $target = $result['theme'] . $_SERVER['REQUEST_URI'];
-
+    if ($target) {
       if (variable_get('themekey_debug_trace_rule_switching', FALSE)) {
-        themekey_set_debug_message('Redirect to %domain. The redirect has been intercepted for debugging. Click this link to proceed: !target', array('%domain' => $result['theme'], '!target' => l($target, $target)));
-        drupal_exit();
+        themekey_set_debug_message('Redirect to %domain. The redirect has been intercepted for debugging. Click this link to proceed: !target', array('%domain' => $target, '!target' => l($target, $target)));
       }
       else {
         drupal_goto($target);
       }
     }
   }
+}
+
+function themekey_redirect_match_rules() {
+  require_once DRUPAL_ROOT . '/' . drupal_get_path('module', 'themekey') . '/themekey_base.inc';
+  $parameters = themekey_get_global_parameters();
+  $result = themekey_match_rule_childs($parameters, array(
+    'table' => 'themekey_redirect_rules',
+    'format_rule_as_string_callback' => 'themekey_redirect_format_rule_as_string',
+    'check_enabled_callback' => 'themekey_redirect_check_different_url',
+  ));
+
+  if (is_array($result) && 'default' != $result['theme']) {
+    drupal_alter('themekey_redirect', $result['theme'], $result['rules_matched']);
+
+    return $result['theme'] . $_SERVER['REQUEST_URI'];
+  }
+
+  return FALSE;
+}
+
+function themekey_redirect_callback() {
+  // clean-up the URI path for rule matching
+  $_GET['q'] = implode('/', func_get_args());
+  $_SERVER['REQUEST_URI'] = str_replace('/themekey/redirect_callback', '', $_SERVER['REQUEST_URI']);
+  return themekey_redirect_match_rules();
 }
 
 /**
@@ -111,6 +133,22 @@ function themekey_redirect_help($path, $arg) {
   }
 }
 
-function themekey_redirect_check_url($url) {
-  return preg_match('@http(|s)://.+\..+@', $url);
+/**
+ * Avoid a redirect loop by not redirecting to current domain.
+ *
+ * @param $url
+ * @return bool
+ */
+function themekey_redirect_check_different_url($url) {
+  $parts = parse_url($url);
+  return (
+    $parts['host'] != $_SERVER['SERVER_NAME'] ||
+    $parts['port'] != $_SERVER['SERVER_PORT']
+  );
+}
+
+function themekey_redirect_themekey_page_cache_support_alter(&$page_cache, $key, $form_id) {
+  if ('themekey_redirect_rule_chain_form' == $form_id) {
+    $page_cache = THEMEKEY_PAGECACHE_SUPPORTED;
+  }
 }

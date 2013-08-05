@@ -67,6 +67,9 @@ function themekey_redirect_rule_chain_form_submit($form, &$form_state) {
   ));
 }
 
+function themekey_redirect_check_url($url) {
+  return preg_match('@http(|s)://.+\..+@', $url);
+}
 
 /**
  * Menu callback -- ask for confirmation of ThemeKey rule deletion
