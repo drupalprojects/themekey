@@ -142,8 +142,7 @@ function themekey_redirect_help($path, $arg) {
 function themekey_redirect_check_different_url($url) {
   $parts = parse_url($url);
   return (
-    $parts['host'] != $_SERVER['HTTP_HOST'] ||
-    $parts['port'] != $_SERVER['SERVER_PORT']
+    $parts['host'] != $_SERVER['HTTP_HOST']
   );
 }
 
