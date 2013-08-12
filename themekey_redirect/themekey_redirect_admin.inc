@@ -29,7 +29,7 @@ function themekey_redirect_rule_chain_form($form, &$form_state) {
   $form = themekey_abstract_rule_chain_form($form, $form_state, array(
     'load_rules_callback' => 'themekey_redirect_load_rules',
     'themes' => themekey_redirect_options(),
-    'rule_delete_path' => 'admin/config/user-interface/themekey/css/delete/',
+    'rule_delete_path' => 'admin/config/user-interface/themekey/redirects/delete/',
   ));
 
   if (!empty($form['old_items'])) {
