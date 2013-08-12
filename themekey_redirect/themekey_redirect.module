@@ -77,7 +77,6 @@ function themekey_redirect_init() {
   if (themekey_is_active()) {
     drupal_add_js(drupal_get_path('module', 'themekey_redirect') . '/themekey_redirect.js');
     $target = themekey_redirect_match_rules();
-
     if ($target) {
       if (variable_get('themekey_debug_trace_rule_switching', FALSE)) {
         themekey_set_debug_message('Redirect to %domain. The redirect has been intercepted for debugging. Click this link to proceed: !target', array('%domain' => $target, '!target' => l($target, $target)));
@@ -96,6 +95,7 @@ function themekey_redirect_match_rules() {
     'table' => 'themekey_redirect_rules',
     'format_rule_as_string_callback' => 'themekey_redirect_format_rule_as_string',
     'check_enabled_callback' => 'themekey_redirect_check_different_url',
+    'stop_on_check_enabled_false' => TRUE,
   ));
 
   if (is_array($result) && 'default' != $result['theme']) {
@@ -141,8 +141,12 @@ function themekey_redirect_help($path, $arg) {
  */
 function themekey_redirect_check_different_url($url) {
   $parts = parse_url($url);
+  $host = $parts['host'];
+  if (isset($parts['port']) && ($parts['port'] != 80)) {
+    $host .= ':' . $parts['port'];
+  }
   return (
-    $parts['host'] != $_SERVER['HTTP_HOST']
+    $host != $_SERVER['HTTP_HOST']
   );
 }
 

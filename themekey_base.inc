@@ -334,7 +334,14 @@ function themekey_match_rule_childs(&$parameters, $options, $parent = 0) {
           continue;
         }
         elseif (TRUE === $child_lookups[$parent]) {
-          if ($options['check_enabled_callback'] && !$options['check_enabled_callback']($item->theme)) {
+          if (isset($options['check_enabled_callback']) && !$options['check_enabled_callback']($item->theme)) {
+            if (!empty($options['stop_on_check_enabled_false'])) {
+              if (variable_get('themekey_debug_trace_rule_switching', FALSE)) {
+                themekey_set_debug_message('Stop on same target: %theme', array('%theme' => $item->theme));
+              }
+              return FALSE;
+            }
+
             if (variable_get('themekey_debug_trace_rule_switching', FALSE)) {
               themekey_set_debug_message('Target disabled or not found: %theme', array('%theme' => $item->theme));
             }
