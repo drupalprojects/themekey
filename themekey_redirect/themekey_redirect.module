@@ -219,6 +219,14 @@ function themekey_redirect_block_configure($delta = '') {
         '#description' => t('One entry per line, format: domain|link title'),
         '#default_value' => themekey_redirect_encode_domain_selector(variable_get('themekey_redirect_domain_selector', array())),
       );
+
+      $form['auto_hide'] = array(
+        '#type' => 'checkbox',
+        '#title' => t('Auto hide'),
+        '#description' => t('If selected the user will only be asked once to return to a previous URL after the redirect.'),
+        '#default_value' => variable_get('themekey_redirect_domain_selector_auto_hide', 1),
+      );
+
       break;
   }
 
@@ -242,6 +250,11 @@ function themekey_redirect_block_save($delta = '', $edit = array()) {
   switch ($delta) {
     case 'domain_selector':
       variable_set('themekey_redirect_domain_selector', themekey_redirect_parse_domain_selector($edit['domain_list']));
+      variable_set('themekey_redirect_domain_selector_auto_hide', !empty($edit['auto_hide']) ? 1 : 0);
+      // fast deletion of page cache (truncate) for new css
+      cache_clear_all('*', 'cache_page', TRUE);
+      // and block cache
+      cache_clear_all('*', 'cache_block', TRUE);
       break;
   }
 }
@@ -257,7 +270,9 @@ function themekey_redirect_block_view($delta = '') {
       if ($links = variable_get('themekey_redirect_domain_selector', array())) {
         $block['subject'] = t('You have been redirected automatically.');
         $block['content'] = theme('themekey_redirect_domain_selector_links', array('links' => $links));
-        drupal_add_css(drupal_get_path('module', 'themekey_redirect') . '/themekey_redirect_domain_selector.css');
+        if (variable_get('themekey_redirect_domain_selector_auto_hide', 1)) {
+          drupal_add_css(drupal_get_path('module', 'themekey_redirect') . '/themekey_redirect_domain_selector.css');
+        }
       }
       break;
   }
