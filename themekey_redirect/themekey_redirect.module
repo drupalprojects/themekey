@@ -46,6 +46,12 @@ function themekey_redirect_theme() {
       'file' => 'themekey_redirect_admin.inc',
       'render element' => 'form',
     ),
+    'themekey_redirect_domain_selector_links' => array(
+      'template' => 'themekey_redirect_domain_selector_links',
+      'variables' => array(
+        'links' => array(),
+      ),
+    ),
   );
   return $items;
 }
@@ -75,15 +81,45 @@ function themekey_redirect_rule_get($id) {
  */
 function themekey_redirect_init() {
   if (themekey_is_active()) {
-    drupal_add_js(drupal_get_path('module', 'themekey_redirect') . '/themekey_redirect.js');
-    $target = themekey_redirect_match_rules();
-    if ($target) {
-      if (variable_get('themekey_debug_trace_rule_switching', FALSE)) {
-        themekey_set_debug_message('Redirect to %domain. The redirect has been intercepted for debugging. Click this link to proceed: !target', array('%domain' => $target, '!target' => l($target, $target)));
+
+    if (isset($_GET['themekey_redirect'])) {
+      // Ensure to have javascriüpt based switching for anonymous users in page cache.
+      drupal_add_js(drupal_get_path('module', 'themekey_redirect') . '/themekey_redirect.js');
+
+      if ('active' == $_GET['themekey_redirect']) {
+        setcookie('themekey_redirect_state', 1, 0, '/');
+      }
+      elseif ('avoid' == $_GET['themekey_redirect']) {
+        setcookie('themekey_redirect_state', 2, 0, '/');
+      }
+    }
+    elseif (empty($_COOKIE['themekey_redirect_state'])) {
+      setcookie('themekey_redirect_state', 0, 0, '/');
+      $target = themekey_redirect_match_rules();
+      if ($target) {
+        // If we're here the page dosen't get cached at all.
+        if (variable_get('themekey_debug_trace_rule_switching', FALSE)) {
+          // No drupal_add_js to ensure that the debug message is visible.
+          themekey_set_debug_message('Redirect to %domain. The redirect has been intercepted for debugging. Click this link to proceed: !target', array('%domain' => $target, '!target' => l($target, $target)));
+        }
+        else {
+          // No drupal_add_js because it won't be executed.
+          drupal_goto($target);
+        }
       }
       else {
-        drupal_goto($target);
+        // Ensure to have javascriüpt based switching for anonymous users in page cache.
+        drupal_add_js(drupal_get_path('module', 'themekey_redirect') . '/themekey_redirect.js');
       }
+    }
+    else {
+      if (variable_get('themekey_debug_trace_rule_switching', FALSE)) {
+        // No drupal_add_js to ensure that the debug message is visible.
+        themekey_set_debug_message('Redirect previously happend for this client. This feature is now turned off until the browser has been closed.');
+      }
+
+      // Ensure to have javascriüpt based switching for anonymous users in page cache.
+      drupal_add_js(drupal_get_path('module', 'themekey_redirect') . '/themekey_redirect.js');
     }
   }
 }
@@ -101,7 +137,7 @@ function themekey_redirect_match_rules() {
   if (is_array($result) && 'default' != $result['theme']) {
     drupal_alter('themekey_redirect', $result['theme'], $result['rules_matched']);
 
-    return $result['theme'] . $_SERVER['REQUEST_URI'];
+    return url($result['theme'] . $_SERVER['REQUEST_URI'], array('query' => array('themekey_redirect' => 'active')));
   }
 
   return FALSE;
@@ -155,4 +191,106 @@ function themekey_redirect_themekey_page_cache_support_alter(&$page_cache, $key,
   if ('themekey_redirect_rule_chain_form' == $form_id) {
     $page_cache = THEMEKEY_PAGECACHE_SUPPORTED;
   }
+}
+
+/**
+ * Implements hook_block().
+ */
+function themekey_redirect_block_info() {
+  $blocks['domain_selector'] = array(
+    'info' => t('ThemeKey Redirect Domain Selector'),
+    'cache' => DRUPAL_CACHE_PER_PAGE,
+  );
+
+  return $blocks;
+}
+
+/**
+ * Implements hook_block_configure().
+ */
+function themekey_redirect_block_configure($delta = '') {
+  $form = array();
+
+  switch ($delta) {
+    case 'domain_selector':
+      $form['domain_list'] = array(
+        '#type' => 'textarea',
+        '#title' => t('Domain Targets'),
+        '#description' => t('One entry per line, format: domain|link title'),
+        '#default_value' => themekey_redirect_encode_domain_selector(variable_get('themekey_redirect_domain_selector', array())),
+      );
+      break;
+  }
+
+  $form['#validate'][] = 'themekey_redirect_block_validate';
+
+  return $form;
+}
+
+function themekey_redirect_block_validate(&$form, $form_state) {
+  switch ($form['delta']['#value']) {
+    case 'domain_selector':
+      //form_set_error('domain_list', t('Todo'));
+      break;
+  }
+}
+
+/**
+ * Implements hook_block_save().
+ */
+function themekey_redirect_block_save($delta = '', $edit = array()) {
+  switch ($delta) {
+    case 'domain_selector':
+      variable_set('themekey_redirect_domain_selector', themekey_redirect_parse_domain_selector($edit['domain_list']));
+      break;
+  }
+}
+
+/**
+ * Implements hook_block_view().
+ */
+function themekey_redirect_block_view($delta = '') {
+  $block = array();
+
+  switch ($delta) {
+    case 'domain_selector':
+      if ($links = variable_get('themekey_redirect_domain_selector', array())) {
+        $block['subject'] = t('You have been redirected automatically.');
+        $block['content'] = theme('themekey_redirect_domain_selector_links', array('links' => $links));
+        drupal_add_css(drupal_get_path('module', 'themekey_redirect') . '/themekey_redirect_domain_selector.css');
+      }
+      break;
+  }
+
+  return $block;
+}
+
+function themekey_redirect_preprocess_themekey_redirect_domain_selector_links(&$vars) {
+  $vars['links_rendered'] = array();
+  foreach ($vars['links'] as $url => $link) {
+    if (themekey_redirect_check_different_url($url)) {
+      $vars['links_rendered'][] = l(t($link), $url . $_SERVER['REQUEST_URI'], array('query' => array('themekey_redirect' => 'avoid')));
+    }
+  }
+}
+
+function themekey_redirect_parse_domain_selector($domain_selector_string) {
+  $domain_selector = array();
+  $domain_selector_string = trim($domain_selector_string, " \r\n");
+  $lines = explode("\n", $domain_selector_string);
+  foreach ($lines as $line) {
+    @list($url, $link) = explode('|', $line);
+    $url = trim($url, " \r\n");
+    $link = trim($link, " \r\n");
+    $domain_selector[$url] = $link ? $link : $url;
+  }
+  return $domain_selector;
+}
+
+function themekey_redirect_encode_domain_selector($domain_selector) {
+  $domain_selector_strings = array();
+  foreach ($domain_selector as $url => $link) {
+    $domain_selector_strings[] = $url . '|' . $link;
+  }
+  return implode("\n", $domain_selector_strings);
 }
