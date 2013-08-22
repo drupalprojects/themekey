@@ -269,7 +269,7 @@ function themekey_redirect_preprocess_themekey_redirect_domain_selector_links(&$
   $vars['links_rendered'] = array();
   foreach ($vars['links'] as $url => $link) {
     if (themekey_redirect_check_different_url($url)) {
-      $vars['links_rendered'][] = l(t($link), $url . $_SERVER['REQUEST_URI'], array('query' => array('themekey_redirect' => 'avoid')));
+      $vars['links_rendered'][] = l(t($link), $url . str_replace('themekey_redirect=active', '', $_SERVER['REQUEST_URI']), array('query' => array('themekey_redirect' => 'avoid')));
     }
   }
 }
