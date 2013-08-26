@@ -642,8 +642,14 @@ function themekey_abstract_format_rule_as_string($themekey_property_id, $options
   if (!empty($item)) {
     $properties = variable_get('themekey_properties', array());
     if (!in_array($item->property, $properties)) {
-      $item->wildcard = $item->property;
-      $item->property = 'drupal:path:wildcard';
+      $attributes = variable_get('themekey_attributes', array());
+      if (!array_key_exists($item->property, $attributes)) {
+        $item->wildcard = $item->property;
+        $item->property = 'drupal:path:wildcard';
+      }
+      elseif (!empty($attributes[$item->property]['static'])) {
+        $item->theme = 'triggered';
+      }
     }
 
     $title = '"' . $item->property . ' ';
