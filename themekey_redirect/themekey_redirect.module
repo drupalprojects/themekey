@@ -88,9 +88,11 @@ function themekey_redirect_init() {
 
       if ('active' == $_GET['themekey_redirect']) {
         setcookie('themekey_redirect_state', 1, 0, '/');
+        themekey_set_debug_message('User has been redirected.');
       }
       elseif ('avoid' == $_GET['themekey_redirect']) {
         setcookie('themekey_redirect_state', 2, 0, '/');
+        themekey_set_debug_message('User manually selected a domain. No further redirects.');
       }
     }
     elseif (empty($_COOKIE['themekey_redirect_state'])) {
@@ -115,7 +117,7 @@ function themekey_redirect_init() {
     else {
       if (variable_get('themekey_debug_trace_rule_switching', FALSE)) {
         // No drupal_add_js to ensure that the debug message is visible.
-        themekey_set_debug_message('Redirect previously happend for this client. This feature is now turned off until the browser has been closed.');
+        themekey_set_debug_message('Redirect previously happened for this client. Automatic redirects are now turned off until the browser will be closed.');
       }
 
       // Ensure to have javascriüpt based switching for anonymous users in page cache.
