@@ -24,31 +24,15 @@ function themekey_mobile_detect_themekey_properties() {
   // Mapping functions
   $maps = array();
 
-  if ($mobile_detect = mobile_detect_get_object()) {
-    $rules = array_merge(
-      array_keys($mobile_detect->getRules()),
-      array(
-        'Mobile',
-        'Tablet',
-      )
-    );
-    foreach ($rules as $rule) {
-      $property = 'mobile_detect:is' . $rule;
+  if (!module_exists('mobile_detect_api')) {
+    if ($mobile_detect = mobile_detect_get_object()) {
+      require_once DRUPAL_ROOT . '/' . drupal_get_path('module', 'themekey') . '/modules/themekey.mobile_detect_api.inc';
 
-      $attributes[$property] = array(
-        'description' => t("Mobile Detect: @rule - 'true' or 'false'", array('@rule' => $rule)),
-        'validator' => 'themekey_validator_string_boolean',
-        'page cache' => THEMEKEY_PAGECACHE_UNSUPPORTED,
-      );
+      list($attributes, $maps) = themekey_mobile_detect_api_themekey_properties_helper($mobile_detect);
 
-      $maps[] = array(
-        'src' => 'system:dummy',
-        'dst' => $property,
-        'callback' => 'themekey_mobile_detect_dummy2rule',
-        'args' => array(
-          'method' => 'is' . $rule,
-        ),
-      );
+      foreach ($maps as &$map) {
+        $map['callback'] = 'themekey_mobile_detect_dummy2rule';
+      }
     }
   }
 
