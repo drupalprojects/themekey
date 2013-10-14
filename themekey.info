@@ -13,3 +13,4 @@ files[] = tests/ThemekeyModulePluginsTestCase.test
 files[] = tests/ThemekeyMultipleNodePropertiesTestCase.test
 files[] = tests/ThemekeyNodePropertiesTestCase.test
 files[] = tests/ThemekeySystemPropertiesTestCase.test
+files[] = tests/ThemekeyUITestCase.test

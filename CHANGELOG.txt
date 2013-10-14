@@ -9,6 +9,8 @@ ThemeKey 7.x-3.0-alpha2, 2013-xx-xx
 [#1811592] mkalkbrenner: redirect to different (sub-) domain by rule - added experimental sub-module themekey_redirect
 [        ] mkalkbrenner: fixed ThemeKey Debug message for static rules
 [        ] mkalkbrenner: added support for mobile_detect_api
+[#2082427] mkalkbrenner: extend individually-styled channels to include the user profile page and contact page
+[        ] mkalkbrenner: added hook_themekey_ui_author_theme_selected()
 
 
 ThemeKey 7.x-3.0-alpha1, 2013-07-12

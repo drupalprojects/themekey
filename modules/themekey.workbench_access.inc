@@ -18,8 +18,7 @@
  * Implements hook_themekey_properties().
  *
  * Provides additional properties for the ThemeKey module:
- *   themekey_ui:node_triggers_theme
- *   themekey_ui:node_author_triggers_theme
+ *   workbench_access:access_id
  *
  * @return
  *   array of themekey properties

@@ -41,10 +41,20 @@ function themekey_invoke_modules($hook) {
     }
   }
 
+  $args = func_get_args();
+  // Remove $hook from the arguments.
+  unset($args[0]);
+
   foreach ($modules as $module) {
     $function = 'themekey_' . $module . '_' . $hook;
     if (function_exists($function)) {
-      $return = array_merge_recursive($return, $function());
+      $result = call_user_func_array($function, $args);
+      if (isset($result) && is_array($result)) {
+        $return = array_merge_recursive($return, $result);
+      }
+      elseif (isset($result)) {
+        $return[] = $result;
+      }
     }
   }
 

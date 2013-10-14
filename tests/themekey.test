@@ -19,7 +19,16 @@ class ThemekeyWebTestCase extends DrupalWebTestCase {
   }
 
   public function setUp() {
-    parent::setUp(array('themekey_simpletest', 'themekey', 'themekey_compat', 'themekey_ui', 'themekey_debug'));
+    $modules = func_get_args();
+    if (empty($modules)) {
+      $modules = array();
+    }
+    else {
+      $modules = $modules[0];
+    }
+    $modules = array_unique(array_merge(array('themekey_simpletest', 'themekey', 'themekey_compat', 'themekey_ui', 'themekey_debug'), $modules));
+
+    parent::setUp($modules);
 
     $this->privileged_user = $this->drupalCreateUser(array('administer theme assignments', 'administer themekey settings'));
     $this->drupalLogin($this->privileged_user);

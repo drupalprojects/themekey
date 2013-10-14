@@ -83,9 +83,9 @@ function themekey_ui_settings_form() {
 
   $form['themekey_ui']['themekey_ui_author'] = array(
     '#type' => 'checkbox',
-    '#title' => t('Let the user select a theme for her nodes in her user profile'),
+    '#title' => t('Let the user select a theme that will be used to display all content she creates.'),
     '#default_value' => variable_get('themekey_ui_author', 0),
-    '#description' => t('Assign themes from user profile. All nodes created by a user will be shown to all visitors using the theme she selected in her profile.'),
+    '#description' => t('Assign themes from user profile. All content created by a user will be shown to all visitors using the theme she selected in her profile. This also includes the contact form and blog pages.'),
   );
 
   if (module_exists('blog')) {
@@ -152,7 +152,7 @@ function themekey_ui_settings_form_submit($form, &$form_state) {
   }
 
   themekey_update_static_rule('themekey_ui:node_triggers_theme', $form_state['values']['themekey_ui_nodeform']);
-  themekey_update_static_rule('themekey_ui:node_author_triggers_theme', $form_state['values']['themekey_ui_author']);
+  themekey_update_static_rule('themekey_ui:author_triggers_theme', $form_state['values']['themekey_ui_author']);
   themekey_update_static_rule('themekey_ui:blog_author_triggers_theme', array_key_exists('themekey_ui_blog_author', $form_state['values']) ? $form_state['values']['themekey_ui_blog_author'] : FALSE);
 
   drupal_set_message(t('The configuration options have been saved.'));
