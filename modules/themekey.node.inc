@@ -226,6 +226,22 @@ function themekey_node_themekey_paths() {
 
 
 /**
+ * Implements hook_themekey_global().
+ */
+function themekey_node_themekey_global() {
+  global $user;
+
+  $parameters = array();
+
+  if (0 === strpos(themekey_get_q(), 'node/add')) {
+    // required by themekey_ui:author_triggers_theme
+    $parameters['profile:uid'] = $user->uid; // this user creates new content
+  }
+
+  return $parameters;
+}
+
+/**
  * Helper function that loads a node and returns the
  * value of a node's property.
  *

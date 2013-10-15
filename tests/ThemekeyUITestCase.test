@@ -27,8 +27,16 @@ class ThemekeyUITestCase extends ThemekeyWebTestCase {
 
     $this->drupalLogout();
 
-    $this->content_user = $this->drupalCreateUser(array('assign theme to own nodes'));
-    $this->registered_user = $this->drupalCreateUser(array('access user contact forms'));
+    $this->content_user = $this->drupalCreateUser(array(
+      'assign theme to own nodes',
+      'create article content',
+      'create blog content',
+    ));
+    $this->registered_user = $this->drupalCreateUser(array(
+      'access user contact forms',
+    ));
+
+    variable_set('node_admin_theme', 0);
   }
 
   public function setThemeForOwnContent($theme) {
@@ -59,6 +67,12 @@ class ThemekeyUITestCase extends ThemekeyWebTestCase {
     $this->drupalLogout();
     $this->drupalLogin($this->content_user);
 
+    $this->drupalGet('node/add');
+    $this->assertTheme('bartik');
+
+    $this->drupalGet('node/add/article');
+    $this->assertTheme('bartik');
+
     $node = $this->drupalCreateNode();
 
     $this->drupalGet('node/' . $node->nid);
@@ -71,6 +85,12 @@ class ThemekeyUITestCase extends ThemekeyWebTestCase {
     $this->assertTheme('bartik');
 
     $this->setThemeForOwnContent('garland');
+
+    $this->drupalGet('node/add');
+    $this->assertTheme('garland');
+
+    $this->drupalGet('node/add/article');
+    $this->assertTheme('garland');
 
     $this->drupalGet('node/' . $node->nid);
     $this->assertTheme('garland');

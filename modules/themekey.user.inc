@@ -96,6 +96,7 @@ function themekey_user_themekey_global() {
   $parameters['user:role'] = $user->roles;
 
   if ('user' == themekey_get_q() && user_is_logged_in()) {
+    // required by themekey_ui:author_triggers_theme
     $parameters['profile:uid'] = $user->uid; // a user watches his own profile
   }
 
