@@ -108,7 +108,7 @@ function themekey_user_themekey_global() {
 function themekey_user_themekey_ui_author_theme_selected($uid, $theme) {
   global $base_root;
 
-  $cid = $base_root . 'user/' . $uid;
+  $cid = $base_root . '/user/' . $uid;
 
   cache_clear_all($cid, 'cache_page');
   cache_clear_all($cid . '/', 'cache_page', TRUE);

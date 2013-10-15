@@ -71,7 +71,7 @@ function themekey_blog_themekey_paths() {
 function themekey_blog_themekey_ui_author_theme_selected($uid, $theme) {
   global $base_root;
 
-  $cid = $base_root . 'blog/' . $uid;
+  $cid = $base_root . '/blog/' . $uid;
 
   cache_clear_all($cid, 'cache_page');
   cache_clear_all($cid . '/', 'cache_page', TRUE);

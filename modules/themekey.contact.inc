@@ -44,7 +44,7 @@ function themekey_contact_themekey_paths() {
 function themekey_contact_themekey_ui_author_theme_selected($uid, $theme) {
   global $base_root;
 
-  $cid = $base_root . 'contact/' . $uid;
+  $cid = $base_root . '/contact/' . $uid;
 
   cache_clear_all($cid, 'cache_page');
   cache_clear_all($cid . '/', 'cache_page', TRUE);
