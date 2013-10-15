@@ -136,7 +136,7 @@ function themekey_ui_update_6200() {
 }
 
 /**
- * Implements hook_update_N().
+ * Collapse properties themekey_ui:node_author_triggers_theme and themekey_ui:blog_author_triggers_theme into themekey_ui:author_triggers_theme
  */
 function themekey_ui_update_7300() {
   db_update('themekey_properties')
@@ -161,4 +161,17 @@ function themekey_ui_update_7300() {
   }
 
   return t('Renamed themekey_ui:node_author_triggers_theme to themekey_ui:author_triggers_theme, removed themekey_ui:blog_author_triggers_theme');
+}
+
+/**
+ * Remove variable themekey_ui_blog_author.
+ */
+function themekey_ui_update_7301() {
+  variable_del('themekey_ui_blog_author');
+
+  module_load_include('inc', 'themekey', 'themekey_base');
+  module_load_include('inc', 'themekey', 'themekey_build');
+  themekey_rebuild();
+
+  return t('Removed variable themekey_ui_blog_author');
 }

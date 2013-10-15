@@ -88,15 +88,6 @@ function themekey_ui_settings_form() {
     '#description' => t('Assign themes from user profile. All content created by a user will be shown to all visitors using the theme she selected in her profile. This also includes the contact form and blog pages.'),
   );
 
-  if (module_exists('blog')) {
-    $form['themekey_ui']['themekey_ui_blog_author'] = array(
-      '#type' => 'checkbox',
-      '#title' => t('Let the user select a theme for her blog pages'),
-      '#default_value' => variable_get('themekey_ui_blog_author', 0),
-      '#description' => t('Assign themes to personal blogs from user profile. Requires "%themekey_ui_author" to be activated.', array('%themekey_ui_author' => t('Let the user select a theme for her nodes in her user profile'))),
-    );
-  }
-
   $form['buttons']['submit'] = array(
     '#type' => 'submit',
     '#value' => t('Save configuration'),

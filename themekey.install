@@ -553,7 +553,7 @@ function themekey_update_7103() {
 }
 
 /**
- * Enable Organic Group properties if og_context is enabled.
+ * ThemKey rebuild.
  */
 function themekey_update_7104() {
   module_load_include('inc', 'themekey', 'themekey_base');
