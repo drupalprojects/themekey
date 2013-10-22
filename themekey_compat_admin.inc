@@ -44,7 +44,8 @@ function themekey_compat_settings_form() {
 
     $form['themekey_compat']['modules_enabled']['themekey_compat_modules_enabled'] = array(
       '#type' => 'checkboxes',
-      '#title' => t('Integrate Modules in Theme Switching Rule Chain'),
+      '#title' => t('Modules to become part of the Theme Switching Rule Chain'),
+      '#description' => t("Optionally disable the theme switching capability of core and additional modules. Their theme switching capabilities will become part of ThemeKey's theme switching rule chain instead and therefor configurable."),
       '#default_value' => variable_get('themekey_compat_modules_enabled', array()),
       '#options' => $options,
     );

@@ -1,3 +1,8 @@
+ThemeKey 7.x-3.0-beta1, 2013-xx-xx
+----------------------------------
+[        ] webservant316, mkalkbrenner: improved wording.
+
+
 ThemeKey 7.x-3.0-alpha2, 2013-10-15
 -----------------------------------
 [        ] mkalkbrenner: added support for mobile_detect and provided different related properties

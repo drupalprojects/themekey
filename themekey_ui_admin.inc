@@ -85,7 +85,7 @@ function themekey_ui_settings_form() {
     '#type' => 'checkbox',
     '#title' => t('Let the user select a theme that will be used to display all content she creates.'),
     '#default_value' => variable_get('themekey_ui_author', 0),
-    '#description' => t("Assign themes from user profile. All content created by a user will be shown to all visitors using the theme she selected in her profile. This also includes the user's contact form, profile page, and blog pages."),
+    '#description' => t("Assign themes from user profile. All content created by a user will be shown to all visitors using the theme they selected in their profile. This also includes the user's contact form, profile page, and blog pages. If Administrative theme selection options are used ThemeKey Compatibility must be enabled and configured to allow ThemeKey to retain control in the theme switching rule chain for 'edit' and 'add' pages."),
   );
 
   $form['buttons']['submit'] = array(
