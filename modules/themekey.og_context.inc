@@ -30,7 +30,7 @@ function themekey_og_context_themekey_properties() {
     'page cache' => THEMEKEY_PAGECACHE_SUPPORTED,
   );
   $attributes['group:type'] = array(
-    'description' => t('Group: Type - The type of a og group'),
+    'description' => t('Group: Type - The type of an og group'),
     'validator' => 'themekey_validator_og_group_type',
     'page cache' => THEMEKEY_PAGECACHE_SUPPORTED,
   );

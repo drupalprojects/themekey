@@ -43,7 +43,7 @@ function themekey_taxonomy_themekey_properties() {
     'page cache' => THEMEKEY_PAGECACHE_UNSUPPORTED,
   );
   $attributes['taxonomy:name'] = array(
-    'description' => t('Taxonomy: Name - The term name (name) of a taxonomy term.'),
+    'description' => t('Taxonomy: Name - The term name (name) of a taxonomy term without support for translations.'),
     'validator' => '',
     'page cache' => THEMEKEY_PAGECACHE_SUPPORTED,
   );
