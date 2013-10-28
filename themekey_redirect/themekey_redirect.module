@@ -83,7 +83,8 @@ function themekey_redirect_init() {
   if (themekey_is_active()) {
 
     if (isset($_GET['themekey_redirect'])) {
-      // Ensure to have javascriüpt based switching for anonymous users in page cache.
+      // Ensure to have javascript based switching for anonymous users in page cache.
+      drupal_add_library('system', 'jquery.cookie');
       drupal_add_js(drupal_get_path('module', 'themekey_redirect') . '/themekey_redirect.js');
 
       if ('active' == $_GET['themekey_redirect']) {
@@ -110,7 +111,8 @@ function themekey_redirect_init() {
         }
       }
       else {
-        // Ensure to have javascriüpt based switching for anonymous users in page cache.
+        // Ensure to have javascript based switching for anonymous users in page cache.
+        drupal_add_library('system', 'jquery.cookie');
         drupal_add_js(drupal_get_path('module', 'themekey_redirect') . '/themekey_redirect.js');
       }
     }
@@ -120,7 +122,8 @@ function themekey_redirect_init() {
         themekey_set_debug_message('Redirect previously happened for this client. Automatic redirects are now turned off until the browser will be closed.');
       }
 
-      // Ensure to have javascriüpt based switching for anonymous users in page cache.
+      // Ensure to have javascript based switching for anonymous users in page cache.
+      drupal_add_library('system', 'jquery.cookie');
       drupal_add_js(drupal_get_path('module', 'themekey_redirect') . '/themekey_redirect.js');
     }
   }
