@@ -3,6 +3,7 @@ ThemeKey 7.x-3.0-beta1, 2013-xx-xx
 [        ] webservant316, mkalkbrenner: improved wording.
 [#1942444] yechuah: added taxonomy:name property
 [#2046143] Simon Georges: Move example module into "Example modules" package
+[#1600844] mkalkbrenner: Themekey fatals on External Pages with Bootstrap
 
 
 ThemeKey 7.x-3.0-alpha2, 2013-10-15

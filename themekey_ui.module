@@ -86,6 +86,10 @@ function themekey_ui_themekey_properties() {
 function themekey_ui_nid2theme($nid) {
   $custom_theme = &drupal_static('themekey_custom_theme', '');
 
+  if (!function_exists('themekey_node_get_simple_node_property')) {
+    require_once DRUPAL_ROOT . '/' . drupal_get_path('module', 'themekey') . '/modules/themekey.node.inc';
+  }
+
   // node_load() must not be called from hook_init().
   // Therefore, we have to execute SQL here using hook_nodeapi().
   $node = new stdClass();
