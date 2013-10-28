@@ -9,10 +9,14 @@
     var propertiesRow = $('#themekey-properties-row-' + parentId);
     if (1 == adjust) {
       $('.themekey-property-theme', propertiesRow).css('display', 'none');
+      $('.themekey-property-append-path', propertiesRow).css('display', 'none');
+      $('.themekey-property-append-path + label', propertiesRow).css('display', 'none');
       $('.themekey-rule-delete-link', propertiesRow).css('display', 'none');
     }
     else if (childCounter.val() < 1) {
       $('.themekey-property-theme', propertiesRow).css('display', 'block');
+      $('.themekey-property-append-path', propertiesRow).css('display', 'inline');
+      $('.themekey-property-append-path + label', propertiesRow).css('display', 'inline');
       $('.themekey-rule-delete-link', propertiesRow).css('display', 'block');
     }
   };

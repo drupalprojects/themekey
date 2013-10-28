@@ -71,6 +71,12 @@ function themekey_redirect_load_rules() {
  */
 function themekey_redirect_rule_set(&$item, $module = 'themekey_redirect') {
   themekey_abstract_rule_set('themekey_redirect_rules', $item, $module);
+  db_update('themekey_redirect_rules')
+    ->fields(array(
+      'append_path' => $item['append_path'],
+    ))
+    ->condition('id',  $item['id']) // If the record is new, the id will be set by drupal_write_record() within themekey_abstract_rule_set().
+    ->execute();
 }
 
 

@@ -387,6 +387,7 @@ function themekey_abstract_rule_set($table, &$item, $module = 'themekey') {
 
     // if query fails $weight will be FALSE which will cause $item['weight'] to be set to '1'
     $item['weight'] = 1 + $weight;
+    // It is important to use drupal_write_record() because it sets $item['id']!
     drupal_write_record($table, $item, array());
 
   }

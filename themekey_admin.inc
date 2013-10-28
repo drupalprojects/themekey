@@ -612,6 +612,11 @@ function theme_themekey_abstract_rule_chain_form($variables, $options) {
         $form['old_items'][$key]['enabled']['#attributes']['class'] = array('themekey-property-enabled');
         $form['old_items'][$key]['theme']['#attributes']['class'] = array('themekey-property-theme themekey-fadeable');
 
+        if (isset($form['old_items'][$key]['append_path'])) {
+          // Special element of ThemeKey Redirect. See themekey_redirect_rule_chain_form().
+          $form['old_items'][$key]['append_path']['#attributes']['class'] = array('themekey-property-append-path themekey-fadeable');
+        }
+
         // form items of type markup don't have attributes
         $form['old_items'][$key]['delete']['#markup'] = str_replace('<a', '<a class="themekey-rule-delete-link"', $form['old_items'][$key]['delete']['#markup']);
 
@@ -621,6 +626,9 @@ function theme_themekey_abstract_rule_chain_form($variables, $options) {
 
         if (!empty($num_childs[$key])) {
           $form['old_items'][$key]['theme']['#attributes']['style'] = 'display: none';
+          if (isset($form['old_items'][$key]['append_path'])) {
+            $form['old_items'][$key]['append_path']['#attributes']['style'] = 'display: none';
+          }
           // form items of type markup don't have attributes
           $form['old_items'][$key]['delete']['#markup'] = str_replace('<a', '<a style="display: none"', $form['old_items'][$key]['delete']['#markup']);
         }
@@ -647,7 +655,9 @@ function theme_themekey_abstract_rule_chain_form($variables, $options) {
         );
 
         $elements[] = array(
-          'data' => drupal_render($form['old_items'][$key]['theme']),
+          'data' => drupal_render($form['old_items'][$key]['theme']) .
+            // Special element of ThemeKey Redirect. See themekey_redirect_rule_chain_form().
+            (isset($form['old_items'][$key]['append_path']) ? drupal_render($form['old_items'][$key]['append_path']) : ''),
         );
 
         $elements[] = array(
@@ -727,7 +737,11 @@ function theme_themekey_abstract_rule_chain_form($variables, $options) {
           drupal_render($form['new_item']['value']),
         'class' => array('themekey-properties-row'),
       );
-      $elements[] = array('data' => drupal_render($form['new_item']['theme']));
+      $elements[] = array(
+        'data' => drupal_render($form['new_item']['theme']) .
+          // Special element of ThemeKey Redirect. See themekey_redirect_rule_chain_form().
+          (isset($form['new_item']['append_path']) ? drupal_render($form['new_item']['append_path']) : ''),
+      );
       $elements[] = array('data' => drupal_render($form['new_item']['enabled']));
 
       $row['data'] = $elements;

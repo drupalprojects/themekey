@@ -32,15 +32,27 @@ function themekey_redirect_rule_chain_form($form, &$form_state) {
     'rule_delete_path' => 'admin/config/user-interface/themekey/redirects/delete/',
   ));
 
+  $items = themekey_redirect_load_rules();
+
   if (!empty($form['old_items'])) {
-    foreach ($form['old_items'] as &$old_item) {
+    foreach ($form['old_items'] as $id => &$old_item) {
       $old_item['theme']['#type'] = 'textfield';
       unset($old_item['theme']['#options']);
+      $old_item['append_path'] = array(
+        '#type' => 'checkbox',
+        '#title' => t('append path'),
+        '#default_value' => isset($items[$id]['append_path']) ? $items[$id]['append_path'] : TRUE,
+      );
     }
   }
   $form['new_item']['theme']['#type'] = 'textfield';
   $form['new_item']['theme']['#default_value'] = 'http://';
   unset($form['new_item']['theme']['#options']);
+  $form['new_item']['append_path'] = array(
+    '#type' => 'checkbox',
+    '#title' => t('append path'),
+    '#default_value' => TRUE,
+  );
 
   return $form;
 }
@@ -68,7 +80,7 @@ function themekey_redirect_rule_chain_form_submit($form, &$form_state) {
 }
 
 function themekey_redirect_check_url($url) {
-  return preg_match('@http(|s)://.+\..+@', $url);
+  return preg_match('@http(|s)://.+@', $url);
 }
 
 /**

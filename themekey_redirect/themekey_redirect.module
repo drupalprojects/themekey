@@ -139,7 +139,12 @@ function themekey_redirect_match_rules() {
   if (is_array($result) && 'default' != $result['theme']) {
     drupal_alter('themekey_redirect', $result['theme'], $result['rules_matched']);
 
-    return url($result['theme'] . $_SERVER['REQUEST_URI'], array('query' => array('themekey_redirect' => 'active')));
+    $last_rule = array_pop($result['rules_matched']);
+
+    return url(
+      $result['theme'] . ($last_rule->append_path ? $_SERVER['REQUEST_URI'] : ''),
+      ($last_rule->append_path ? array('query' => array('themekey_redirect' => 'active')) : array())
+    );
   }
 
   return FALSE;
