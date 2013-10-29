@@ -3,7 +3,7 @@ jQuery(document).ready(function($) {
     if (state != 1 && state != 2) {
         $.ajax({
             // add the current path and query to the url for ThemeKey's rule matching
-            url: '/themekey/redirect_callback' + window.location.pathname + window.location.search,
+            url: Drupal.settings.basePath.replace(/\/$/, "") + '/index.php?q=themekey/redirect_callback' + window.location.pathname + window.location.search.replace(/^?/, "&"),
             dataType: 'json',
             type: 'GET',
             success: function(target) {

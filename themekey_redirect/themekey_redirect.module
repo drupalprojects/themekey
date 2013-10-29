@@ -156,7 +156,7 @@ function themekey_redirect_match_rules() {
 function themekey_redirect_callback() {
   // clean-up the URI path for rule matching
   $_GET['q'] = implode('/', func_get_args());
-  $_SERVER['REQUEST_URI'] = str_replace('/themekey/redirect_callback', '', $_SERVER['REQUEST_URI']);
+  $_SERVER['REQUEST_URI'] = str_replace('themekey/redirect_callback/', '', $_SERVER['REQUEST_URI']);
   return themekey_redirect_match_rules();
 }
 
