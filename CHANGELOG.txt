@@ -1,4 +1,4 @@
-ThemeKey 7.x-3.0-beta1, 2013-xx-xx
+ThemeKey 7.x-3.0-beta1, 2013-10-31
 ----------------------------------
 [        ] webservant316, mkalkbrenner: improved wording.
 [#1942444] yechuah: added taxonomy:name property
