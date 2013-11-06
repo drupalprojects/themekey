@@ -136,10 +136,8 @@ function themekey_taxonomy_nid2tid($nid) {
   $query->condition('t.nid', $nid);
   $result = $query->execute();
 
-  if ($result->rowCount()) {
-    foreach ($result as $item) {
-      $tids[] = $item->tid;
-    }
+  foreach ($result as $item) {
+    $tids[] = $item->tid;
   }
 
   return count($tids) ? $tids : NULL;
