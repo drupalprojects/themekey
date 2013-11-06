@@ -113,8 +113,8 @@ function themekey_browscap_themekey_global() {
   $parameters['browscap:minorver'] = array_key_exists('minorver', $browser) ? $browser['minorver'] : NULL;
   $parameters['browscap:platform'] = array_key_exists('platform', $browser) ? $browser['platform'] : NULL;
   $parameters['browscap:platform_version'] = array_key_exists('platform_version', $browser) ? $browser['platform_version'] : NULL;
-  $parameters['browscap:ismobiledevice'] = array_key_exists('ismobiledevice', $browser) ? $browser['ismobiledevice'] : NULL;
-  $parameters['browscap:issyndicationreader'] = array_key_exists('issyndicationreader', $browser) ? $browser['issyndicationreader'] : NULL;
+  $parameters['browscap:ismobiledevice'] = array_key_exists('ismobiledevice', $browser) ? ($browser['ismobiledevice'] ? 'true' : 'false') : NULL;
+  $parameters['browscap:issyndicationreader'] = array_key_exists('issyndicationreader', $browser) ? ($browser['issyndicationreader'] ? 'true' : 'false') : NULL;
   $parameters['browscap:crawler'] = array_key_exists('crawler', $browser) ? $browser['crawler'] : NULL;
   $parameters['browscap:cssversion'] = array_key_exists('cssversion', $browser) ? $browser['cssversion'] : NULL;
   $parameters['browscap:parent'] = array_key_exists('parent', $browser) ? $browser['parent'] : NULL;
