@@ -68,10 +68,8 @@ function themekey_workbench_access_nid2access_id($nid) {
   $query->condition('wban.nid', $nid);
   $result = $query->execute();
 
-  if ($result->rowCount()) {
-    foreach ($result as $item) {
-      $aids[] = $item->access_id;
-    }
+  foreach ($result as $item) {
+    $aids[] = $item->access_id;
   }
 
   return count($aids) ? $aids : NULL;

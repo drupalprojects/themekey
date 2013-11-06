@@ -363,35 +363,16 @@ function themekey_ui_node_insert($node) {
  * @param unknown_type $node
  */
 function themekey_ui_node_update($node) {
-
   if (!empty($node->themekey_ui_theme)) {
-
-    if (!(isset($node->revision) && $node->revision) && 0 < db_select('themekey_ui_node_theme', 't')
-                                                            ->fields('t')
-                                                            ->condition('nid', $node->nid)
-                                                            ->condition('vid', $node->vid)
-                                                            ->execute()
-                                                            ->rowCount()
-    ) {
-
-      // UPDATE
-      $query = db_update('themekey_ui_node_theme')
-        ->fields(array(
-          'nid' => $node->nid,
-          'vid' => $node->vid,
-          'theme' => $node->themekey_ui_theme,
-        ));
-      $query->condition('nid', $node->nid, '=');
-      $query->condition('vid', $node->vid, '=');
-      $query->execute();
-    }
-    else {
-      // INSERT
-      themekey_ui_node_insert($node);
-    }
-
+    db_merge('themekey_ui_node_theme')
+      ->key(array('nid' => $node->nid, 'vid' => $node->vid))
+      ->fields(array(
+        'nid' => $node->nid,
+        'vid' => $node->vid,
+        'theme' => $node->themekey_ui_theme,
+      ))
+      ->execute();
   }
-
 }
 
 
@@ -414,30 +395,13 @@ function themekey_ui_node_delete($node) {
  */
 function themekey_ui_user_insert(&$edit, $account, $category) {
   if (user_access('assign theme to own nodes') && variable_get('themekey_ui_author', 0) && !empty($edit['themekey_ui_theme'])) {
-
-    if (db_select('themekey_ui_author_theme', 't')
-        ->fields('t')
-        ->condition('uid', $account->uid)
-        ->execute()
-        ->rowCount()
-    ) {
-
-      db_update('themekey_ui_author_theme')
-        ->fields(array(
-         'uid' => $account->uid,
-         'theme' => $edit['themekey_ui_theme'],
-        ))
-        ->condition('uid', $account->uid)
-        ->execute();
-    }
-    else {
-      db_insert('themekey_ui_author_theme')
-        ->fields(array(
-         'uid' => $account->uid,
-         'theme' => $edit['themekey_ui_theme'],
-        ))
-        ->execute();
-    }
+    db_merge('themekey_ui_author_theme')
+      ->key(array('uid' => $account->uid))
+      ->fields(array(
+        'uid' => $account->uid,
+        'theme' => $edit['themekey_ui_theme'],
+      ))
+      ->execute();
 
     if (isset($account->themekey_ui_theme) && $edit['themekey_ui_theme'] != $account->themekey_ui_theme) {
       // theme settings changed
