@@ -85,12 +85,12 @@ function themekey_node_themekey_properties() {
   );
   $attributes['node:promote'] = array(
     'description' => t('Node: Promoted - If the node is promoted to the front page. Possible values are "0" for true and "1" for false.'),
-    'validator' => 'themekey_validator_nummeric_boolean',
+    'validator' => 'themekey_validator_numeric_boolean',
     'page cache' => THEMEKEY_PAGECACHE_SUPPORTED,
   );
   $attributes['node:sticky'] = array(
     'description' => t('Node: Sticky - If the node is set "Sticky at top of lists". Possible values are "0" for true and "1" for false.'),
-    'validator' => 'themekey_validator_nummeric_boolean',
+    'validator' => 'themekey_validator_numeric_boolean',
     'page cache' => THEMEKEY_PAGECACHE_SUPPORTED,
   );
   $attributes['node:type'] = array(

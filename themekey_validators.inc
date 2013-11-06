@@ -83,7 +83,7 @@ function themekey_validator_string_boolean($rule) {
  *     describing a problem with the value
  *   If no errors detected the array is empty.
  */
-function themekey_validator_nummeric_boolean($rule) {
+function themekey_validator_numeric_boolean($rule) {
   $errors = array();
   switch ($rule['operator']) {
     case '=':

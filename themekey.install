@@ -556,6 +556,15 @@ function themekey_update_7103() {
  * ThemKey rebuild.
  */
 function themekey_update_7104() {
+  // moved themekey_rebuild() to themekey_update_7300()
+
+  return t('Update of ThemeKey ran successfully');
+}
+
+/**
+ * ThemKey rebuild.
+ */
+function themekey_update_7300() {
   module_load_include('inc', 'themekey', 'themekey_base');
   module_load_include('inc', 'themekey', 'themekey_build');
   themekey_rebuild();

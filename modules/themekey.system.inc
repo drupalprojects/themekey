@@ -190,7 +190,7 @@ function themekey_system_themekey_properties() {
 
   $attributes['system:random'] = array(
     'description' => t("System: Random - A random value that could be '0' or 1'."),
-    'validator' => 'themekey_validator_nummeric_boolean',
+    'validator' => 'themekey_validator_numeric_boolean',
     'page cache' => THEMEKEY_PAGECACHE_UNSUPPORTED,
   );
 
