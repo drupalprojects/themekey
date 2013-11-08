@@ -553,18 +553,21 @@ function themekey_update_7103() {
 }
 
 /**
- * ThemKey rebuild.
+ * Rebuild ThemeKey's internal property registry.
  */
 function themekey_update_7104() {
-  // moved themekey_rebuild() to themekey_update_7300()
+  // moved themekey_rebuild() to themekey_update_7301()
 
   return t('Update of ThemeKey ran successfully');
 }
 
+// function themekey_update_7300() has been erroneously declared in
+// themekey_redeirect.install before.
+
 /**
- * ThemKey rebuild.
+ * Rebuild ThemeKey's internal property registry.
  */
-function themekey_update_7300() {
+function themekey_update_7301() {
   module_load_include('inc', 'themekey', 'themekey_base');
   module_load_include('inc', 'themekey', 'themekey_build');
   themekey_rebuild();
