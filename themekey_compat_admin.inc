@@ -97,8 +97,8 @@ function themekey_compat_settings_form_submit($form, &$form_state) {
   variable_set('themekey_compat_modules_enabled', $modules_enabled);
 
   if (!empty($modules_enabled)) {
-    drupal_set_message(t('You integrated some modules in Theme Switching Rule Chain. !link',
-      array('!link' => l(t('Review the Theme Switching Rule Chain.'), 'admin/config/user-interface/themekey/properties'))),
+    drupal_set_message(filter_xss(t('You integrated some modules in Theme Switching Rule Chain. !link',
+      array('!link' => l(t('Review the Theme Switching Rule Chain.'), 'admin/config/user-interface/themekey/properties')))),
       'warning');
   }
 

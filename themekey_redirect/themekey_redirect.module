@@ -145,7 +145,7 @@ function themekey_redirect_match_rules() {
     $last_rule = array_pop($result['rules_matched']);
 
     return url(
-      $result['theme'] . ($last_rule->append_path ? $_SERVER['REQUEST_URI'] : ''),
+      $result['theme'] . ($last_rule->append_path ? request_uri() : ''),
       ($last_rule->append_path ? array('query' => array('themekey_redirect' => 'active')) : array())
     );
   }
@@ -156,7 +156,9 @@ function themekey_redirect_match_rules() {
 function themekey_redirect_callback() {
   // clean-up the URI path for rule matching
   $_GET['q'] = implode('/', func_get_args());
-  $_SERVER['REQUEST_URI'] = str_replace('themekey/redirect_callback/', '', $_SERVER['REQUEST_URI']);
+  // TODO coder module complains about "the use of REQUEST_URI is prone to XSS exploits and does not work on IIS; use request_uri() instead [security_12]" but we have to override (or set) the REQUEST_URI here which is not an security issue
+  // @ignore rule:function
+  $_SERVER['REQUEST_URI'] = str_replace('themekey/redirect_callback/', '', request_uri());
   return themekey_redirect_match_rules();
 }
 
@@ -294,7 +296,7 @@ function themekey_redirect_preprocess_themekey_redirect_domain_selector_links(&$
   $vars['links_rendered'] = array();
   foreach ($vars['links'] as $url => $link) {
     if (themekey_redirect_check_different_url($url)) {
-      $vars['links_rendered'][] = l(t($link), $url . str_replace('themekey_redirect=active', '', $_SERVER['REQUEST_URI']), array('query' => array('themekey_redirect' => 'avoid')));
+      $vars['links_rendered'][] = l(t($link), $url . str_replace('themekey_redirect=active', '', request_uri()), array('query' => array('themekey_redirect' => 'avoid')));
     }
   }
 }
