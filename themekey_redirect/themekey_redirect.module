@@ -156,8 +156,12 @@ function themekey_redirect_match_rules() {
 function themekey_redirect_callback() {
   // clean-up the URI path for rule matching
   $_GET['q'] = implode('/', func_get_args());
-  // TODO coder module complains about "the use of REQUEST_URI is prone to XSS exploits and does not work on IIS; use request_uri() instead [security_12]" but we have to override (or set) the REQUEST_URI here which is not an security issue
-  // @ignore rule:function
+  // Coder module complains "the use of REQUEST_URI is prone to XSS exploits and
+  // does not work on IIS; use request_uri() instead [security_12]". But we have
+  // to override (or set) the REQUEST_URI here which is not an security issue.
+  // The rule in coder module is about reading $_SERVER['REQUEST_URI'] and not
+  // about setting it.
+  // @ignore security_12
   $_SERVER['REQUEST_URI'] = str_replace('themekey/redirect_callback/', '', request_uri());
   return themekey_redirect_match_rules();
 }

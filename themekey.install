@@ -211,6 +211,10 @@ function themekey_update_6104() {
  * Implements hook_update_N().
  */
 function themekey_update_6105() {
+  // Coder module complains "global variables should start with a single
+  // underscore followed by the module and another underscore". But $db_type is
+  // defined by drupal core.
+  // @ignore style_global_vars
   global $db_type;
 
   $return = array();
@@ -404,10 +408,8 @@ function themekey_update_6202() {
   db_add_field('themekey_properties', 'parent', $field_parent);
 
   if ($result = db_query("SELECT * FROM {themekey_properties} WHERE conditions <> :conditions", array(':conditions' => serialize(array())))) {
-
     foreach ($result as $row) {
-
-     $conditions = unserialize($row->conditions);
+      $conditions = unserialize($row->conditions);
       if (is_array($conditions)) {
         $parent = $row->id;
         foreach ($conditions as $condition) {

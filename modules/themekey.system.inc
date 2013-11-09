@@ -704,19 +704,19 @@ function themekey_dummy2day_of_week($dummy) {
 
 
 /**
-* ThemeKey mapping function to set a
-* ThemeKey property's value (destination)
-* with the aid of another ThemeKey property (source).
-*
-* src: system:dummy
-* dst: system:day_of_month
-*
-* @param $dummy
-*   string containing current value of ThemeKey property system:dummy
-*
-* @return
-*   current day of the month without leading zeros
-*/
+ * ThemeKey mapping function to set a
+ * ThemeKey property's value (destination)
+ * with the aid of another ThemeKey property (source).
+ *
+ * src: system:dummy
+ * dst: system:day_of_month
+ *
+ * @param $dummy
+ *   string containing current value of ThemeKey property system:dummy
+ *
+ * @return
+ *   current day of the month without leading zeros
+ */
 function themekey_dummy2day_of_month($dummy) {
   return format_date(time(), 'custom', 'j', variable_get('date_default_timezone', 0));
 }

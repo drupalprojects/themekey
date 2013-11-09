@@ -76,7 +76,7 @@ function themekey_abstract_rule_chain_form($form, &$form_state, $options) {
   foreach ($items as $item) {
     if ($fix_depth) {
       if (!empty($item['parent'])) {
-       $item['depth'] = $items[$item['parent']]['depth'] + 1;
+        $item['depth'] = $items[$item['parent']]['depth'] + 1;
       }
       else {
         $item['depth'] = 0;
@@ -532,7 +532,7 @@ function themekey_settings_form($form, &$form_state) {
       '#type' => 'checkbox',
       '#title' => t('Forum pages trigger property taxonomy:vid'),
       '#default_value' => variable_get('themekey_module_forum_triggers_taxonomy_vid', 0),
-      '#description' => t('Property taxonomy:vid is set when a single node is shown (e.g. /node/17). If this option is selected, forum pages like /forum/28 will set taxonomy:vid as well.'),
+      '#description' => t('Property taxonomy:vid is set when a single node is shown (for example, /node/17). If this option is selected, forum pages like /forum/28 will set taxonomy:vid as well.'),
     );
   }
 
@@ -540,7 +540,7 @@ function themekey_settings_form($form, &$form_state) {
     '#type' => 'checkbox',
     '#title' => t('Cron cleans up page cache'),
     '#default_value' => variable_get('themekey_cron_page_cache', 1),
-    '#description' => t('Select this option if ThemeKey should check rules containing time-based properties when cron runs. ThemeKey will carefully clean up the page cache if necessary to provide the right theme to anonymous users automatically, e.g. a Christmas theme.'),
+    '#description' => t('Select this option if ThemeKey should check rules containing time-based properties when cron runs. ThemeKey will carefully clean up the page cache if necessary to provide the right theme to anonymous users automatically, for example, a Christmas theme.'),
   );
 
   return system_settings_form($form);

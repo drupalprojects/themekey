@@ -55,10 +55,10 @@ function themekey_theme_options($default = TRUE, $admin = FALSE) {
 
 
 /**
- * Rebuilds all ThemeKey-related Drupal variables
- * by calling ThemeKey's hooks:
+ * Rebuilds all ThemeKey-related Drupal variables by calling the hooks:
  * - hook_themekey_properties()
  * - hook_themekey_paths()
+ * - hook_themekey_rebuild()
  */
 function themekey_rebuild() {
   // includes all modules in the themekey/modules subfolder (internal modules)

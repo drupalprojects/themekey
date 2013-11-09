@@ -131,8 +131,9 @@ function themekey_custom_theme() {
       $used_session_theme = FALSE;
       // If no theme has been triggered but a theme
       // is in the user's session, use that theme.
-      if (!$theme_candidate && !empty($_SESSION['themekey_theme'])
-           && (!$custom_theme || $custom_theme == variable_get('theme_default', 'bartik'))) {
+      if (!$theme_candidate && !empty($_SESSION['themekey_theme']) &&
+        (!$custom_theme || $custom_theme == variable_get('theme_default', 'bartik'))
+      ) {
         $theme_candidate = $_SESSION['themekey_theme'];
         $used_session_theme = TRUE;
         if (variable_get('themekey_debug_trace_rule_switching', FALSE)) {
@@ -157,7 +158,7 @@ function themekey_custom_theme() {
       }
       elseif (variable_get('themekey_debug_trace_rule_switching', FALSE)) {
         if ($custom_theme) {
-          // static rules set $theme_candidate to 'default and $custom_theme directly
+          // Static rules set $theme_candidate to 'default and $custom_theme directly.
           themekey_set_debug_message('$custom_theme has been set to %custom_theme during rule matching.', array('%custom_theme' => $custom_theme));
         }
         else {
@@ -187,8 +188,13 @@ function themekey_custom_theme() {
   return $custom_theme;
 }
 
+/**
+ * Indicates if ThemeKey rule chains will be evaluated.
+ *
+ * @return bool
+ */
 function themekey_is_active() {
-  // don't change theme when ...
+  // Don't change theme when ...
   return (
     (in_array('system', variable_get('themekey_compat_modules_enabled', array())) || !(variable_get('admin_theme', '0') && path_is_admin($_GET['q']))) // ... admin area and admin theme set
     && strpos($_GET['q'], 'admin/structure/block/demo') !== 0 // ... block demo runs
@@ -317,8 +323,8 @@ function themekey_modules_disabled($modules) {
 
 
 /**
-* Implements hook_modules_enabled().
-*/
+ * Implements hook_modules_enabled().
+ */
 function themekey_modules_enabled($modules) {
   require_once DRUPAL_ROOT . '/' . drupal_get_path('module', 'themekey') . '/themekey_build.inc';
 

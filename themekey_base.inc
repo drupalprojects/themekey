@@ -229,7 +229,7 @@ function themekey_get_global_parameters() {
   if (is_null($global_parameters)) {
     $global_parameters = array_merge_recursive(themekey_invoke_modules('themekey_global'), module_invoke_all('themekey_global'));
 
-    $path_condition = new StdClass();
+    $path_condition = new stdClass();
     $path_condition->property = 'drupal:path';
     $paths = variable_get('themekey_paths', array());
     foreach ($paths as $item) {

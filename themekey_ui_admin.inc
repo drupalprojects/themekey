@@ -181,7 +181,7 @@ function themekey_ui_theme_select_form(&$form, $title, $description, $default = 
       unset($themes[$name]);
     }
   }
-  themekey_ui_theme_build_select_form($form, $title, $description, $default, $weight, $collapsed, $element_key, $themes, /*add_default*/ TRUE);
+  themekey_ui_theme_build_select_form($form, $title, $description, $default, $weight, $collapsed, $element_key, $themes, /* add_default */ TRUE);
 }
 
 

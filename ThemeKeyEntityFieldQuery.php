@@ -1,6 +1,14 @@
 <?php
 
 /**
+ * @file
+ * ThemeKey's variant of class EntityFieldQuery.
+ *
+ * @author Markus Kalkbrenner | mkalkbrenner
+ *   @see http://drupal.org/user/124705
+ */
+
+/**
  * Class ThemeKeyEntityFieldQuery
  *
  * Adds all field values of fields added by fieldCondition() to the

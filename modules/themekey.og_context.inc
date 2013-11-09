@@ -12,15 +12,15 @@
  */
 
 /**
-* Implements hook_themekey_properties().
-*
-* Provides additional properties for module ThemeKey:
-* - group:id
-* - group:type
-*
-* @return
-* array of themekey properties and mapping functions
-*/
+ * Implements hook_themekey_properties().
+ *
+ * Provides additional properties for module ThemeKey:
+ * - group:id
+ * - group:type
+ *
+ * @return
+ * array of themekey properties and mapping functions
+ */
 function themekey_og_context_themekey_properties() {
   // Attributes for properties
   $attributes = array();
@@ -48,8 +48,8 @@ function themekey_og_context_themekey_properties() {
 }
 
 /**
-* Implements hook_themekey_paths().
-*/
+ * Implements hook_themekey_paths().
+ */
 function themekey_og_context_themekey_paths() {
   $paths = array();
 
@@ -98,9 +98,9 @@ function themekey_og_context_nid2gid($nid) {
  *   string
  *   or NULL if no value could be mapped
  */
-function themekey_og_context_nid2type($nid){
+function themekey_og_context_nid2type($nid) {
   // look for group info from context
-  if ($group = og_context()){
+  if ($group = og_context()) {
     return $group['group_type'];
   }
 

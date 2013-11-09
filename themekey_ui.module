@@ -290,7 +290,7 @@ function themekey_ui_form_alter(&$form, $form_state, $form_id) {
             ' ' . t('(site default theme)'))) . '</p>';
           $description .= '<p>' .
             t('This default behaviour could be modified using the !themekey_compat_link module.',
-              array('!themekey_compat_link' => l('ThemeKey Compatibilty', module_exists('themekey_compat') ? 'admin/config/user-interface/themekey/settings/compat' : 'admin/modules'))) .
+              array('!themekey_compat_link' => l(t('ThemeKey Compatibilty'), module_exists('themekey_compat') ? 'admin/config/user-interface/themekey/settings/compat' : 'admin/modules'))) .
             '</p>';
         }
         themekey_ui_theme_select_form($form, t('Theme configuration for this node'), $description, !empty($form['#node']->themekey_ui_theme) ? $form['#node']->themekey_ui_theme : 'default');
@@ -306,7 +306,8 @@ function themekey_ui_user_profile_form_submit($form, &$form_state) {
   }
 }
 
-/** Implementation of hook_node_load
+/**
+ * Implements hook_node_load().
  *
  * @param $nodes
  * @param $types
@@ -342,8 +343,8 @@ function themekey_ui_node_load($nodes, $types) {
 
 
 /**
- * Implementation of hook_node_insert
- * @param unknown_type $node
+ * Implements hook_node_insert().
+ * @param $node
  */
 function themekey_ui_node_insert($node) {
   if (!empty($node->themekey_ui_theme)) {
@@ -359,8 +360,8 @@ function themekey_ui_node_insert($node) {
 
 
 /**
- * Implementation of hook_node_update
- * @param unknown_type $node
+ * Implements hook_node_update().
+ * @param $node
  */
 function themekey_ui_node_update($node) {
   if (!empty($node->themekey_ui_theme)) {
@@ -377,8 +378,8 @@ function themekey_ui_node_update($node) {
 
 
 /**
- * Implementation of hook_node_delete
- * @param unknown_type $node
+ * Implements hook_node_delete().
+ * @param $node
  */
 function themekey_ui_node_delete($node) {
   db_delete('themekey_ui_node_theme')
@@ -388,10 +389,10 @@ function themekey_ui_node_delete($node) {
 
 
 /**
- * Implementation of hook_user_insert()
- * @param unknown_type $edit
- * @param unknown_type $account
- * @param unknown_type $category
+ * Implements hook_user_insert().
+ * @param $edit
+ * @param $account
+ * @param $category
  */
 function themekey_ui_user_insert(&$edit, $account, $category) {
   if (user_access('assign theme to own nodes') && variable_get('themekey_ui_author', 0) && !empty($edit['themekey_ui_theme'])) {
@@ -409,7 +410,6 @@ function themekey_ui_user_insert(&$edit, $account, $category) {
       cache_clear_all('*', 'cache_page', TRUE);
     }
 
-
     $edit['themekey_ui_theme'] = NULL;
   }
 
@@ -417,7 +417,7 @@ function themekey_ui_user_insert(&$edit, $account, $category) {
 
 
 /**
- * Implementation of hook_node_update()
+ * Implements hook_node_update().
  */
 function themekey_ui_user_update(&$edit, $account, $category) {
   themekey_ui_user_insert($edit, $account, $category);
@@ -425,7 +425,7 @@ function themekey_ui_user_update(&$edit, $account, $category) {
 
 
 /**
- * Implementation of hook_user_delete()
+ * Implements hook_user_delete().
  * @param $account
  */
 function themekey_ui_user_delete($account) {

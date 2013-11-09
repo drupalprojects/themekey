@@ -41,8 +41,8 @@ function themekey_mobile_detect_themekey_properties() {
 
 
 /**
-* ThemeKey mapping function to set a
-* ThemeKey property's value (destination)
+ * ThemeKey mapping function to set a
+ * ThemeKey property's value (destination)
  * with the aid of another ThemeKey property (source).
  *
  * src: system:dummy

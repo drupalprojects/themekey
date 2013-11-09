@@ -260,10 +260,10 @@ function themekey_node_get_simple_node_property($nid, $property) {
   if (!isset($nodes[$nid])) {
     //node_load() must not be called from hook_init(). Therefore, we have to execute SQL here
     $nodes[$nid] = db_select('node', 'n')
-                   ->fields('n')
-                   ->condition('n.nid', $nid)
-                   ->execute()
-                   ->fetchObject();
+      ->fields('n')
+      ->condition('n.nid', $nid)
+      ->execute()
+      ->fetchObject();
   }
 
   if (isset($nodes[$nid]->$property)) {
@@ -522,8 +522,8 @@ function themekey_node_get_q2type($q) {
 
 
 /**
-* ThemeKey mapping function to set a
-* ThemeKey property's value (destination)
+ * ThemeKey mapping function to set a
+ * ThemeKey property's value (destination)
  * with the aid of another ThemeKey property (source).
  *
  * src: node:nid

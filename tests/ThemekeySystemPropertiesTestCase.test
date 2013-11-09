@@ -27,7 +27,7 @@ class ThemekeySystemPropertiesTestCase extends ThemekeyWebTestCase {
         ),
       ),
     );
-    
+
     $this->simplePropertyTest('system:query_param', '=', 'test=1', $url);
   }
 
@@ -39,7 +39,7 @@ class ThemekeySystemPropertiesTestCase extends ThemekeyWebTestCase {
         ),
       ),
     );
-    
+
     $this->simplePropertyTest('system:query_string', '=', 'test=1', $url);
   }
 }

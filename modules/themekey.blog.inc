@@ -55,8 +55,8 @@ function themekey_blog_themekey_properties() {
 
 
 /**
-* Implements hook_themekey_paths().
-*/
+ * Implements hook_themekey_paths().
+ */
 function themekey_blog_themekey_paths() {
   $paths = array();
 
