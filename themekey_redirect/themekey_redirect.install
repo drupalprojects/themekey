@@ -19,7 +19,7 @@ function themekey_redirect_schema() {
 
   $schema = array();
   $schema['themekey_redirect_rules'] = $themekey_schema['themekey_properties'];
-  $schema['themekey_redirect_rules']['append_path'] = array(
+  $schema['themekey_redirect_rules']['fields']['append_path'] = array(
     'type' => 'int',
     'unsigned' => TRUE,
     'not null' => TRUE,

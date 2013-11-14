@@ -5,6 +5,7 @@ ThemeKey 7.x-3.0-rc1, 2013-xx-xx
 [#2128887] izus, mkalkbrenner: Do not rely on rowCount() for SELECT statement
 [        ] mkalkbrenner: fixed Cannot redeclare themekey_update_7300 if ThemeKey Redirect is enabled
 [#2128671] mkalkbrenner: Various errors if description in .info files exceeds 255 characters.
+[        ] mkalkbrenner: fixed Unknown column 'append_path' in 'field list' when enabling ThemeKey Redirect
 
 
 ThemeKey 7.x-3.0-beta1, 2013-10-31
