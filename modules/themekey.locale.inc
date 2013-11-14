@@ -18,6 +18,7 @@
  * Provides additional properties for the ThemeKey module:
  * - locale:language
  * - locale:language_content
+ * - locale:language_from_browser
  *
  * @return
  *   array of themekey properties and mapping functions
@@ -37,8 +38,19 @@ function themekey_locale_themekey_properties() {
     'validator' => 'themekey_validator_language',
     'page cache' => THEMEKEY_PAGECACHE_SUPPORTED,
   );
+  $attributes['locale:language_from_browser'] = array(
+    'description' => t('Locale: Language From Browser - Identify best matching language from the Accept-language HTTP header we got.'),
+    'validator' => 'themekey_validator_language',
+    'page cache' => THEMEKEY_PAGECACHE_UNSUPPORTED,
+  );
 
-  return array('attributes' => $attributes);
+  $maps = array();
+  $maps[] = array(
+    'src' => 'system:dummy',
+    'dst' => 'locale:language_from_browser',
+    'callback' => 'themekey_locale_dummy2language_from_browser');
+
+  return array('attributes' => $attributes, 'maps' => $maps);
 }
 
 
@@ -66,4 +78,25 @@ function themekey_locale_themekey_global() {
   }
 
   return $parameters;
+}
+
+/**
+ * ThemeKey mapping function to set a
+ * ThemeKey property's value (destination)
+ * with the aid of another ThemeKey property (source).
+ *
+ * src: system:dummy
+ * dst: locale:language_from_browser
+ *
+ * @param $dummy
+ *   string containing current value of ThemeKey property system:dummy
+ *
+ * @return
+ *   The language code as string or NULL
+ */
+function themekey_locale_dummy2language_from_browser($dummy) {
+  // This implementation is simple but too expensive to be handled by
+  // themekey_locale_themekey_global() on every page request.
+  $langcode = locale_language_from_browser(language_list());
+  return ($langcode) ? $langcode : NULL;
 }
