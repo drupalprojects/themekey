@@ -1,4 +1,46 @@
 <?php
+/**
+ * @file
+ *
+ * Define rules to redirect the user to a different domain.
+ * The common use-case is to setup sub-domains for mobile sites.
+ * In this case you can configure ThemeKey Redirect to detect mobile clients and
+ * redirect the user accordingly. In ThemeKey itself you have to configure rules
+ * to select a mobile theme depending on the sub-domain.
+ *
+ * Cookie states:
+ *  - 0: No redirect happened, keep on evaluating redirect rule chain on further
+ *       requests. Note: if cookie is not set the state is 0 as well.
+ *  - 1: Redirect happened. Optionally provide the user the choice to switch back.
+ *  - 2: Redirect completed and no further redirects will happen until the
+ *       browser gets closed.
+ *
+ * Initial State, user visits Domain A:
+ *  Domain A 0, Domain B 0
+ *
+ * User gets redirected to Domain B and is allowed to switch back manually:
+ *  Domain A 0, Domain B 1 (set via php before page delivery)
+ *  Domain A 0, Domain B 2 (set via javascript after page delivery and a switch back link has been shown)
+ *
+ * If user clicks switch back link:
+ *  Domain A 2 (set via php before page delivery), Domain B 2
+ *
+ *
+ * Initial State, user visits Domain A:
+ *  Domain A 0, Domain B 0
+ *
+ * User gets redirected to Domain B and is not allowed to switch back manually:
+ *  Domain A 0, Domain B 1 (set via php before page delivery)
+ *  Domain A 0, Domain B 2 (set via javascript after page delivery)
+ *
+ *
+ * Initial State, user visits Domain A:
+ *  Domain A 0, Domain B 0
+ *
+ * User gets redirected to Domain B and "Don't evaluate the rule chain again if the user comes back after a redirect." is turned on:
+ *  Domain A 2 (set via php before page delivery), Domain B 1 (set via php before page delivery)
+ *  Domain A 2, Domain B 2 (set via javascript after page delivery)
+ */
 
 /**
  * Implements hook_menu().
@@ -25,6 +67,16 @@ function themekey_redirect_menu() {
     'access arguments' => array('administer theme assignments'),
     'file' => 'themekey_redirect_admin.inc',
     'type' => MENU_CALLBACK,
+  );
+  $items['admin/config/user-interface/themekey/settings/redirects'] = array(
+    'title' => 'Redirect',
+    'access callback' => 'user_access',
+    'access arguments' => array('administer themekey settings'),
+    'file' => 'themekey_redirect_admin.inc',
+    'page callback' => 'drupal_get_form',
+    'page arguments' => array('themekey_redirect_settings_form'),
+    'type' => MENU_LOCAL_TASK,
+    'weight' => 9,
   );
   $items['themekey/redirect_callback'] = array(
     'title' => 'ThemeKey Redirect Callback',
@@ -80,12 +132,12 @@ function themekey_redirect_rule_get($id) {
  * Implements hook_init().
  */
 function themekey_redirect_init() {
-  if (themekey_is_active()) {
-
+  if (themekey_is_active()) { // Not active if ThemeKey Redirect ajax callback is requested.
     if (isset($_GET['themekey_redirect'])) {
+      // Don't cache the page if query param 'themekey_redirect' is set.
+      drupal_page_is_cacheable(FALSE);
       // Ensure to have javascript based switching for anonymous users in page cache.
-      drupal_add_library('system', 'jquery.cookie');
-      drupal_add_js(drupal_get_path('module', 'themekey_redirect') . '/themekey_redirect.js');
+      themekey_redirect_add_js();
 
       if ('active' == $_GET['themekey_redirect']) {
         setcookie('themekey_redirect_state', 1, 0, '/');
@@ -96,12 +148,22 @@ function themekey_redirect_init() {
         themekey_set_debug_message('User manually selected a domain. No further redirects.');
       }
     }
-    elseif (empty($_COOKIE['themekey_redirect_state'])) {
-      setcookie('themekey_redirect_state', 0, 0, '/');
+    elseif (empty($_COOKIE['themekey_redirect_state'])) { // Cookie not set or state is 0.
+      // Evaluate the ThemeKey Redirect rule chain.
       $target = themekey_redirect_match_rules();
       if ($target) {
-        // If we're here the page dosen't get cached at all.
-        if (variable_get('themekey_debug_trace_rule_switching', FALSE)) {
+        // If we're here the page doesn't get cached at all due to the debug
+        // output or the redirect below.
+        if (variable_get('themekey_redirect_redirect_once', FALSE)) {
+          setcookie('themekey_redirect_state', 2, 0, '/');
+        }
+
+        if (
+          variable_get('themekey_debug_trace_rule_switching', FALSE) &&
+          // We have to check the permission as well to not turn of the redirect
+          // for other users while debugging.
+          user_access('themekey_debug_see_messages')
+        ) {
           // No drupal_add_js to ensure that the debug message is visible.
           themekey_set_debug_message('Redirect to %domain. The redirect has been intercepted for debugging. Click this link to proceed: !target', array('%domain' => $target, '!target' => l($target, $target)));
         }
@@ -112,21 +174,32 @@ function themekey_redirect_init() {
       }
       else {
         // Ensure to have javascript based switching for anonymous users in page cache.
-        drupal_add_library('system', 'jquery.cookie');
-        drupal_add_js(drupal_get_path('module', 'themekey_redirect') . '/themekey_redirect.js');
+        themekey_redirect_add_js();
       }
     }
     else {
-      if (variable_get('themekey_debug_trace_rule_switching', FALSE)) {
+      if (variable_get('themekey_debug_trace_rule_switching', FALSE) &&
+        // We have to check the permission as well to not turn of the redirect
+        // for other users while debugging.
+        user_access('themekey_debug_see_messages')
+      ) {
         // No drupal_add_js to ensure that the debug message is visible.
         themekey_set_debug_message('Redirect previously happened for this client. Automatic redirects are now turned off until the browser will be closed.');
       }
-
-      // Ensure to have javascript based switching for anonymous users in page cache.
-      drupal_add_library('system', 'jquery.cookie');
-      drupal_add_js(drupal_get_path('module', 'themekey_redirect') . '/themekey_redirect.js');
+      else {
+        // Ensure to have javascript based switching for anonymous users in page cache.
+        themekey_redirect_add_js();
+      }
     }
   }
+}
+
+function themekey_redirect_add_js() {
+  drupal_add_library('system', 'jquery.cookie');
+  drupal_add_js(array('ThemeKeyRedirect' => array(
+    'redirectOnce' => variable_get('themekey_redirect_redirect_once', FALSE),
+  )), 'setting');
+  drupal_add_js(drupal_get_path('module', 'themekey_redirect') . '/themekey_redirect.js');
 }
 
 function themekey_redirect_match_rules() {
@@ -146,7 +219,7 @@ function themekey_redirect_match_rules() {
 
     return url(
       $result['theme'] . ($last_rule->append_path ? request_uri() : ''),
-      ($last_rule->append_path ? array('query' => array('themekey_redirect' => 'active')) : array())
+      array('query' => array('themekey_redirect' => 'active')) // If we redirect to a non-drupal site, the query should not break anything.
     );
   }
 
@@ -154,6 +227,8 @@ function themekey_redirect_match_rules() {
 }
 
 function themekey_redirect_callback() {
+  // Don't cache this JSON response.
+  drupal_page_is_cacheable(FALSE);
   // clean-up the URI path for rule matching
   $_GET['q'] = implode('/', func_get_args());
   // Coder module complains "the use of REQUEST_URI is prone to XSS exploits and

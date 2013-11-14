@@ -133,3 +133,28 @@ function theme_themekey_redirect_rule_chain_form($variables) {
     )
   ));
 }
+
+/**
+ * Form builder for the redirect settings form.
+ *
+ * @ingroup forms
+ */
+function themekey_redirect_settings_form() {
+  $form = array();
+
+  $form['themekey_redirect'] = array(
+    '#type' => 'fieldset',
+    '#title' => t('Redirect Settings'),
+    '#collapsible' => FALSE,
+    '#collapsed' => FALSE,
+  );
+
+  $form['themekey_redirect']['themekey_redirect_redirect_once'] = array(
+    '#type' => 'checkbox',
+    '#title' => t("Don't evaluate the rule chain again if the user comes back after a redirect."),
+    '#default_value' => variable_get('themekey_redirect_redirect_once', FALSE),
+    '#description' => t('TODO'),
+  );
+
+  return system_settings_form($form);
+}

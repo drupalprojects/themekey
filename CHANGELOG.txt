@@ -7,6 +7,7 @@ ThemeKey 7.x-3.0-rc1, 2013-xx-xx
 [#2128671] mkalkbrenner: Various errors if description in .info files exceeds 255 characters.
 [        ] mkalkbrenner: fixed Unknown column 'append_path' in 'field list' when enabling ThemeKey Redirect
 [        ] mkalkbrenner: new property locale:language_from_browser
+[        ] mkalkbrenner: improved ThemeKey Redirect to match more use cases, not just sub-domains for mobile devices.
 
 
 ThemeKey 7.x-3.0-beta1, 2013-10-31
