@@ -1,4 +1,3 @@
-
 name = "ThemeKey"
 description = "Map themes to Drupal paths or object properties."
 core = 7.x

@@ -1,6 +1,6 @@
 
 name = "ThemeKey Debug"
-description = "Debug ThemeKey"
+description = "Debug ThemeKey, see which rules are applied and the current values of all properties."
 core = 7.x
 dependencies[] = themekey
 package = ThemeKey
