@@ -218,7 +218,16 @@ function themekey_redirect_match_rules() {
     $last_rule = array_pop($result['rules_matched']);
 
     return url(
-      $result['theme'] . ($last_rule->append_path ? request_uri() : ''),
+      $result['theme'] .
+        (
+          $last_rule->append_path ?
+            (
+              variable_get('themekey_redirect_compatible_path', FALSE) ? '/index.php?q=' . $_GET['q'] .
+                (
+                  !empty($_SERVER['QUERY_STRING']) ? '&' . $_SERVER['QUERY_STRING'] : ''
+                ) : request_uri()
+            ) : ''
+        ),
       array('query' => array('themekey_redirect' => 'active')) // If we redirect to a non-drupal site, the query should not break anything.
     );
   }
@@ -229,7 +238,8 @@ function themekey_redirect_match_rules() {
 function themekey_redirect_callback() {
   // Don't cache this JSON response.
   drupal_page_is_cacheable(FALSE);
-  // clean-up the URI path for rule matching
+  // Clean-up the URI path for rule matching and response by overriding
+  // $_GET['q'] and $_SERVER['REQUEST_URI'].
   $_GET['q'] = implode('/', func_get_args());
   // Coder module complains "the use of REQUEST_URI is prone to XSS exploits and
   // does not work on IIS; use request_uri() instead [security_12]". But we have

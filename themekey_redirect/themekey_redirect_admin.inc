@@ -156,5 +156,12 @@ function themekey_redirect_settings_form() {
     '#description' => t('TODO'),
   );
 
+  $form['themekey_redirect']['themekey_redirect_compatible_path'] = array(
+    '#type' => 'checkbox',
+    '#title' => t("Append drupal compatible path."),
+    '#default_value' => variable_get('themekey_redirect_compatible_path', FALSE),
+    '#description' => t('Uses urls like index.php?q=node/1 instead of clean urls or translated paths.'),
+  );
+
   return system_settings_form($form);
 }
