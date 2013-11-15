@@ -169,7 +169,8 @@ function themekey_redirect_init() {
         }
         else {
           // No drupal_add_js because it won't be executed.
-          drupal_goto($target);
+          // Use 307 Temporary Redirect to avoid response caching by browsers.
+          drupal_goto($target, array(), /* Temporary Redirect */ 307);
         }
       }
       else {
