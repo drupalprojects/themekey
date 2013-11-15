@@ -217,6 +217,7 @@ function themekey_redirect_match_rules() {
     drupal_alter('themekey_redirect', $result['theme'], $result['rules_matched']);
 
     $last_rule = array_pop($result['rules_matched']);
+    $query_string = themekey_query_string();
 
     return url(
       $result['theme'] .
@@ -225,7 +226,7 @@ function themekey_redirect_match_rules() {
             (
               variable_get('themekey_redirect_compatible_path', FALSE) ? '/index.php?q=' . $_GET['q'] .
                 (
-                  !empty($_SERVER['QUERY_STRING']) ? '&' . $_SERVER['QUERY_STRING'] : ''
+                  $query_string ? '&' . $query_string : ''
                 ) : request_uri()
             ) : ''
         ),

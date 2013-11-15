@@ -298,6 +298,15 @@ function themekey_get_q() {
   return $get_q;
 }
 
+/**
+ * Returns the content of $_SERVER['QUERY_STRING'] as expected.
+ * Therefore, paramter 'q' gets removed if present.
+ *
+ * @return string
+ */
+function themekey_query_string() {
+  return trim(preg_replace("/q=[^&]*/", '', $_SERVER['QUERY_STRING']), '&');
+}
 
 /**
  * Implements hook_cron().

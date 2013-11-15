@@ -480,14 +480,8 @@ function themekey_dummy2post($dummy) {
  *   or NULL if no value could be mapped
  */
 function themekey_dummy2query_string($dummy) {
-  if (!empty($_SERVER['QUERY_STRING'])) {
-    $query_string = trim(preg_replace("/q=[^&]*/", '', $_SERVER['QUERY_STRING']), '&');
-    if (!empty($query_string)) {
-      return $query_string;
-    }
-  }
-
-  return NULL;
+  $query_string = themekey_query_string();
+  return $query_string ? $query_string : NULL;
 }
 
 
