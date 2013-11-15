@@ -8,6 +8,7 @@ ThemeKey 7.x-3.0-rc1, 2013-xx-xx
 [        ] mkalkbrenner: fixed Unknown column 'append_path' in 'field list' when enabling ThemeKey Redirect
 [        ] mkalkbrenner: new property locale:language_from_browser
 [        ] mkalkbrenner: improved ThemeKey Redirect to match more use cases, not just sub-domains for mobile devices.
+[        ] mkalkbrenner: ThemeKey Redirect: Removed redirects implemented in php for authenticated users because they caused trouble with varnish. Now we always rely on javascript.
 
 
 ThemeKey 7.x-3.0-beta1, 2013-10-31

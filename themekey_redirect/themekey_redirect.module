@@ -133,63 +133,22 @@ function themekey_redirect_rule_get($id) {
  */
 function themekey_redirect_init() {
   if (themekey_is_active()) { // Not active if ThemeKey Redirect ajax callback is requested.
+    // Ensure to have javascript based switching for anonymous users in page cache.
+    themekey_redirect_add_js();
+
     if (isset($_GET['themekey_redirect'])) {
       // Don't cache the page if query param 'themekey_redirect' is set.
       drupal_page_is_cacheable(FALSE);
-      // Ensure to have javascript based switching for anonymous users in page cache.
-      themekey_redirect_add_js();
 
-      if ('active' == $_GET['themekey_redirect']) {
-        setcookie('themekey_redirect_state', 1, 0, '/');
-        themekey_set_debug_message('User has been redirected.');
-      }
-      elseif ('avoid' == $_GET['themekey_redirect']) {
-        setcookie('themekey_redirect_state', 2, 0, '/');
-        themekey_set_debug_message('User manually selected a domain. No further redirects.');
-      }
-    }
-    elseif (empty($_COOKIE['themekey_redirect_state'])) { // Cookie not set or state is 0.
-      // Evaluate the ThemeKey Redirect rule chain.
-      $target = themekey_redirect_match_rules();
-      if ($target) {
-        // If we're here the page doesn't get cached at all due to the debug
-        // output or the redirect below.
-        if (variable_get('themekey_redirect_redirect_once', FALSE)) {
+      switch ($_GET['themekey_redirect']) {
+        case 'active':
+          // User has been redirected.
+          setcookie('themekey_redirect_state', 1, 0, '/');
+          break;
+        case 'avoid':
+          //User manually selected a domain. No further redirects.
           setcookie('themekey_redirect_state', 2, 0, '/');
-        }
-
-        if (
-          variable_get('themekey_debug_trace_rule_switching', FALSE) &&
-          // We have to check the permission as well to not turn of the redirect
-          // for other users while debugging.
-          user_access('themekey_debug_see_messages')
-        ) {
-          // No drupal_add_js to ensure that the debug message is visible.
-          themekey_set_debug_message('Redirect to %domain. The redirect has been intercepted for debugging. Click this link to proceed: !target', array('%domain' => $target, '!target' => l($target, $target)));
-        }
-        else {
-          // No drupal_add_js because it won't be executed.
-          // Use 307 Temporary Redirect to avoid response caching by browsers.
-          drupal_goto($target, array(), /* Temporary Redirect */ 307);
-        }
-      }
-      else {
-        // Ensure to have javascript based switching for anonymous users in page cache.
-        themekey_redirect_add_js();
-      }
-    }
-    else {
-      if (variable_get('themekey_debug_trace_rule_switching', FALSE) &&
-        // We have to check the permission as well to not turn of the redirect
-        // for other users while debugging.
-        user_access('themekey_debug_see_messages')
-      ) {
-        // No drupal_add_js to ensure that the debug message is visible.
-        themekey_set_debug_message('Redirect previously happened for this client. Automatic redirects are now turned off until the browser will be closed.');
-      }
-      else {
-        // Ensure to have javascript based switching for anonymous users in page cache.
-        themekey_redirect_add_js();
+          break;
       }
     }
   }
