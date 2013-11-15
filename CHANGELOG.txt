@@ -1,4 +1,4 @@
-ThemeKey 7.x-3.0-rc1, 2013-xx-xx
+ThemeKey 7.x-3.0-rc1, 2013-11-15
 --------------------------------
 [#2118987] mkalkbrenner: Browscap:ismobiledevice rule not working in some setups
 [        ] mkalkbrenner: fixed spelling of themekey_validator_numeric_boolean
