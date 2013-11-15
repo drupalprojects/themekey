@@ -1,5 +1,5 @@
 name = "ThemeKey Redirect (Experimental)"
-description = "Provides an additional rule chain to define rules to redirect the user."
+description = "Provides an additional rule chain to define rules to redirect the user. Experimental!"
 core = 7.x
 dependencies[] = themekey
 package = ThemeKey
