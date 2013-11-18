@@ -149,11 +149,18 @@ function themekey_redirect_settings_form() {
     '#collapsed' => FALSE,
   );
 
+  $form['themekey_redirect']['themekey_redirect_check_once'] = array(
+    '#type' => 'checkbox',
+    '#title' => t('Only evaluate once.'),
+    '#default_value' => variable_get('themekey_redirect_check_once', FALSE),
+    '#description' => t('Only evaluate the rule chain for one time. The evaluation happens immediately when the user hits the site and never again util the user closes the browser.'),
+  );
+
   $form['themekey_redirect']['themekey_redirect_redirect_once'] = array(
     '#type' => 'checkbox',
-    '#title' => t("Don't evaluate the rule chain again if the user comes back after a redirect."),
+    '#title' => t("Don't evaluate if the user comes back."),
     '#default_value' => variable_get('themekey_redirect_redirect_once', FALSE),
-    '#description' => t('TODO'),
+    '#description' => t("Don't evaluate the rule chain again if the user comes back after a redirect. This state is saved until the user closes the browser."),
   );
 
   $form['themekey_redirect']['themekey_redirect_compatible_path'] = array(

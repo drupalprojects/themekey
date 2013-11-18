@@ -1,3 +1,8 @@
+ThemeKey 7.x-3.0, 2013-xx-xx
+----------------------------
+[        ] mkalkbrenner: ThemeKey Redirect: added an option to evaluate the rule chain only once to optimize the performance.
+
+
 ThemeKey 7.x-3.0-rc1, 2013-11-15
 --------------------------------
 [#2118987] mkalkbrenner: Browscap:ismobiledevice rule not working in some setups

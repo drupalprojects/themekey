@@ -23,6 +23,10 @@ jQuery(document).ready(function($) {
                 }
             }
         });
+        if (Drupal.settings.ThemeKeyRedirect.checkOnce) {
+            // Set Domain A state to 2.
+            $.cookie('themekey_redirect_state', 2, { path: '/'});
+        }
     }
     else if (state == 1) {
         // The user has been redirected but is optionally allowed once to switch
