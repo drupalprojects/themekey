@@ -217,7 +217,7 @@ function themekey_abstract_rule_chain_form($form, &$form_state, $options) {
   );
   $form['new_item']['value'] = array(
     '#type' => 'textfield',
-    '#default_value' => !empty($_GET['value']) ? check_plain($_GET['value']) : '',
+    '#default_value' => !empty($_GET['value']) ? html_entity_decode(filter_xss($_GET['value'])) : '',
     '#size' => 25,
     '#maxlength' => 255,
   );

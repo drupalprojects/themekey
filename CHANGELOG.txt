@@ -2,6 +2,7 @@ ThemeKey 7.x-3.0, 2013-xx-xx
 ----------------------------
 [        ] mkalkbrenner: ThemeKey Redirect: added an option to evaluate the rule chain only once to optimize the performance.
 [        ] mkalkbrenner: extended test cases.
+[#2128525] mkalkbrenner: Cookie values containing serialized data creates invalid auto rule links.
 
 
 ThemeKey 7.x-3.0-rc1, 2013-11-15
