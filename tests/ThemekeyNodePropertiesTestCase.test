@@ -9,9 +9,9 @@
 class ThemekeyNodePropertiesTestCase extends ThemekeyWebTestCase {
   public static function getInfo() {
     return array(
-      'name' => 'Themekey Node Properties',
-      'description' => 'Test the themekey node properties (node:).',
-      'group' => 'Themekey',
+      'name' => 'ThemeKey Node Properties',
+      'description' => 'Test the ThemeKey node properties (node:).',
+      'group' => 'ThemeKey',
     );
   }
 

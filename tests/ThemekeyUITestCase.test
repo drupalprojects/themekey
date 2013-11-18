@@ -11,7 +11,7 @@ class ThemekeyUITestCase extends ThemekeyWebTestCase {
     return array(
       'name' => 'ThemeKey UI',
       'description' => 'Test the ThemeKey UI features.',
-      'group' => 'Themekey',
+      'group' => 'ThemeKey',
     );
   }
 

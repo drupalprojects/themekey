@@ -9,9 +9,9 @@
 class ThemekeySystemPropertiesTestCase extends ThemekeyWebTestCase {
   public static function getInfo() {
     return array(
-      'name' => 'Themekey System Properties',
-      'description' => 'Test the themekey system properties (system:).',
-      'group' => 'Themekey',
+      'name' => 'ThemeKey System Properties',
+      'description' => 'Test the themeKey system properties (system:).',
+      'group' => 'ThemeKey',
     );
   }
 

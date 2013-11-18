@@ -9,9 +9,9 @@
 class ThemekeyModulePluginsTestCase extends ThemekeyWebTestCase {
   public static function getInfo() {
     return array(
-      'name' => 'Themekey Module Plugins',
+      'name' => 'ThemeKey Module Plugins',
       'description' => 'Test the module plugins functionality.',
-      'group' => 'Themekey',
+      'group' => 'ThemeKey',
     );
   }
 
