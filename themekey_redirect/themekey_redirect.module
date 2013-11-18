@@ -298,14 +298,6 @@ function themekey_redirect_block_configure($delta = '') {
   return $form;
 }
 
-function themekey_redirect_block_validate(&$form, $form_state) {
-  switch ($form['delta']['#value']) {
-    case 'domain_selector':
-      //form_set_error('domain_list', t('Todo'));
-      break;
-  }
-}
-
 /**
  * Implements hook_block_save().
  */

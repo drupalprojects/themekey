@@ -240,7 +240,7 @@ function themekey_update_6105() {
 
         foreach ($result as $row) {
 
-          $return['INSERT']['success'] = db_insert('themekey_ui_node_theme') // Table name no longer needs {}
+          $return['INSERT']['success'] = db_insert('themekey_ui_node_theme')
             ->fields(array(
               'nid' => $row->nid,
               'vid' => $row->vid,
@@ -347,7 +347,7 @@ function themekey_update_6200() {
       }
     }
 
-    $insert_success = db_insert('themekey_properties') // Table name no longer needs {}
+    $insert_success = db_insert('themekey_properties')
     ->fields(array(
       'property' => 'drupal:path',
       'value' => $item->path,
@@ -377,8 +377,7 @@ function themekey_update_6200() {
  * Implements hook_update_N().
  */
 function themekey_update_6201() {
-  // Don't rebuild anymore when themekey_update_6202() will run
-  //themekey_rebuild();
+  // Moved to themekey_update_6202().
   return '';
 }
 
@@ -413,7 +412,7 @@ function themekey_update_6202() {
       if (is_array($conditions)) {
         $parent = $row->id;
         foreach ($conditions as $condition) {
-          $parent = db_insert('themekey_properties') // Table name no longer needs {}
+          $parent = db_insert('themekey_properties')
           ->fields(array(
             'property' =>  $condition['property'],
             'operator' => $condition['operator'],
