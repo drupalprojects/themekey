@@ -513,6 +513,13 @@ function themekey_settings_form($form, &$form_state) {
     '#description' => t('Make all installed themes available for selection, not enabled ones only.'),
   );
 
+  $form['settings']['themekey_ajax_base_page_theme'] = array(
+    '#type' => 'checkbox',
+    '#title' => t('Use current theme for Ajax responses.'),
+    '#default_value' => variable_get('themekey_ajax_base_page_theme', 1),
+    '#description' => t('Many different pages can invoke an Ajax request to system/ajax or another generic Ajax path. It is almost always desired for an Ajax response to be rendered using the same theme as the base page, because most themes are built with the assumption that they control the entire page, so if the CSS for two themes are both loaded for a given page, they may conflict with each other. Drupal provides a generic functionality to handle this issue. Unfortunately some modules do not use it the right way. Therefor ThemeKey provides a generic workaround which solves the issue for some modules.'),
+  );
+
   $form['settings']['themekey_theme_maintain'] = array(
     '#type' => 'checkbox',
     '#title' => t('Retain the theme until a new theme is set'),

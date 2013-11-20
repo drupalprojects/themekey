@@ -119,6 +119,10 @@ function themekey_custom_theme() {
     $custom_theme_called = &drupal_static('themekey_custom_theme_called', FALSE);
     $custom_theme_called = TRUE;
 
+    if (variable_get('themekey_ajax_base_page_theme', 1)) {
+      $custom_theme = ajax_base_page_theme();
+    }
+
     if (!$custom_theme) {
       require_once DRUPAL_ROOT . '/' . drupal_get_path('module', 'themekey') . '/themekey_base.inc';
 
