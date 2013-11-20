@@ -588,6 +588,8 @@ function theme_themekey_abstract_rule_chain_form($variables, $options) {
 
     foreach ($form['old_items'] as $key => $item) {
       if (is_numeric($key) && !empty($item['property'])) {
+        themekey_deprected_property_warning($item['property']['#value']);
+
         $parents_disabled[$key] = FALSE;
 
         if (!empty($parents_disabled[$item['parent']['#value']])) {
@@ -778,7 +780,7 @@ function theme_themekey_abstract_rule_chain_form($variables, $options) {
 
 
 /**
- * Detects if there's an active administration theme and displays a warning
+ * Detects if there's an active administration theme and displays a warning.
  */
 function themekey_admin_theme_warning() {
   if (!in_array('system', variable_get('themekey_compat_modules_enabled', array())) && variable_get('admin_theme', '0')) {
@@ -791,10 +793,24 @@ function themekey_admin_theme_warning() {
   }
 }
 
+/**
+ * Detects if deprecated properties are in use.
+ */
+function themekey_deprected_property_warning($property) {
+  static $warnings = array();
+
+  if (!isset($warnings[$property])) {
+    $attributes = variable_get('themekey_attributes', array());
+    if (!empty($attributes[$property]['deprecated'])) {
+      drupal_set_message(!empty($attributes[$property]['deprecated message']) ? filter_xss($attributes[$property]['deprecated message']) : t('Property %property is deprecated!', array('%property' => $property)), 'warning');
+    }
+    $warnings[$property] = TRUE;
+  }
+}
 
 /**
  * Detects if page cache is active and incompatible properties are used
- * in theme switching rule chain
+ * in theme switching rule chain.
  */
 function themekey_page_cache_warning($page_cache_support) {
   static $warnings = array();

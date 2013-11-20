@@ -125,21 +125,29 @@ function themekey_system_themekey_properties() {
   $attributes['system:user_browser'] = array(
     'description' => t("System: Browser - Information about user's browser. Possible values: 'Blazer [VERSION]', 'Internet Explorer [VERSION]', 'Internet Explorer Mobile [VERSION]', 'Mozilla Firefox [VERSION]', 'Netscape [VERSION]', 'Google Chrome [VERSION]', 'Safari [VERSION]', 'Galeon [VERSION]', 'Konqueror [VERSION]', 'Gecko based', 'Opera [VERSION]', 'Lynx [VERSION]', 'Fennec [VERSION]', 'Maemo [VERSION]', 'unknown'"),
     'page cache' => THEMEKEY_PAGECACHE_UNSUPPORTED,
+    'deprecated' => TRUE,
+    'deprecated message' => filter_xss(t('Property system:user_browser is deprecated. Consider to use one of the new properties ThemeKey provides in combination with !browscap, !mobile_detect_api, or !mobile_detect.', array('!browscap' => l(t('Browscap'), 'https://drupal.org/project/browscap'), '!mobile_detect_api' => l(t('Mobile Detect API'), 'https://drupal.org/project/mobile_detect_api'), '!mobile_detect' => l(t('Mobile Detect'), 'https://drupal.org/project/mobile_detect_api')))),
   );
 
   $attributes['system:user_browser_simplified'] = array(
     'description' => t("System: Browser - Simplified information about user's browser. Possible values: 'Blazer', 'Internet Explorer', 'Internet Explorer Mobile', 'Mozilla Firefox', 'Netscape', 'Google Chrome', 'Safari', 'Galeon', 'Konqueror', 'Gecko based', 'Opera', 'Lynx', 'Fennec', 'Maemo', 'unknown'"),
     'page cache' => THEMEKEY_PAGECACHE_UNSUPPORTED,
+    'deprecated' => TRUE,
+    'deprecated message' => filter_xss(t('Property system:user_browser_simplified is deprecated. Consider to use one of the new properties ThemeKey provides in combination with !browscap, !mobile_detect_api, or !mobile_detect.', array('!browscap' => l(t('Browscap'), 'https://drupal.org/project/browscap'), '!mobile_detect_api' => l(t('Mobile Detect API'), 'https://drupal.org/project/mobile_detect_api'), '!mobile_detect' => l(t('Mobile Detect'), 'https://drupal.org/project/mobile_detect_api')))),
   );
 
   $attributes['system:user_os'] = array(
     'description' => t("System: Operating System - Information about user's browser. Possible values: 'Windows XP', 'Windows Vista', 'Windows 98', 'Windows 2000', 'Windows 2003 server', 'Windows NT',  'Windows ME', 'Windows CE', 'Windows ME', 'Windows Phone', 'iPhone', 'iPad', 'Mac OS X', 'Macintosh', 'Linux', 'Free BSD', 'Symbian', 'webOS', 'Android', 'Blackberry', 'unknown'"),
     'page cache' => THEMEKEY_PAGECACHE_UNSUPPORTED,
+    'deprecated' => TRUE,
+    'deprecated message' => filter_xss(t('Property system:user_os is deprecated. Consider to use one of the new properties ThemeKey provides in combination with !browscap, !mobile_detect_api, or !mobile_detect.', array('!browscap' => l(t('Browscap'), 'https://drupal.org/project/browscap'), '!mobile_detect_api' => l(t('Mobile Detect API'), 'https://drupal.org/project/mobile_detect_api'), '!mobile_detect' => l(t('Mobile Detect'), 'https://drupal.org/project/mobile_detect_api')))),
   );
 
   $attributes['system:user_os_simplified'] = array(
     'description' => t("System: Operating System - Simplified information about user's browser. Possible values: 'Windows', 'Windows Phone', 'iPhone', 'iPad', 'Mac OS X', 'Macintosh', 'Linux', 'Free BSD', 'Symbian', 'webOS', 'Android', 'Blackberry', 'unknown'"),
     'page cache' => THEMEKEY_PAGECACHE_UNSUPPORTED,
+    'deprecated' => TRUE,
+    'deprecated message' => filter_xss(t('Property system:user_os_simplified is deprecated. Consider to use one of the new properties ThemeKey provides in combination with !browscap, !mobile_detect_api, or !mobile_detect.', array('!browscap' => l(t('Browscap'), 'https://drupal.org/project/browscap'), '!mobile_detect_api' => l(t('Mobile Detect API'), 'https://drupal.org/project/mobile_detect_api'), '!mobile_detect' => l(t('Mobile Detect'), 'https://drupal.org/project/mobile_detect_api')))),
   );
 
   $attributes['system:date_time'] = array(
