@@ -4,6 +4,8 @@ core = 7.x
 package = ThemeKey
 configure = admin/config/user-interface/themekey/settings
 
+dependencies[] = system (>=7.22)
+
 files[] = ThemeKeyEntityFieldQuery.php
 files[] = modules/themekey_browser_detection.php
 files[] = tests/themekey.test
