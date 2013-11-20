@@ -334,7 +334,7 @@ function themekey_abstract_rule_chain_form_validate(&$form, $form_state, $option
                 $has_childs_1 = FALSE;
                 $has_childs_2 = FALSE;
 
-                foreach ($values['old_items'] as $key_3 => $value_3) {
+                foreach ($values['old_items'] as $value_3) {
                   if ($value_3['parent'] == $value_1['id']) {
                     $has_childs_1 = TRUE;
                   }
@@ -413,7 +413,7 @@ function themekey_abstract_rule_chain_form_validate(&$form, $form_state, $option
           }
         }
         else {
-          form_set_error('new_item][property', filter_xss(t('ThemeKey requested an unknown validator called %validator to validate the property, %property', array('%validator' => $validator, '%property' => $value_1['property']))), array('em'));
+          form_set_error('new_item][property', filter_xss(t('ThemeKey requested an unknown validator called %validator to validate the property, %property', array('%validator' => $validator, '%property' => $values['new_item']['property']))), array('em'));
         }
       }
       elseif ('~' == $values['new_item']['operator'] || '!~' == $values['new_item']['operator']) {
@@ -580,9 +580,9 @@ function theme_themekey_abstract_rule_chain_form($variables, $options) {
   $output = '';
 
   $rows = array();
+  $num_childs = array();
 
   if (!empty($form['old_items'])) {
-    $num_childs = array();
     $parents_disabled = array();
     $attributes = variable_get('themekey_attributes', array());
 
