@@ -164,3 +164,11 @@ function hook_themekey_custom_theme_alter(&$custom_theme, $rules_matched) {
     $custom_theme = 'seven';
   }
 }
+
+/**
+ * By implementing hook_themekey_disabled_paths() you can specify paths
+ * where ThemeKey should not be active.
+ */
+function themekey_redirect_themekey_disabled_paths() {
+  return array('themekey/redirect_callback');
+}

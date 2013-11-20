@@ -108,6 +108,13 @@ function themekey_redirect_theme() {
   return $items;
 }
 
+/**
+ * Implements hook_themekey_disabled_paths().
+ */
+function themekey_redirect_themekey_disabled_paths() {
+  return array('themekey/redirect_callback');
+}
+
 function themekey_redirect_format_rule_as_string($themekey_property_id) {
   module_load_include('inc', 'themekey', 'themekey_build');
   return themekey_abstract_format_rule_as_string($themekey_property_id, array(
@@ -250,6 +257,9 @@ function themekey_redirect_check_different_url($url) {
   );
 }
 
+/**
+ * Implements hook_themekey_page_cache_support_alter().
+ */
 function themekey_redirect_themekey_page_cache_support_alter(&$page_cache, $key, $form_id) {
   if ('themekey_redirect_rule_chain_form' == $form_id) {
     $page_cache = THEMEKEY_PAGECACHE_SUPPORTED;
