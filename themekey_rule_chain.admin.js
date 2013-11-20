@@ -43,61 +43,63 @@
     });
   };
 
-  Drupal.tableDrag.prototype.onDrag = function() {
-    ThemeKey.oldParentId = $('.themekey-property-parent', $(this.rowObject.element)).val();
-    return null;
-  };
+  if (Drupal.tableDrag) {
+    Drupal.tableDrag.prototype.onDrag = function() {
+      ThemeKey.oldParentId = $('.themekey-property-parent', $(this.rowObject.element)).val();
+      return null;
+    };
 
-  Drupal.tableDrag.prototype.onDrop = function() {
-    if (this.changed) {
-      var rowElement = $(this.rowObject.element);
-      var newParentId = $('.themekey-property-parent', rowElement).val();
-      var enabledElement = $('.themekey-property-enabled', rowElement);
+    Drupal.tableDrag.prototype.onDrop = function() {
+      if (this.changed) {
+        var rowElement = $(this.rowObject.element);
+        var newParentId = $('.themekey-property-parent', rowElement).val();
+        var enabledElement = $('.themekey-property-enabled', rowElement);
 
-      if (enabledElement.attr('checked')) {
-        if (0 < ThemeKey.oldParentId) {
-          ThemeKey.adjustChildCounter(ThemeKey.oldParentId, -1);
+        if (enabledElement.attr('checked')) {
+          if (0 < ThemeKey.oldParentId) {
+            ThemeKey.adjustChildCounter(ThemeKey.oldParentId, -1);
+          }
+
+          if (0 < newParentId) {
+            var parentEnabledElement = $('.themekey-property-enabled', $('#themekey-properties-row-' + newParentId));
+            if (parentEnabledElement.attr('checked')) {
+              ThemeKey.adjustChildCounter(newParentId, 1);
+            }
+            else {
+              enabledElement.removeAttr('checked');
+              enabledElement.css('display', 'none');
+              rowElement.addClass('themekey-fade-out');
+              // hide and disable children
+              var id = enabledElement.attr('name').replace('old_items[', '').replace('][enabled]', '');
+              ThemeKey.disableChilds(id);
+            }
+          }
+        }
+        else {
+          if (0 < newParentId) {
+            var parentEnabledElement = $('.themekey-property-enabled', $('#themekey-properties-row-' + newParentId));
+            if (parentEnabledElement.attr('checked')) {
+              enabledElement.css('display', 'block');
+            }
+            else {
+              enabledElement.css('display', 'none');
+            }
+          }
         }
 
         if (0 < newParentId) {
-          var parentEnabledElement = $('.themekey-property-enabled', $('#themekey-properties-row-' + newParentId));
-          if (parentEnabledElement.attr('checked')) {
-            ThemeKey.adjustChildCounter(newParentId, 1);
-          }
-          else {
-            enabledElement.removeAttr('checked');
-            enabledElement.css('display', 'none');
-            rowElement.addClass('themekey-fade-out');
-            // hide and disable children
-            var id = enabledElement.attr('name').replace('old_items[', '').replace('][enabled]', '');
-            ThemeKey.disableChilds(id);
+          if (0 >= ThemeKey.oldParentId) {
+            rowElement.removeClass('themekey-top-level');
           }
         }
-      }
-      else {
-        if (0 < newParentId) {
-          var parentEnabledElement = $('.themekey-property-enabled', $('#themekey-properties-row-' + newParentId));
-          if (parentEnabledElement.attr('checked')) {
-            enabledElement.css('display', 'block');
-          }
-          else {
-            enabledElement.css('display', 'none');
-          }
+        else {
+          enabledElement.css('display', 'block');
+          rowElement.addClass('themekey-top-level');
         }
       }
-
-      if (0 < newParentId) {
-        if (0 >= ThemeKey.oldParentId) {
-          rowElement.removeClass('themekey-top-level');
-        }
-      }
-      else {
-        enabledElement.css('display', 'block');
-        rowElement.addClass('themekey-top-level');
-      }
-    }
-    return null;
-  };
+      return null;
+    };
+  }
 
   Drupal.behaviors.ThemeKey = {
     attach: function(context) {
