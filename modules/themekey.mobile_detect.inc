@@ -28,15 +28,15 @@ function themekey_mobile_detect_themekey_properties() {
     if ($mobile_detect = mobile_detect_get_object()) {
       require_once DRUPAL_ROOT . '/' . drupal_get_path('module', 'themekey') . '/modules/themekey.mobile_detect_api.inc';
 
-      list($attributes, $maps) = themekey_mobile_detect_api_themekey_properties_helper($mobile_detect);
+      $properties = themekey_mobile_detect_api_themekey_properties_helper($mobile_detect);
 
-      foreach ($maps as &$map) {
+      foreach ($properties['maps'] as &$map) {
         $map['callback'] = 'themekey_mobile_detect_dummy2rule';
       }
     }
   }
 
-  return array('attributes' => $attributes, 'maps' => $maps);
+  return $properties;
 }
 
 
