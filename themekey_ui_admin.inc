@@ -28,15 +28,15 @@ function themekey_ui_settings_form() {
   themekey_ui_theme_build_select_form(
     $form,
     t('Selectable Themes'),
-    t('Select all the the themes that should be provided in theme selectors.'),
+    t('Select all the themes that should be provided in theme selectors.'),
     variable_get('themekey_ui_selectable_themes', array('default')),
     NULL,
     TRUE,
     'themekey_ui_selectable_themes',
     list_themes(),
-    FALSE);
-
-  $form['themekey_ui_themes']['themekey_ui_selectable_themes']['#type'] = 'checkboxes';
+    FALSE,
+    TRUE
+  );
 
   $form['themekey_ui'] = array(
     '#type' => 'fieldset',
@@ -216,8 +216,11 @@ function themekey_ui_theme_select_form(&$form, $title, $description, $default = 
  * @param $add_default
  *   boolean, TRUE if 'System default' should be
  *   be provided as options in the select form
+ *
+ * @param $multiple
+ *   boolean, TRUE if multiple themes should be selectable
  */
-function themekey_ui_theme_build_select_form(&$form, $title, $description, $default, $weight, $collapsed, $element_key, $themes, $add_default) {
+function themekey_ui_theme_build_select_form(&$form, $title, $description, $default, $weight, $collapsed, $element_key, $themes, $add_default, $multiple = FALSE) {
   $theme_options = themekey_theme_options();
 
   $form['themekey_ui_themes'] = array(
@@ -268,7 +271,7 @@ function themekey_ui_theme_build_select_form(&$form, $title, $description, $defa
   }
 
   $form['themekey_ui_themes'][$element_key] = array(
-    '#type' => 'radios',
+    '#type' => $multiple ? 'checkboxes' : 'radios',
     '#options' => $options,
     '#default_value' => $default,
   );

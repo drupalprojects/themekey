@@ -513,13 +513,6 @@ function themekey_settings_form($form, &$form_state) {
     '#description' => t('Make all installed themes available for selection, not enabled ones only.'),
   );
 
-  $form['settings']['themekey_ajax_base_page_theme'] = array(
-    '#type' => 'checkbox',
-    '#title' => t('Use current theme for Ajax responses.'),
-    '#default_value' => variable_get('themekey_ajax_base_page_theme', 1),
-    '#description' => t('Many different pages can invoke an Ajax request to system/ajax or another generic Ajax path. It is almost always desired for an Ajax response to be rendered using the same theme as the base page, because most themes are built with the assumption that they control the entire page, so if the CSS for two themes are both loaded for a given page, they may conflict with each other. Drupal provides a generic functionality to handle this issue. Unfortunately some modules do not use it the right way. Therefor ThemeKey provides a generic workaround which solves the issue for some modules.'),
-  );
-
   $form['settings']['themekey_theme_maintain'] = array(
     '#type' => 'checkbox',
     '#title' => t('Retain the theme until a new theme is set'),
@@ -553,6 +546,92 @@ function themekey_settings_form($form, &$form_state) {
   return system_settings_form($form);
 }
 
+
+/**
+ * Form builder for the ThemeKey ajax settings form.
+ *
+ * @ingroup forms
+ */
+function themekey_ajax_settings_form($form, &$form_state) {
+  $form['settings'] = array(
+    '#type' => 'fieldset',
+    '#title' => t('Ajax Settings'),
+    '#collapsible' => FALSE,
+    '#collapsed' => FALSE,
+  );
+
+  $form['settings']['themekey_ajax_base_page_theme'] = array(
+    '#type' => 'checkbox',
+    '#title' => t('Use current theme for Ajax responses.'),
+    '#default_value' => variable_get('themekey_ajax_base_page_theme', 1),
+    '#description' => t('Many different pages can invoke an Ajax request to system/ajax or another generic Ajax path. It is almost always desired for an Ajax response to be rendered using the same theme as the base page, because most themes are built with the assumption that they control the entire page, so if the CSS for two themes are both loaded for a given page, they may conflict with each other. Drupal provides a generic functionality to handle this issue. Unfortunately some modules do not use it the right way. Therefor ThemeKey provides a generic workaround which solves the issue for some modules.'),
+  );
+
+  $form['settings']['themekey_unsafe_ajax_base_page_theme'] = array(
+    '#type' => 'checkbox',
+    '#title' => t('Bypass a request forgery protection in theme selection for Ajax responses.'),
+    '#default_value' => variable_get('themekey_unsafe_ajax_base_page_theme', 0),
+    '#description' => t('The option "%option" is only working for non-cached pages due to a request forgery protection in core that prevents that a user can force a different theme by injecting a different theme name in the Ajax request. By disabling this protection you can get more use-cases to work. To disable the protection is risky if you installed a theme that provides additional features or bypasses access rights on the theme level. Or if you configured a theme to expose non-public data, for example as a block. To reduce that risk you should provide a list of "Safe Themes" below.', array('%option' => t('Use current theme for Ajax responses.'))),
+  );
+
+  $form['settings']['themekey_consider_default_theme_safe'] = array(
+    '#type' => 'checkbox',
+    '#title' => t('Always consider the default theme to be safe.'),
+    '#default_value' => variable_get('themekey_consider_default_theme_safe', 1),
+    '#description' => t('Always consider the default theme to be safe independent from the list of "Safe Themes" below.'),
+  );
+
+  if (module_exists('themekey_ui')) {
+    module_load_include('inc', 'themekey_ui', 'themekey_ui_admin');
+    themekey_ui_theme_build_select_form(
+      $form,
+      t('Safe Themes'),
+      t('Select all themes that are safe to be used by Ajax calls triggered by anonymous users.'),
+      variable_get('themekey_ajax_themes', array()),
+      NULL,
+      TRUE,
+      'themekey_ajax_themes',
+      list_themes(),
+      FALSE,
+      TRUE
+    );
+  }
+  else {
+    drupal_set_message(t('Enable the "ThemeKey UI" module to get a graphical selector for "Safe Themes"'), 'warning', FALSE);
+
+    $options = array();
+    $themes = list_themes();
+    foreach ($themes as $machine_name => $theme) {
+      if ($theme->status) {
+        $options[$machine_name] = $theme->info['name'];
+      }
+    }
+
+    $form['settings']['themekey_ajax_themes'] = array(
+      '#type' => 'checkboxes',
+      '#options' => $options,
+      '#title' => t('Safe Themes'),
+      '#default_value' => variable_get('themekey_ajax_themes', array()),
+      '#description' => t('Select all themes that are safe to be used by Ajax calls triggered by anonymous users.'),
+    );
+  }
+
+  $form['#submit'][] = 'themekey_ajax_settings_form_submit';
+
+  return system_settings_form($form);
+}
+
+function themekey_ajax_settings_form_submit($form, &$form_state) {
+  $form_state['values']['themekey_ajax_themes'] = array_values(array_filter($form_state['values']['themekey_ajax_themes'], 'is_string'));
+  $old_themes = variable_get('themekey_ajax_themes', array());
+  if (
+    array_diff($old_themes, $form_state['values']['themekey_ajax_themes']) ||
+    array_diff($form_state['values']['themekey_ajax_themes'], $old_themes)
+  ) {
+    // fast deletion of menu cache (truncate)
+    cache_clear_all('*', 'cache_menu', TRUE);
+  }
+}
 
 /**
  * Themes themekey_rule_chain_form() and adds drag'n'drop features.

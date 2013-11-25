@@ -8,6 +8,7 @@ ThemeKey 7.x-3.0, 2013-xx-xx
 [#1851474] mkalkbrenner: JS error on empty Theme Switching Rule Chain
 [#1907196] mkalkbrenner: Declare built-in client detection as deprected in favor of Browscap and Mobile Detect
 [        ] mkalkbrenner: fixed mobile_detect integration
+[        ] mkalkbrenner: added more options to improve ajax handling
 
 
 ThemeKey 7.x-3.0-rc1, 2013-11-15

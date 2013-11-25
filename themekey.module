@@ -61,6 +61,7 @@ function themekey_permission() {
  */
 function themekey_menu() {
   $items = array();
+
   $items['admin/config/user-interface/themekey'] = array(
     'title' => 'ThemeKey',
     'description' => 'Set up rules to switch the site\'s appearance (theme) dynamically, depending on Drupal paths or different properties.',
@@ -70,11 +71,13 @@ function themekey_menu() {
     'page callback' => 'drupal_get_form',
     'page arguments' => array('themekey_rule_chain_form'),
   );
+
   $items['admin/config/user-interface/themekey/rules'] = array(
     'title' => 'Theme Switching Rule Chain',
     'type' => MENU_DEFAULT_LOCAL_TASK,
     'weight' => 0,
   );
+
   $items['admin/config/user-interface/themekey/rules/delete'] = array(
     'title' => 'Delete ThemeKey Rule',
     'page callback' => 'drupal_get_form',
@@ -84,6 +87,7 @@ function themekey_menu() {
     'file' => 'themekey_admin.inc',
     'type' => MENU_CALLBACK,
   );
+
   $items['admin/config/user-interface/themekey/settings'] = array(
     'title' => 'Settings',
     'access callback' => 'user_access',
@@ -94,15 +98,41 @@ function themekey_menu() {
     'type' => MENU_LOCAL_TASK,
     'weight' => 5,
   );
+
   $items['admin/config/user-interface/themekey/settings/general'] = array(
     'title' => 'General',
     'type' => MENU_DEFAULT_LOCAL_TASK,
     'weight' => 0,
   );
 
+  $items['admin/config/user-interface/themekey/settings/ajax'] = array(
+    'title' => 'Ajax',
+    'access callback' => 'user_access',
+    'access arguments' => array('administer themekey settings'),
+    'file' => 'themekey_admin.inc',
+    'page callback' => 'drupal_get_form',
+    'page arguments' => array('themekey_ajax_settings_form'),
+    'type' => MENU_LOCAL_TASK,
+    'weight' => 1,
+  );
+
   return $items;
 }
 
+/**
+ * Implements hook_menu_alter().
+ *
+ * Replaces theme callbacks.
+ */
+function themekey_menu_alter(&$items) {
+  if (variable_get('themekey_unsafe_ajax_base_page_theme', 0)) {
+    foreach ($items as &$item) {
+      if (isset($item['theme callback']) && $item['theme callback'] == 'ajax_base_page_theme') {
+        $item['theme callback'] = 'themekey_ajax_base_page_theme';
+      }
+    }
+  }
+}
 
 /**
  * Implements hook_custom_theme().
@@ -115,12 +145,13 @@ function themekey_custom_theme() {
   $custom_theme = &drupal_static('themekey_custom_theme', '');
 
   if (themekey_is_active()) {
+    // If ThemeKey is active, themekey_is_active() already included themekey_base.inc.
 
     $custom_theme_called = &drupal_static('themekey_custom_theme_called', FALSE);
     $custom_theme_called = TRUE;
 
     if (variable_get('themekey_ajax_base_page_theme', 1)) {
-      $custom_theme = ajax_base_page_theme();
+      $custom_theme = themekey_ajax_base_page_theme();
     }
 
     if (!$custom_theme) {
@@ -381,4 +412,35 @@ function themekey_themekey_custom_theme_alter(&$custom_theme, $rules_matched) {
       $function($custom_theme, $rules_matched);
     }
   }
+}
+
+/**
+ * Wrapper for ajax_base_page_theme() that optionally skips the token check.
+ */
+function themekey_ajax_base_page_theme() {
+  if (
+    variable_get('themekey_unsafe_ajax_base_page_theme', 0) &&
+    !empty($_POST['ajax_page_state']['theme']) &&
+    !empty($_POST['ajax_page_state']['theme_token']) &&
+    themekey_check_theme_enabled($_POST['ajax_page_state']['theme_token']) &&
+    themekey_is_ajax_theme_safe($_POST['ajax_page_state']['theme_token'])
+  ) {
+    return $_POST['ajax_page_state']['theme'];
+  }
+  else {
+    return ajax_base_page_theme();
+  }
+}
+
+/**
+ * Checks if a theme is safe according to current configuration.
+ * See themekey_ajax_settings_form().
+ *
+ * @param $theme
+ * @return bool
+ */
+function themekey_is_ajax_theme_safe($theme) {
+  return
+    in_array($theme, variable_get('themekey_ajax_themes', array())) ||
+    (variable_get('themekey_consider_default_theme_safe', 1) && $theme === variable_get('theme_default', 'bartik'));
 }
