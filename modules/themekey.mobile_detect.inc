@@ -19,10 +19,7 @@
  *   array of themekey properties and mapping functions
  */
 function themekey_mobile_detect_themekey_properties() {
-  // Attributes of properties
-  $attributes = array();
-  // Mapping functions
-  $maps = array();
+  $properties = array('attributes' => array(), 'maps' => array());
 
   if (!module_exists('mobile_detect_api')) {
     if ($mobile_detect = mobile_detect_get_object()) {
