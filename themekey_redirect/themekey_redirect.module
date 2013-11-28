@@ -289,8 +289,10 @@ function themekey_redirect_block_configure($delta = '') {
       $form['domain_list'] = array(
         '#type' => 'textarea',
         '#title' => t('Domain Targets'),
-        '#description' => t('One entry per line, format: domain|link title'),
+        '#description' => t('One entry per line, format: url|link title. The url must include the protocol. Example: http://www.example.com|My Example Site'),
         '#default_value' => themekey_redirect_encode_domain_selector(variable_get('themekey_redirect_domain_selector', array())),
+        '#element_validate' => array('themekey_redirect_domain_list_validate'),
+        '#required' => TRUE,
       );
 
       $form['auto_hide'] = array(
@@ -306,6 +308,22 @@ function themekey_redirect_block_configure($delta = '') {
   $form['#validate'][] = 'themekey_redirect_block_validate';
 
   return $form;
+}
+
+/*
+ * There's no hook_block_validate() in drupal. So we have to validate the form
+ * on element level.
+ */
+function themekey_redirect_domain_list_validate($element) {
+  if (!empty($element['#value'])) {
+    $domain_selector = themekey_redirect_parse_domain_selector($element['#value']);
+    foreach ($domain_selector as $url => $link) {
+      @$parts = parse_url($url);
+      if (!isset($parts['host']) || !isset($parts['scheme'])) {
+        form_set_error('domain_list', t('The url %url is not valid.', array('%url' => $url)));
+      }
+    }
+  }
 }
 
 /**
