@@ -53,7 +53,7 @@ function themekey_og_context_themekey_properties() {
 function themekey_og_context_themekey_paths() {
   $paths = array();
 
-  $paths[] = array('path' => 'group/%group:type/#group:id/%');
+  $paths[] = array('path' => 'group/%group:type/#group:id');
 
   return $paths;
 }
