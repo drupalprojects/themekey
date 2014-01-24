@@ -247,7 +247,7 @@ function themekey_abstract_rule_chain_form($form, &$form_state, $options) {
 function themekey_rule_chain_form_validate(&$form, $form_state) {
   themekey_abstract_rule_chain_form_validate($form, $form_state, array(
     'check_enabled_callback' => 'themekey_check_theme_enabled',
-    'not_enabled_message' => t('Theme is not activated'),
+    'not_enabled_message' => t('Theme is not enabled.'),
   ));
 }
 
@@ -262,7 +262,7 @@ function themekey_abstract_rule_chain_form_validate(&$form, $form_state, $option
     foreach ($values['old_items'] as $key_1 => $value_1) {
       if ($value_1['enabled']) {
         if (!empty($options['check_enabled_callback']) && !$options['check_enabled_callback']($value_1['theme'])) {
-          form_set_error('old_items][' . $key_1 . '][theme', check_plain($options['not_enabled_message']));
+          form_set_error('old_items][' . $key_1 . '][theme', check_plain($value_1['theme'] . ': ' . $options['not_enabled_message']));
         }
 
         if (empty($value_1['property'])) {
