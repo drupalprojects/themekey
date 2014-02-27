@@ -161,6 +161,11 @@ function themekey_custom_theme() {
         $theme_candidate = $result['theme'];
       }
 
+      if (variable_get('themekey_debug_trace_rule_switching', FALSE)) {
+        themekey_set_debug_message('ThemeKey Debug: Theme candidate after rule matching: %theme_candidate', array('%theme_candidate' => $theme_candidate ? $theme_candidate : 'n/a'));
+        themekey_set_debug_message('ThemeKey Debug: Theme stored in session: %theme', array('%theme' => !empty($_SESSION['themekey_theme']) ? $_SESSION['themekey_theme'] : 'n/a'));
+      }
+
       $used_session_theme = FALSE;
       // If no theme has been triggered but a theme
       // is in the user's session, use that theme.
@@ -179,9 +184,15 @@ function themekey_custom_theme() {
         if ((user_is_logged_in() && variable_get('themekey_theme_maintain', 0)) ||
             (!user_is_logged_in() && variable_get('themekey_theme_maintain_anonymous', 0))) {
           $_SESSION['themekey_theme'] = $theme_candidate;
+          if (variable_get('themekey_debug_trace_rule_switching', FALSE)) {
+            themekey_set_debug_message('ThemeKey Debug: Storing theme in session: %theme', array('%theme' => $theme_candidate));
+          }
         }
         elseif (!empty($_SESSION['themekey_theme'])) {
           unset($_SESSION['themekey_theme']);
+          if (variable_get('themekey_debug_trace_rule_switching', FALSE)) {
+            themekey_set_debug_message('ThemeKey Debug: Removed theme from session.');
+          }
         }
 
         $custom_theme = $theme_candidate;
@@ -210,6 +221,9 @@ function themekey_custom_theme() {
           themekey_set_debug_message('%custom_theme is not enabled. Fall back to %custom_theme_not_altered.', array('%custom_theme' => $custom_theme, 'custom_theme_not_altered' => $custom_theme_not_altered));
         }
       }
+    }
+    elseif (variable_get('themekey_debug_trace_rule_switching', FALSE)) {
+      themekey_set_debug_message('ThemeKey Debug: Skipped evaluation of rule chain because a static custom theme has been selected: %custom_theme', array('%custom_theme' => $custom_theme));
     }
   }
   elseif (variable_get('themekey_debug_trace_rule_switching', FALSE)) {
