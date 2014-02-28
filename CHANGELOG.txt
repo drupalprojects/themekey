@@ -1,3 +1,8 @@
+ThemeKey 7.x-3.1, 2014-xx-xx
+----------------------------
+[#2188709] mkalkbrenner: 'Retain the theme until a new theme is set' doesn't work for static/triggered rules
+
+
 ThemeKey 7.x-3.0, 2014-01-24
 ----------------------------
 [        ] mkalkbrenner: improved error message if a theme is disabled or a css file is missing

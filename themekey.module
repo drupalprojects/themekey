@@ -156,14 +156,15 @@ function themekey_custom_theme() {
 
     if (!$custom_theme) {
       $theme_candidate = NULL;
+      // A static rule might set $custom_theme during themekey_match_rules()
       $result = themekey_match_rules();
       if (is_array($result)) {
         $theme_candidate = $result['theme'];
       }
 
-      if (variable_get('themekey_debug_trace_rule_switching', FALSE)) {
-        themekey_set_debug_message('ThemeKey Debug: Theme candidate after rule matching: %theme_candidate', array('%theme_candidate' => $theme_candidate ? $theme_candidate : 'n/a'));
-        themekey_set_debug_message('ThemeKey Debug: Theme stored in session: %theme', array('%theme' => !empty($_SESSION['themekey_theme']) ? $_SESSION['themekey_theme'] : 'n/a'));
+      if (!$custom_theme && variable_get('themekey_debug_trace_rule_switching', FALSE)) {
+        themekey_set_debug_message('Theme candidate after rule matching: %theme_candidate', array('%theme_candidate' => $theme_candidate ? $theme_candidate : 'n/a'));
+        themekey_set_debug_message('Theme stored in session: %theme', array('%theme' => !empty($_SESSION['themekey_theme']) ? $_SESSION['themekey_theme'] : 'n/a'));
       }
 
       $used_session_theme = FALSE;
@@ -175,34 +176,40 @@ function themekey_custom_theme() {
         $theme_candidate = $_SESSION['themekey_theme'];
         $used_session_theme = TRUE;
         if (variable_get('themekey_debug_trace_rule_switching', FALSE)) {
-          themekey_set_debug_message('ThemeKey Debug: No rule triggered a different theme. Reusing last theme from user\'s session: %custom_theme', array('%custom_theme' => $theme_candidate));
+          themekey_set_debug_message('No rule triggered a different theme. Reusing last theme from user\'s session: %custom_theme', array('%custom_theme' => $theme_candidate));
         }
       }
 
       // We have a theme, apply it
-      if (!empty($theme_candidate) && $theme_candidate != 'default') {
+      if (
+        (!empty($theme_candidate) && $theme_candidate != 'default') ||
+        (!empty($custom_theme) && $custom_theme != 'default')
+      ) {
+        if (!empty($theme_candidate) && $theme_candidate != 'default') {
+          $custom_theme = $theme_candidate;
+        }
+
+        if (variable_get('themekey_debug_trace_rule_switching', FALSE)) {
+          themekey_set_debug_message('Switching theme to %custom_theme.', array('%custom_theme' => $custom_theme));
+        }
+
         if ((user_is_logged_in() && variable_get('themekey_theme_maintain', 0)) ||
             (!user_is_logged_in() && variable_get('themekey_theme_maintain_anonymous', 0))) {
-          $_SESSION['themekey_theme'] = $theme_candidate;
+          $_SESSION['themekey_theme'] = $custom_theme;
           if (variable_get('themekey_debug_trace_rule_switching', FALSE)) {
-            themekey_set_debug_message('ThemeKey Debug: Storing theme in session: %theme', array('%theme' => $theme_candidate));
+            themekey_set_debug_message('Storing theme in session: %theme', array('%theme' => $custom_theme));
           }
         }
         elseif (!empty($_SESSION['themekey_theme'])) {
           unset($_SESSION['themekey_theme']);
           if (variable_get('themekey_debug_trace_rule_switching', FALSE)) {
-            themekey_set_debug_message('ThemeKey Debug: Removed theme from session.');
+            themekey_set_debug_message('Removed theme from session.');
           }
-        }
-
-        $custom_theme = $theme_candidate;
-        if (variable_get('themekey_debug_trace_rule_switching', FALSE)) {
-          themekey_set_debug_message('Switching theme to %custom_theme.', array('%custom_theme' => $custom_theme));
         }
       }
       elseif (variable_get('themekey_debug_trace_rule_switching', FALSE)) {
         if ($custom_theme) {
-          // Static rules set $theme_candidate to 'default and $custom_theme directly.
+          // Static rules set $theme_candidate to 'default' and $custom_theme directly.
           themekey_set_debug_message('$custom_theme has been set to %custom_theme during rule matching.', array('%custom_theme' => $custom_theme));
         }
         else {
@@ -223,7 +230,7 @@ function themekey_custom_theme() {
       }
     }
     elseif (variable_get('themekey_debug_trace_rule_switching', FALSE)) {
-      themekey_set_debug_message('ThemeKey Debug: Skipped evaluation of rule chain because a static custom theme has been selected: %custom_theme', array('%custom_theme' => $custom_theme));
+      themekey_set_debug_message('Skipped evaluation of rule chain because a static custom theme has been selected: %custom_theme', array('%custom_theme' => $custom_theme));
     }
   }
   elseif (variable_get('themekey_debug_trace_rule_switching', FALSE)) {
