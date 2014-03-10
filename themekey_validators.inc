@@ -1009,13 +1009,13 @@ function themekey_validator_og_group_type($rule) {
   switch ($rule['operator']) {
     case '=':
     case '!':
-      if (function_exists('og_membership_type_load')) {
-        if (!og_membership_type_load($rule['value'])) {
+      if (function_exists('og_get_all_group_entity')) {
+        if(!array_key_exists($rule['value'], og_get_all_group_entity())) {
           $errors['value'] = t('The group type %value is not defined.', array('%value' => $rule['value']));
-        }
+      }
       }
       else {
-        $errors['property'] = t('Unable to verify property group:type because function og_membership_type_load() is missing.');
+        $errors['property'] = t('Unable to verify property group:type because function og_get_all_group_entity() is missing.');
       }
       break;
 
