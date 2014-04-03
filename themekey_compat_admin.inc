@@ -27,10 +27,10 @@ function themekey_compat_settings_form() {
     foreach ($modules as $module) {
       $name = $module;
       if (isset($modules_list[$module]->info) && !empty($modules_list[$module]->info['name'])) {
-        $name = $modules_list[$module]->info['name'];
+        $name = $modules_list[$module]->info['name'] . ' (' . $modules_list[$module]->info['description'] . ')';
       }
       if ('system' == $module) {
-        $name .= ' (' . t('Administration theme') . ')';
+        $name = preg_replace("/\)$/", ' ' . t('Provides the "Administration theme".') . ')', $name);
       }
       $options[$module] = $name;
     }
