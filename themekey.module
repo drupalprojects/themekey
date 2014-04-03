@@ -443,8 +443,8 @@ function themekey_ajax_base_page_theme() {
     variable_get('themekey_unsafe_ajax_base_page_theme', 0) &&
     !empty($_POST['ajax_page_state']['theme']) &&
     !empty($_POST['ajax_page_state']['theme_token']) &&
-    themekey_check_theme_enabled($_POST['ajax_page_state']['theme_token']) &&
-    themekey_is_ajax_theme_safe($_POST['ajax_page_state']['theme_token'])
+    themekey_check_theme_enabled($_POST['ajax_page_state']['theme']) &&
+    themekey_is_ajax_theme_safe($_POST['ajax_page_state']['theme'])
   ) {
     return $_POST['ajax_page_state']['theme'];
   }
