@@ -1,6 +1,6 @@
 
-name = "ThemeKey Features (Experimental!)"
-description = "Integrates ThemeKey with Features. Warning! Don't use in production! Highly Experimental!"
+name = "ThemeKey Features (Beta)"
+description = "Export single rules with Features."
 core = 7.x
 dependencies[]= themekey
 dependencies[]= features
