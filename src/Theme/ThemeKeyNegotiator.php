@@ -9,24 +9,41 @@
 namespace Drupal\themekey\Theme;
 use Drupal\Core\Theme\ThemeNegotiatorInterface;
 use Drupal\Core\Routing\RouteMatchInterface;
-use Drupal\Core\Config\ConfigFactoryInterface;
+use Drupal\themekey\Engine\EngineInterface;
 
 class ThemeKeyNegotiator implements ThemeNegotiatorInterface {
-  /**
-   * The system theme config object.
-   *
-   * @var \Drupal\Core\Config\ConfigFactoryInterface
-   */
-  protected $configFactory;
 
   /**
-   * Constructs a DefaultNegotiator object.
-   *
-   * @param \Drupal\Core\Config\ConfigFactoryInterface $config_factory
-   *   The config factory.
+   * @var
    */
-  public function __construct(ConfigFactoryInterface $config_factory) {
-    $this->configFactory = $config_factory;
+  protected $themeKeyEngine;
+
+  /**
+   * Gets the ThemeKey Engine service.
+   *
+   * @return \Drupal\themekey\Engine\EngineInterface
+   *   The string translation service.
+   */
+  protected function getThemeKeyEngine() {
+    if (!$this->themeKeyEngine) {
+      $this->themeKeyEngine = \Drupal::service('themekey.engine');
+    }
+
+    return $this->themeKeyEngine;
+  }
+
+  /**
+   * Sets the ThemeKey Engine service to use.
+   *
+   * @param \Drupal\themekey\Engine\EngineInterface $themeKeyEngine
+   *   The string translation service.
+   *
+   * @return $this
+   */
+  public function setThemeKeyEngine(EngineInterface $themeKeyEngine) {
+    $this->themeKeyEngine = $themeKeyEngine;
+
+    return $this;
   }
 
   /**
@@ -60,7 +77,6 @@ class ThemeKeyNegotiator implements ThemeNegotiatorInterface {
    * {@inheritdoc}
    */
   public function determineActiveTheme(RouteMatchInterface $route_match) {
-    // Here you return the actual theme name.
-    return isset($_GET['theme']) ? $_GET['theme'] : NULL;
+    return $this->getThemeKeyEngine()->determineTheme($route_match);
   }
 }

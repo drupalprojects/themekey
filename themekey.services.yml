@@ -4,3 +4,6 @@ services:
     arguments: ['@config.factory']
     tags:
       - { name: theme_negotiator, priority: 0 }
+  themekey.engine:
+    class: Drupal\themekey\Engine\Engine
+    arguments: ['@config.factory']
