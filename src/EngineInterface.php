@@ -5,7 +5,8 @@
  * Provides Drupal\themekey\Engine\EngineInterface
  */
 
-namespace Drupal\themekey\Engine;
+namespace Drupal\themekey;
+
 use Drupal\Core\Routing\RouteMatchInterface;
 
 /**

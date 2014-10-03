@@ -7,9 +7,10 @@
  */
 
 namespace Drupal\themekey\Theme;
+
 use Drupal\Core\Theme\ThemeNegotiatorInterface;
 use Drupal\Core\Routing\RouteMatchInterface;
-use Drupal\themekey\Engine\EngineInterface;
+use Drupal\themekey\EngineInterface;
 
 class ThemeKeyNegotiator implements ThemeNegotiatorInterface {
 

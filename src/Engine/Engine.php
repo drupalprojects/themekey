@@ -7,8 +7,10 @@
  */
 
 namespace Drupal\themekey\Engine;
+
 use Drupal\Core\Routing\RouteMatchInterface;
 use Drupal\Core\Config\ConfigFactoryInterface;
+use Drupal\themekey\EngineInterface;
 
 class Engine implements EngineInterface {
 
