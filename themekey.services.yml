@@ -7,3 +7,9 @@ services:
   themekey.engine:
     class: Drupal\themekey\Engine\Engine
     arguments: ['@config.factory']
+  plugin.manager.themekey.property:
+    class: Drupal\themekey\PropertyManager
+    parent: default_plugin_manager
+  plugin.manager.themekey.operator:
+    class: Drupal\themekey\OperatorManager
+    parent: default_plugin_manager

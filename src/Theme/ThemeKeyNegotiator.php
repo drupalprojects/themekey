@@ -22,7 +22,7 @@ class ThemeKeyNegotiator implements ThemeNegotiatorInterface {
   /**
    * Gets the ThemeKey Engine service.
    *
-   * @return \Drupal\themekey\Engine\EngineInterface
+   * @return \Drupal\themekey\EngineInterface
    *   The string translation service.
    */
   protected function getThemeKeyEngine() {
@@ -36,7 +36,7 @@ class ThemeKeyNegotiator implements ThemeNegotiatorInterface {
   /**
    * Sets the ThemeKey Engine service to use.
    *
-   * @param \Drupal\themekey\Engine\EngineInterface $themeKeyEngine
+   * @param \Drupal\themekey\EngineInterface $themeKeyEngine
    *   The string translation service.
    *
    * @return $this
