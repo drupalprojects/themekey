@@ -10,11 +10,10 @@ namespace Drupal\themekey\Annotation;
 use Drupal\Component\Annotation\Plugin;
 
 /**
- * Defines a ThemeKey Property annotation object.
+ * Defines a property item annotation object.
  *
  * Plugin Namespace: Plugin\themekey\property
  *
- * @see \Drupal\themekey\Plugin\PropertyManager
  * @see plugin_api
  *
  * @Annotation
@@ -29,17 +28,21 @@ class Property extends Plugin {
   public $id;
 
   /**
-   * The price of one scoop of the flavor in dollars.
-   *
-   * @var string
-   */
-  public $group;
-
-  /**
    * The name of the property.
    *
-   * @var string
+   * @var \Drupal\Core\Annotation\Translation
+   *
+   * @ingroup plugin_translatable
    */
   public $name;
+
+  /**
+   * The description of the property.
+   *
+   * @var \Drupal\Core\Annotation\Translation
+   *
+   * @ingroup plugin_translatable
+   */
+  public $description;
 
 }
