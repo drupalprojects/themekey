@@ -30,7 +30,8 @@ class SystemQueryParam extends PropertyBase {
     // unset($query_params['q']);
     foreach ($query_params as $key => $value) {
       $filtered_params[] = $key . (!empty($value) ? '=' . $value : '');
+      $filtered_params[$key] = !empty($value) ? $value : '';
     }
-    return array_unique($filtered_params);
+    return $filtered_params;
   }
 }

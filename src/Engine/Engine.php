@@ -109,13 +109,27 @@ class Engine implements EngineInterface {
 //    drupal_set_message(print_r($properties, TRUE));
 //    drupal_set_message(print_r($operators, TRUE));
 
-    $rule = new \stdClass();
-    $rule->property = 'system:query_param';
-    $rule->operator = '=';
-    $rule->value = 'theme=bartik';
-    $rule->theme = 'bartik';
+    $rules[0] = new \stdClass();
+    $rules[0]->property = 'system:query_param';
+    $rules[0]->key = 'theme'; // optional
+    $rules[0]->operator = '=';
+    $rules[0]->value = 'seven';
+    $rules[0]->theme = 'seven';
 
-    return $this->matchCondition($rule) ? $rule->theme : NULL;
+    $rules[1] = new \stdClass();
+    $rules[1]->property = 'system:query_param';
+    $rules[1]->operator = '=';
+    $rules[1]->value = 'theme=bartik';
+    $rules[1]->theme = 'bartik';
+
+    foreach ($rules as $rule) {
+      if ($this->matchCondition($rule)) {
+        // TODO cascade (recursive)
+        return $rule->theme;
+      }
+    }
+
+    return NULL;
   }
 
   /**
@@ -144,10 +158,18 @@ class Engine implements EngineInterface {
 
     #drupal_set_message(print_r($property->getValues(), TRUE));
 
-    foreach ($property->getValues() as $value) {
-      #drupal_set_message($value);
-      if ($operator->evaluate($condition->value, $value)) {
-        return TRUE;
+    $values = $property->getValues();
+
+    if (isset($condition->key)) {
+      if (isset($values[$condition->key])) {
+        return $operator->evaluate($values[$condition->key], $condition->value);
+      }
+    }
+    else {
+      foreach ($values as $value) {
+        if ($operator->evaluate($value, $condition->value)) {
+          return TRUE;
+        }
       }
     }
 
