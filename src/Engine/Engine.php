@@ -10,11 +10,16 @@ namespace Drupal\themekey\Engine;
 
 use Drupal\Core\Routing\RouteMatchInterface;
 use Drupal\Core\Config\ConfigFactoryInterface;
-use Drupal\Component\Plugin\PluginManagerInterface;
 use Drupal\themekey\EngineInterface;
-use MyProject\Proxies\__CG__\stdClass;
+use Drupal\themekey\PropertyManagerTrait;
+use Drupal\themekey\OperatorManagerTrait;
+use Drupal\themekey\Entity\ThemeKeyRule;
+use Drupal\themekey\ThemeKeyRuleInterface;
 
 class Engine implements EngineInterface {
+
+  use PropertyManagerTrait;
+  use OperatorManagerTrait;
 
   /**
    * The system theme config object.
@@ -22,16 +27,6 @@ class Engine implements EngineInterface {
    * @var \Drupal\Core\Config\ConfigFactoryInterface
    */
   protected $configFactory;
-
-  /**
-   * @var
-   */
-  protected $propertyManager;
-
-  /**
-   * @var
-   */
-  protected $operatorManager;
 
   /**
    * Constructs a DefaultNegotiator object.
@@ -44,83 +39,10 @@ class Engine implements EngineInterface {
   }
 
   /**
-   * Gets the ThemeKey Property manager.
-   *
-   * @return \Drupal\Component\Plugin\PluginManagerInterface
-   *   The ThemeKey Property manager.
-   */
-  protected function getPropertyManager() {
-    if (!$this->propertyManager) {
-      $this->propertyManager = \Drupal::service('plugin.manager.themekey.property');
-    }
-
-    return $this->propertyManager;
-  }
-
-  /**
-   * Sets the ThemeKey Property manager to use.
-   *
-   * @param \Drupal\Component\Plugin\PluginManagerInterface
-   *   The ThemeKey Property manager.
-   *
-   * @return $this
-   */
-  public function setPropertyManager(PluginManagerInterface $propertyManager) {
-    $this->propertyManager = $propertyManager;
-
-    return $this;
-  }
-
-  /**
-   * Gets the ThemeKey Operator manager.
-   *
-   * @return \Drupal\Component\Plugin\PluginManagerInterface
-   *   The ThemeKey Operator manager.
-   */
-  protected function getOperatorManager() {
-    if (!$this->operatorManager) {
-      $this->operatorManager = \Drupal::service('plugin.manager.themekey.operator');
-    }
-
-    return $this->operatorManager;
-  }
-
-  /**
-   * Sets the ThemeKey Property manager to use.
-   *
-   * @param \Drupal\Component\Plugin\PluginManagerInterface
-   *   The ThemeKey Property manager.
-   *
-   * @return $this
-   */
-  public function setOperatorManager(PluginManagerInterface $operatorManager) {
-    $this->operatorManager = $operatorManager;
-
-    return $this;
-  }
-
-  /**
    * {@inheritdoc}
    */
   public function determineTheme(RouteMatchInterface $route_match) {
-//    $properties = $this->getPropertyManager()->getDefinitions();
-//    $operators = $this->getOperatorManager()->getDefinitions();
-//
-//    drupal_set_message(print_r($properties, TRUE));
-//    drupal_set_message(print_r($operators, TRUE));
-
-    $rules[0] = new \stdClass();
-    $rules[0]->property = 'system:query_param';
-    $rules[0]->key = 'theme'; // optional
-    $rules[0]->operator = '=';
-    $rules[0]->value = 'seven';
-    $rules[0]->theme = 'seven';
-
-    $rules[1] = new \stdClass();
-    $rules[1]->property = 'system:query_param';
-    $rules[1]->operator = '=';
-    $rules[1]->value = 'theme=bartik';
-    $rules[1]->theme = 'bartik';
+    $rules = ThemeKeyRule::loadMultiple();
 
     foreach ($rules as $rule) {
       if ($this->matchCondition($rule)) {
@@ -136,7 +58,7 @@ class Engine implements EngineInterface {
    * Detects if a ThemeKey rule matches to the current
    * page request.
    *
-   * @param object $condition
+   * @param object $rule
    *   ThemeKey rule as object:
    *   - property
    *   - operator
@@ -144,30 +66,26 @@ class Engine implements EngineInterface {
    *
    * @return bool
    */
-  public function matchCondition(/* TODO condition interface */ $condition) {
-    // Default operator is 'equal'
-    if (empty($condition->operator)) {
-      $condition->operator = '=';
-    }
-
+  public function matchCondition(ThemeKeyRuleInterface $rule) {
     $operator = $this->getOperatorManager()
-      ->createInstance($condition->operator);
+      ->createInstance($rule->operator());
 
     $property = $this->getPropertyManager()
-      ->createInstance($condition->property);
+      ->createInstance($rule->property());
 
     #drupal_set_message(print_r($property->getValues(), TRUE));
 
     $values = $property->getValues();
+    $key = $rule->key();
 
-    if (isset($condition->key)) {
-      if (isset($values[$condition->key])) {
-        return $operator->evaluate($values[$condition->key], $condition->value);
+    if (!is_null($key)) {
+      if (isset($values[$key])) {
+        return $operator->evaluate($values[$key], $rule->value());
       }
     }
     else {
       foreach ($values as $value) {
-        if ($operator->evaluate($value, $condition->value)) {
+        if ($operator->evaluate($value, $rule->value())) {
           return TRUE;
         }
       }

@@ -1,0 +1,6 @@
+themekey_rule.add:
+  route_name: 'themekey_rule.add'
+  title: 'Add ThemeKeyRule'
+  appears_on:
+    - themekey_rule.list
+

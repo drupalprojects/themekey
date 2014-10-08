@@ -1,0 +1,32 @@
+# ThemeKeyRule routing definition
+themekey_rule.list:
+  path: '/admin/config/system/themekey_rule'
+  defaults:
+    _entity_list: 'themekey_rule'
+    _title: 'ThemeKeyRule Configuration'
+  requirements:
+    _permission: 'administer site configuration'
+
+themekey_rule.add:
+  path: '/admin/config/system/themekey_rule/add'
+  defaults:
+    _entity_form: 'themekey_rule.add'
+    _title: 'Add ThemeKeyRule'
+  requirements:
+    _permission: 'administer site configuration'
+
+themekey_rule.edit:
+  path: '/admin/config/system/themekey_rule/{themekey_rule}'
+  defaults:
+    _entity_form: 'themekey_rule.edit'
+    _title: 'Edit ThemeKeyRule'
+  requirements:
+    _permission: 'administer site configuration'
+
+themekey_rule.delete:
+  path: '/admin/config/system/themekey_rule/{themekey_rule}/delete'
+  defaults:
+    _entity_form: 'themekey_rule.delete'
+    _title: 'Delete ThemeKeyRule'
+  requirements:
+    _permission: 'administer site configuration'

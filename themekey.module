@@ -1,0 +1,13 @@
+<?php
+
+use Drupal\themekey\Entity\ThemeKeyRule;
+
+/**
+* Menu argument loader. Returns a ThemeKey Rule entity
+*
+* @param $id
+* @return \Drupal\Core\Entity\EntityInterface|static
+ */
+function themekey_rule_load($id) {
+  return ThemeKeyRule::load($id);
+}
