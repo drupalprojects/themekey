@@ -13,6 +13,7 @@ use Drupal\Core\Config\ConfigFactoryInterface;
 use Drupal\themekey\EngineInterface;
 use Drupal\themekey\PropertyManagerTrait;
 use Drupal\themekey\OperatorManagerTrait;
+use Drupal\themekey\RuleChainManagerTrait;
 use Drupal\themekey\Entity\ThemeKeyRule;
 use Drupal\themekey\ThemeKeyRuleInterface;
 
@@ -20,6 +21,7 @@ class Engine implements EngineInterface {
 
   use PropertyManagerTrait;
   use OperatorManagerTrait;
+  use RuleChainManagerTrait;
 
   /**
    * The system theme config object.
@@ -42,17 +44,32 @@ class Engine implements EngineInterface {
    * {@inheritdoc}
    */
   public function determineTheme(RouteMatchInterface $route_match) {
-    $rules = ThemeKeyRule::loadMultiple();
+    #return NULL;
+    $ruleChainManager = $this->getRuleChainManager();
+    $chain = $ruleChainManager->getOptimizedChain();
 
-    foreach ($rules as $rule) {
-      if ($this->matchCondition($rule)) {
-        // TODO cascade (recursive)
-        return $rule->theme;
+    return $chain ? $this->walkRuleChildren($chain) : NULL;
+  }
+
+  protected function walkRuleChildren($chain, $theme = NULL, $parent = 0) {
+    $has_children = FALSE;
+    foreach ($chain as $ruleId => $ruleMetaData) {
+      if ($ruleMetaData['parent'] == $parent) {
+        $has_children = TRUE;
+        $rule = ThemeKeyRule::load($ruleId);
+        if ($this->matchCondition($rule)) {
+          $theme = $this->walkRuleChildren($chain, $rule->theme(), $ruleId);
+          if ($theme) {
+            return $theme;
+          }
+        }
       }
     }
-
-    return NULL;
+    // No children: return theme of parent.
+    // Has children: all children did not match => return no theme.
+    return $has_children ? NULL : $theme;
   }
+
 
   /**
    * Detects if a ThemeKey rule matches to the current
@@ -66,7 +83,7 @@ class Engine implements EngineInterface {
    *
    * @return bool
    */
-  public function matchCondition(ThemeKeyRuleInterface $rule) {
+  protected function matchCondition(ThemeKeyRuleInterface $rule) {
     $operator = $this->getOperatorManager()
       ->createInstance($rule->operator());
 

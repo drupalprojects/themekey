@@ -3,6 +3,18 @@
 use Drupal\themekey\Entity\ThemeKeyRule;
 
 /**
+ * Implements hook_theme().
+ */
+function themekey_theme() {
+  return array(
+    'themekey_rule_chain_table' => array(
+      'render element' => 'form',
+      'file' => 'themekey.admin.inc',
+    ),
+  );
+}
+
+/**
 * Menu argument loader. Returns a ThemeKey Rule entity
 *
 * @param $id

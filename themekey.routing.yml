@@ -30,3 +30,11 @@ themekey_rule.delete:
     _title: 'Delete ThemeKeyRule'
   requirements:
     _permission: 'administer site configuration'
+
+themekey_rule.chain:
+  path: '/admin/config/system/themekey_rule/chain'
+  defaults:
+    _form: 'Drupal\themekey\Form\ThemeKeyRuleChainForm'
+    _title: 'Re-order ThemeKey rules.'
+  requirements:
+    _permission: 'administer site configuration'

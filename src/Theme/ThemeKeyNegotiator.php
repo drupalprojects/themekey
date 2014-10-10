@@ -51,6 +51,9 @@ class ThemeKeyNegotiator implements ThemeNegotiatorInterface {
    * {@inheritdoc}
    */
   public function applies(RouteMatchInterface $route_match) {
+    if (strpos($route_match->getRouteName(), 'themekey_rule.') === 0) {
+      return FALSE;
+    }
     return TRUE;
 
     // TODO migrate complete function themekey_is_active() to applies()
