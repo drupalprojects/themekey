@@ -23,12 +23,14 @@ function theme_themekey_rule_chain_table($variables) {
   $rows = array();
 
   foreach (Element::children($form) as $key) {
+    $ruleId = $form[$key]['#title'];
+
     $form[$key]['weight']['#attributes']['class'] = array('rule-weight');
     $form[$key]['parent']['#attributes']['class'] = array('rule-parent');
     $form[$key]['rule_id'] = array(
       '#type' => 'hidden',
       '#disabled' => TRUE,
-      '#value' => $form[$key]['#title'],
+      '#value' => $ruleId,
       '#attributes' => array (
         'class' => array('rule-id'),
       ),
@@ -38,9 +40,8 @@ function theme_themekey_rule_chain_table($variables) {
     $data = array(
       SafeMarkup::set(
         drupal_render($indentation) .
-        $form[$key]['#title'] .
         drupal_render($form[$key]['rule_id']) .
-        ThemeKeyRule::load($form[$key]['#title'])->toString()
+        ThemeKeyRule::load($ruleId)->toString()
       ),
       drupal_render($form[$key]['weight']),
       drupal_render($form[$key]['parent']),
@@ -50,7 +51,7 @@ function theme_themekey_rule_chain_table($variables) {
     $links['edit'] = array(
       'title' => t('Edit'),
       'route_name' => 'themekey_rule.edit',
-      'route_parameters' => array('themekey_rule' => $form[$key]['#title']),
+      'route_parameters' => array('themekey_rule' => $ruleId),
       'query' => $destination,
     );
 
