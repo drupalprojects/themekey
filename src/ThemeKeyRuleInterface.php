@@ -45,4 +45,9 @@ interface ThemeKeyRuleInterface extends ConfigEntityInterface
    */
   public function comment();
 
+  /**
+   * @return string
+   */
+  public function toString();
+
 }

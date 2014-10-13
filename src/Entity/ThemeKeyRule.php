@@ -9,6 +9,7 @@ namespace Drupal\themekey\Entity;
 
 use Drupal\Core\Config\Entity\ConfigEntityBase;
 use Drupal\themekey\ThemeKeyRuleInterface;
+use Drupal\Component\Utility\String;
 
 /**
  * Defines the ThemeKeyRule entity.
@@ -143,5 +144,21 @@ class ThemeKeyRule extends ConfigEntityBase implements ThemeKeyRuleInterface {
    */
   public function comment() {
     return $this->comment;
+  }
+
+  /**
+   * Returns a simple string representation of the rule.
+   * TODO
+   *
+   * @return string
+   */
+  public function toString() {
+    return String::checkPlain(
+      $this->property() . ' ' .
+      ($this->key() ? : '' ) .
+      $this->operator() .
+      $this->value() . ' >>> ' .
+      $this->theme()
+    );
   }
 }

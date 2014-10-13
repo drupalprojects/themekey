@@ -87,6 +87,7 @@ class RuleChainManager implements RuleChainManagerInterface {
           'weight' => ++$weight,
           'parent' => NULL,
           'enabled' => TRUE,
+          'depth' => 0,
         );
         $changed = TRUE;
       }
@@ -110,7 +111,7 @@ class RuleChainManager implements RuleChainManagerInterface {
     }
   }
 
-  protected function sortChain($chain, $parent = NULL) {
+  protected function sortChain($chain, $parent = NULL, $depth = 0) {
     $sorted_rules = array();
     $sorted_chain = array();
 
@@ -124,9 +125,10 @@ class RuleChainManager implements RuleChainManagerInterface {
       asort($sorted_rules, SORT_NUMERIC);
       foreach (array_keys($sorted_rules) as $ruleId) {
         $sorted_chain[$ruleId] = $chain[$ruleId];
+        $sorted_chain[$ruleId]['depth'] = $depth;
         $sorted_chain = array_merge(
           $sorted_chain,
-          $this->sortChain($chain, $ruleId)
+          $this->sortChain($chain, $ruleId, $depth + 1)
         );
       }
     }

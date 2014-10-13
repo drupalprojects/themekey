@@ -8,7 +8,7 @@ use Drupal\Core\Render\Element;
 use Drupal\themekey\RuleChainManagerTrait;
 
 /**
- * Provides a form for administering a single book's hierarchy.
+ * Provides a form for administering the ThemeKey rule chain.
  */
 class ThemeKeyRuleChainForm extends ConfigFormBase {
 
@@ -49,10 +49,11 @@ class ThemeKeyRuleChainForm extends ConfigFormBase {
     $form['#title'] = $this->t('ThemeKey Rule Chain');
 
     $form['table'] = array(
-//      '#theme' => 'themekey_rule_chain_table',
+      '#theme' => 'themekey_rule_chain_table',
       '#tree' => TRUE,
     );
 
+    $depth = 0;
     $ruleChain = $ruleChainManager->getChain();
     foreach ($ruleChain as $ruleId => $ruleMetaData) {
       $form['table'][$ruleId] = array(
@@ -70,6 +71,7 @@ class ThemeKeyRuleChainForm extends ConfigFormBase {
         '#type' => 'weight',
         '#title' => $this->t('Weight'),
         '#default_value' => $ruleMetaData['weight'],
+        '#delta' => 100, // REVIEW Allows weight from -100 to 100. Is that enough?
       );
 
       $form['table'][$ruleId]['parent'] = array(
@@ -78,6 +80,10 @@ class ThemeKeyRuleChainForm extends ConfigFormBase {
         '#default_value' => $ruleMetaData['parent'],
       );
 
+      $form['table'][$ruleId]['depth'] = array(
+        '#type' => 'value',
+        '#value' => $ruleMetaData['depth'],
+      );
     }
 
     $form['save'] = array(

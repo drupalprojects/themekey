@@ -10,6 +10,7 @@ function themekey_theme() {
     'themekey_rule_chain_table' => array(
       'render element' => 'form',
       'file' => 'themekey.admin.inc',
+      'function' => 'theme_themekey_rule_chain_table',
     ),
   );
 }
