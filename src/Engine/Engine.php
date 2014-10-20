@@ -30,6 +30,8 @@ class Engine implements EngineInterface {
    */
   protected $configFactory;
 
+  protected $routeMatch;
+
   /**
    * Constructs a DefaultNegotiator object.
    *
@@ -41,10 +43,25 @@ class Engine implements EngineInterface {
   }
 
   /**
+   * @return \Drupal\Core\Routing\RouteMatchInterface
+   */
+  public function getRouteMatch() {
+    return $this->routeMatch;
+  }
+
+  /**
+   * @return \Drupal\Core\Config\ConfigFactoryInterface
+   */
+  public function getConfigFactory() {
+    return $this->configFactory;
+  }
+
+  /**
    * {@inheritdoc}
    */
   public function determineTheme(RouteMatchInterface $route_match) {
-    #return NULL;
+    $this->routeMatch = $route_match;
+var_dump($route_match);
     $ruleChainManager = $this->getRuleChainManager();
     $chain = $ruleChainManager->getOptimizedChain();
 
@@ -89,6 +106,8 @@ class Engine implements EngineInterface {
 
     $property = $this->getPropertyManager()
       ->createInstance($rule->property());
+
+    $property->setEngine($this);
 
     #drupal_set_message(print_r($property->getValues(), TRUE));
 

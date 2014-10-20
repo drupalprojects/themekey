@@ -45,4 +45,11 @@ class Property extends Plugin {
    */
   public $description;
 
+  /**
+   * Indicates if the property is compatible to page caching.
+   *
+   * @var bool
+   */
+  public $page_cache_compatible;
+
 }

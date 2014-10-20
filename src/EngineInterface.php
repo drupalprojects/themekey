@@ -24,4 +24,15 @@ interface EngineInterface {
    *   Returns the active theme name, else return NULL.
    */
   public function determineTheme(RouteMatchInterface $route_match);
+
+  /**
+   * @return \Drupal\Core\Routing\RouteMatchInterface
+   */
+  public function getRouteMatch();
+
+  /**
+   * @return \Drupal\Core\Config\ConfigFactoryInterface
+   */
+  public function getConfigFactory();
+
 }

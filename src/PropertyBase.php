@@ -11,6 +11,26 @@ use Drupal\themekey\Plugin\SingletonPluginBase;
 
 abstract class PropertyBase extends SingletonPluginBase implements PropertyInterface {
 
+  protected $engine;
+
+  public function setEngine($engine) {
+    $this->engine = $engine;
+  }
+
+  /**
+   * @return \Drupal\Core\Routing\RouteMatchInterface
+   */
+  public function getRouteMatch() {
+    return $this->engine->getRouteMatch();
+  }
+
+  /**
+   * @return \Drupal\Core\Config\ConfigFactoryInterface
+   */
+  public function getConfigFactory() {
+    return $this->$engine->getConfigFactory();
+  }
+
   /**
    * {@inheritdoc}
    */

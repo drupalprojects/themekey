@@ -5,6 +5,11 @@
  * Provides Drupal\themekey\PropertyInterface
  */
 
+/* TODO
+ * - custom GUI / form elements, p.e. days of week, months
+ * - validators (annotations?)
+ */
+
 namespace Drupal\themekey;
 
 use Drupal\themekey\Plugin\SingletonPluginInspectionInterface;

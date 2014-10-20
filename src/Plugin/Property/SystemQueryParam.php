@@ -25,6 +25,7 @@ class SystemQueryParam extends PropertyBase {
    *   array of system:query_param values
    */
   public function getValues() {
+    // TODO use safe values from RouteMatch
     $filtered_params = array();
     $query_params = $_GET;
     // unset($query_params['q']);
