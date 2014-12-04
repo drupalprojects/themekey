@@ -16,6 +16,7 @@ use Drupal\themekey\PropertyBase;
  *   id = "drupal:route_name",
  *   name = @Translation(""),
  *   description = @Translation(""),
+ *   page_cache_compatible = TRUE,
  * )
  */
 class DrupalRouteName extends PropertyBase {

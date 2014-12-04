@@ -16,6 +16,7 @@ use Drupal\themekey\PropertyBase;
  *   id = "system:query_param",
  *   name = @Translation("System: Query Parameter"),
  *   description = @Translation("Every single query parameter other than 'q' and its value, if present. Note that values are url decoded. Example: '?q=node&foo=bar&dummy&filter=tid%3A27' will cause three entries 'foo=bar', 'dummy' and 'filter=tid:27'. For 'q', see property drupal:get_q."),
+ *   page_cache_compatible = TRUE,
  * )
  */
 class SystemQueryParam extends PropertyBase {

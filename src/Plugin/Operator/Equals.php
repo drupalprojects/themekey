@@ -27,4 +27,5 @@ class Equals extends OperatorBase {
   public function evaluate($value1, $value2) {
     return ($value1 == $value2);
   }
+
 }

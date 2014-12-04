@@ -11,6 +11,7 @@ use Drupal\Core\Entity\EntityInterface;
 use Drupal\Core\Entity\EntityForm;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\themekey\PropertyManagerTrait;
+use Drupal\themekey\PropertyAdminManagerTrait;
 use Drupal\themekey\OperatorManagerTrait;
 use Drupal\themekey\ThemeKeyRuleInterface;
 
@@ -18,6 +19,7 @@ class ThemeKeyRuleForm extends EntityForm
 {
 
   use PropertyManagerTrait;
+  use PropertyAdminManagerTrait;
   use OperatorManagerTrait;
 
   /**
@@ -114,6 +116,25 @@ class ThemeKeyRuleForm extends EntityForm
     );
 
     return $form;
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function validateForm(array &$form, FormStateInterface $form_state) {
+    $propertyAdmin = $this->getPropertyAdminManager()->createInstance(
+      $form_state->getValue('property')
+    );
+
+    $value = $form_state->getValue('value');
+
+    if ($propertyAdmin) {
+      $operator = $this->getOperatorManager()->createInstance(
+        $form_state->getValue('operator')
+      );
+
+      $operator->validate($propertyAdmin, $value, $form_state);
+    }
   }
 
   /**

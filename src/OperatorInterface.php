@@ -36,4 +36,9 @@ interface OperatorInterface extends SingletonPluginInspectionInterface {
    */
   public function evaluate($value1, $value2);
 
+  /**
+   * Validate.
+   */
+  public function validate(\Drupal\themekey\PropertyAdminInterface $propertyAdmin, $value, \Drupal\Core\Form\FormStateInterface $form_state);
+
 }

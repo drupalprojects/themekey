@@ -16,6 +16,9 @@ services:
   plugin.manager.themekey.property:
     class: Drupal\themekey\PropertyManager
     parent: default_plugin_manager
+  plugin.manager.themekey.property_admin:
+    class: Drupal\themekey\PropertyAdminManager
+    parent: default_plugin_manager
   plugin.manager.themekey.operator:
     class: Drupal\themekey\OperatorManager
     parent: default_plugin_manager

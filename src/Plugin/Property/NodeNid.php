@@ -10,12 +10,13 @@ namespace Drupal\themekey\Plugin\Property;
 use Drupal\themekey\PropertyBase;
 
 /**
- * Provides a 'query param' property.
+ * Provides a 'node id' property.
  *
  * @Property(
  *   id = "node:nid",
  *   name = @Translation(""),
  *   description = @Translation(""),
+ *   page_cache_compatible = TRUE,
  * )
  */
 class NodeNid extends PropertyBase {

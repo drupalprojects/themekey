@@ -44,5 +44,12 @@ abstract class PropertyBase extends SingletonPluginBase implements PropertyInter
   public function getDescription() {
     return $this->pluginDefinition['description'];
   }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function isPageCacheCompatible() {
+    return $this->pluginDefinition['page_cache_compatible'];
+  }
 }
 

@@ -61,7 +61,7 @@ class Engine implements EngineInterface {
    */
   public function determineTheme(RouteMatchInterface $route_match) {
     $this->routeMatch = $route_match;
-var_dump($route_match);
+#var_dump($route_match);
     $ruleChainManager = $this->getRuleChainManager();
     $chain = $ruleChainManager->getOptimizedChain();
 
