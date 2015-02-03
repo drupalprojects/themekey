@@ -1,4 +1,4 @@
-ThemeKey 7.x-3.3, 2014-xx-xx
+ThemeKey 7.x-3.3, 2015-02-03
 ----------------------------
 [#2277243] mkalkbrenner: fixed Call to undefined function themekey_invoke_modules() in themekey_ui.module on line 304
 [#2224913] mkalkbrenner: removed single quotes from module descriptions in info files which seemed to cause issues in some environments.
