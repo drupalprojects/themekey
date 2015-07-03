@@ -1,6 +1,7 @@
 ThemeKey 7.x-3.4, 2015-07-03
 ----------------------------
 [#2224913] Rory Downes, mkalkbrenner: Admin Interface broken / Potential incompatibility with WAMP on Windows
+[#2517964] gratefulsk, mkalkbrenner: Path comment/#comment:cid does not populate comment:cid property
 
 
 ThemeKey 7.x-3.3, 2015-02-03
