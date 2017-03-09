@@ -18,26 +18,26 @@ use Drupal\themekey\ThemeKeyRuleInterface;
 class ThemeKeyRuleForm extends EntityForm
 {
 
-  use PropertyManagerTrait;
-  use PropertyAdminManagerTrait;
-  use OperatorManagerTrait;
+    use PropertyManagerTrait;
+    use PropertyAdminManagerTrait;
+    use OperatorManagerTrait;
 
   /**
    * {@inheritdoc}
    */
-  public function form(array $form, FormStateInterface $form_state) {
-    $form = parent::form($form, $form_state);
+    public function form(array $form, FormStateInterface $form_state) {
+        $form = parent::form($form, $form_state);
 
-    $themekey_rule = $this->entity;
+        $themekey_rule = $this->entity;
 
-    $form['label'] = array(
-      '#type' => 'textfield',
-      '#title' => $this->t('Label'),
-      '#maxlength' => 255,
-      '#default_value' => $themekey_rule->label(),
-      '#description' => $this->t("Label for the ThemeKeyRule."),
-      '#required' => TRUE,
-    );
+        $form['label'] = array(
+        '#type' => 'textfield',
+        '#title' => $this->t('Label'),
+        '#maxlength' => 255,
+        '#default_value' => $themekey_rule->label(),
+        '#description' => $this->t("Label for the ThemeKeyRule."),
+        '#required' => true,
+        );
 
     $form['id'] = array(
       '#type' => 'machine_name',
@@ -55,30 +55,30 @@ class ThemeKeyRuleForm extends EntityForm
       $property_options[$property['id']] = $property['id'];
     }
 
-    $form['property'] = array(
-      '#type' => 'select',
-      '#title' => $this->t('Property'),
-      '#options' => $property_options,
-      '#default_value' => $themekey_rule->property(),
-      '#description' => $this->t("Property for the ThemeKeyRule."),
-      '#required' => TRUE,
-    );
+        $form['property'] = array(
+        '#type' => 'select',
+        '#title' => $this->t('Property'),
+        '#options' => $property_options,
+        '#default_value' => $themekey_rule->property(),
+        '#description' => $this->t("Property for the ThemeKeyRule."),
+        '#required' => true,
+        );
 
-    $form['key'] = array(
-      '#type' => 'textfield',
-      '#title' => $this->t('Key'),
-      '#maxlength' => 255,
-      '#default_value' => $themekey_rule->key(),
-      '#description' => $this->t("Optional key for the ThemeKeyRule."),
-      '#required' => FALSE,
-    );
+        $form['key'] = array(
+        '#type' => 'textfield',
+        '#title' => $this->t('Key'),
+        '#maxlength' => 255,
+        '#default_value' => $themekey_rule->key(),
+        '#description' => $this->t("Optional key for the ThemeKeyRule."),
+        '#required' => false,
+        );
 
-    $operators = $this->getOperatorManager()->getDefinitions();
+        $operators = $this->getOperatorManager()->getDefinitions();
 
-    $operator_options = array();
-    foreach ($operators as $operator) {
-      $operator_options[$operator['id']] = $operator['id'];
-    }
+        $operator_options = array();
+        foreach ($operators as $operator) {
+            $operator_options[$operator['id']] = $operator['id'];
+        }
 
     $form['operator'] = array(
       '#type' => 'select',

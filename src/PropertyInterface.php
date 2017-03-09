@@ -19,27 +19,27 @@ use Drupal\themekey\Plugin\SingletonPluginInspectionInterface;
  */
 interface PropertyInterface extends SingletonPluginInspectionInterface {
 
-  /**
+    /**
    * Return the name of the ThemeKey property.
    *
    * @return string
    */
-  public function getName();
+    public function getName();
 
-  /**
+    /**
    * Return the Description of the ThemeKey property.
    *
    * @return string
    */
-  public function getDescription();
+    public function getDescription();
 
 
-  /**
+    /**
    * Return the the current values of the ThemeKey property.
    *
    * @return array
    *   array of system:query_param values
    */
-  public function getValues();
+    public function getValues();
 
 }

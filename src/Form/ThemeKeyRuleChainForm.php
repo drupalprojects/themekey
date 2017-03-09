@@ -12,6 +12,10 @@ use Drupal\themekey\RuleChainManagerTrait;
  */
 class ThemeKeyRuleChainForm extends ConfigFormBase {
 
+    protected function getEditableConfigNames() {
+            return ['themekey_rule.settings'];
+  }
+
   use RuleChainManagerTrait;
 
   /**

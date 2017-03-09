@@ -1,7 +1,6 @@
 <?php
 
-
-use Drupal\Component\Utility\SafeMarkup;
+use Drupal\Component\Utility\FormattableMarkup;
 use Drupal\Core\Render\Element;
 use Drupal\themekey\Entity\ThemeKeyRule;
 
@@ -15,37 +14,37 @@ use Drupal\themekey\Entity\ThemeKeyRule;
  * @ingroup themeable
  */
 function theme_themekey_rule_chain_table($variables) {
-  $destination = drupal_get_destination();
+    $destination = drupal_get_destination();
 
-  $form = $variables['form'];
+    $form = $variables['form'];
 
-  $header = array(t('ThemeKey Rule'), t('Weight'), t('Parent'), t('Enabled'), t('Operations'));
-  $rows = array();
+    $header = array(t('ThemeKey Rule'), t('Weight'), t('Parent'), t('Enabled'), t('Operations'));
+    $rows = array();
 
-  foreach (Element::children($form) as $key) {
-    $ruleId = $form[$key]['#title'];
+		foreach (Element::children($form) as $key) {
+          $ruleId = $form[$key]['#title'];
 
-    $form[$key]['weight']['#attributes']['class'] = array('rule-weight');
-    $form[$key]['parent']['#attributes']['class'] = array('rule-parent');
-    $form[$key]['rule_id'] = array(
-      '#type' => 'hidden',
-      '#disabled' => TRUE,
-      '#value' => $ruleId,
-      '#attributes' => array (
+        $form[$key]['weight']['#attributes']['class'] = array('rule-weight');
+        $form[$key]['parent']['#attributes']['class'] = array('rule-parent');
+        $form[$key]['rule_id'] = array(
+        '#type' => 'hidden',
+        '#disabled' => true,
+        '#value' => $ruleId,
+        '#attributes' => array (
         'class' => array('rule-id'),
-      ),
-    );
+		),
+	);
 
     $indentation = array('#theme' => 'indentation', '#size' => $form[$key]['depth']['#value']);
     $data = array(
-      SafeMarkup::set(
-        drupal_render($indentation) .
-        drupal_render($form[$key]['rule_id']) .
+      FormattableMarkup::set(
+        \Drupal::service('renderer')->render($indentation) .
+        \Drupal::service('renderer')->render($form[$key]['rule_id']) .
         ThemeKeyRule::load($ruleId)->toString()
       ),
-      drupal_render($form[$key]['weight']),
-      drupal_render($form[$key]['parent']),
-      drupal_render($form[$key]['enabled']),
+      \Drupal::service('renderer')->render($form[$key]['weight']),
+      \Drupal::service('renderer')->render($form[$key]['parent']),
+      \Drupal::service('renderer')->render($form[$key]['enabled']),
     );
 
     $links['edit'] = array(
@@ -96,5 +95,5 @@ function theme_themekey_rule_chain_table($variables) {
     ),
   );
 
-  return drupal_render($table);
+    return \Drupal::service('renderer')->render($table);
 }
